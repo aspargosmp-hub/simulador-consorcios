@@ -1496,19 +1496,19 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               </div>
               <div>
                 <div className="text-[11px] uppercase tracking-widest text-bb-yellow font-bold flex items-center gap-2">
-                  <span>Estudo Personalizado — BB Consórcios</span>
+                  <span>Proposta Comercial — BB Consórcios</span>
                   <span className="bg-white/20 text-white px-2 py-0.5 rounded text-[10px]">
                     {tipoPessoa === 'PF' ? 'Pessoa Física (CPF)' : 'Pessoa Jurídica (CNPJ)'}
                   </span>
                 </div>
                 <h3 className="text-xl font-extrabold mt-0.5">
-                  Modalidade:{' '}
+                  Simulação de Consórcio:{' '}
+                  {OBJETIVOS_COMPRA.find((o) => o.id === objetivo)?.label || ''} —{' '}
                   {MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality}
                 </h3>
                 {cliente && (
                   <p className="text-xs text-blue-100 mt-1">
-                    Preparado especialmente para: <strong>{cliente}</strong>{' '}
-                    {telefone ? `(${telefone})` : ''}
+                    Cliente: <strong>{cliente}</strong> {telefone ? `(${telefone})` : ''}
                   </p>
                 )}
               </div>
