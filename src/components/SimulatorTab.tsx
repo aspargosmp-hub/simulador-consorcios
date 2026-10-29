@@ -1018,55 +1018,72 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               >
                 <div className="space-y-3">
                   {/* Topo do Card */}
-                  <div className="flex items-center justify-between">
-                    <label className="inline-flex items-center gap-1.5 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={slot.enabled}
-                        onChange={(e) => {
-                          const enabled = e.target.checked;
-                          const defaultId =
-                            !slot.groupId && modalityItems.length > 0
-                              ? modalityItems[Math.min(idx, modalityItems.length - 1)].id
-                              : slot.groupId;
-                          updateSlot(idx, { enabled, groupId: defaultId });
-                        }}
-                        className="rounded text-bb-blue focus:ring-bb-blue"
-                      />
-                      <span className="text-xs font-extrabold text-slate-800 uppercase tracking-wide">
-                        Proposta {idx + 1}
-                      </span>
-                      {slot.enabled && idx < 3 && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-bb-yellow/40 text-bb-dark font-bold">
-                          {idx === 0
-                            ? '🎯 Crédito Ideal'
-                            : idx === 1
-                            ? '💰 Menor Parcela'
-                            : '⚡ Menor Lance'}
+                  <div className="space-y-1.5 pb-2 border-b border-slate-200/70">
+                    <div className="flex items-center justify-between gap-2">
+                      <label className="inline-flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                        <input
+                          type="checkbox"
+                          checked={slot.enabled}
+                          onChange={(e) => {
+                            const enabled = e.target.checked;
+                            const defaultId =
+                              !slot.groupId && modalityItems.length > 0
+                                ? modalityItems[Math.min(idx, modalityItems.length - 1)].id
+                                : slot.groupId;
+                            updateSlot(idx, { enabled, groupId: defaultId });
+                          }}
+                          className="rounded text-bb-blue focus:ring-bb-blue"
+                        />
+                        <span className="text-xs font-extrabold text-bb-dark uppercase tracking-wide">
+                          Proposta {idx + 1}
                         </span>
-                      )}
-                    </label>
+                      </label>
 
-                    {slot.enabled && selectedItem && (
-                      <div className="flex items-center gap-1">
-                        {onOpenAssembleiaGroup && selectedItem.grupo !== '000000' && (
+                      {slot.enabled && selectedItem && (
+                        <div className="flex items-center gap-1 shrink-0">
+                          {onOpenAssembleiaGroup && selectedItem.grupo !== '000000' && (
+                            <button
+                              type="button"
+                              onClick={() => onOpenAssembleiaGroup(selectedItem.grupo)}
+                              className="px-2 py-1 rounded-md bg-blue-100/80 hover:bg-blue-200 text-bb-blue text-[10px] font-bold inline-flex items-center gap-1 whitespace-nowrap transition"
+                              title="Ver Histórico de Assembleias deste Grupo"
+                            >
+                              <BarChart3 className="w-3 h-3 shrink-0" /> Assemb.
+                            </button>
+                          )}
                           <button
                             type="button"
-                            onClick={() => onOpenAssembleiaGroup(selectedItem.grupo)}
-                            className="p-1 rounded bg-blue-100 hover:bg-blue-200 text-bb-blue text-[10px] font-bold inline-flex items-center gap-0.5"
-                            title="Ver Histórico de Assembleias deste Grupo"
+                            onClick={() => duplicateSlotToNext(idx)}
+                            className="px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-semibold inline-flex items-center gap-1 whitespace-nowrap transition"
+                            title="Duplicar esta proposta para o próximo card"
                           >
-                            <BarChart3 className="w-3 h-3" /> Assemb.
+                            <CopyPlus className="w-3 h-3 shrink-0" /> Duplicar
                           </button>
-                        )}
-                        <button
-                          type="button"
-                          onClick={() => duplicateSlotToNext(idx)}
-                          className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] inline-flex items-center gap-1"
-                          title="Duplicar esta proposta para o próximo card"
-                        >
-                          <CopyPlus className="w-3 h-3" /> Duplicar
-                        </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {slot.enabled && (
+                      <div
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded flex items-center gap-1 w-full ${
+                          idx === 0
+                            ? 'bg-blue-100/70 text-bb-blue'
+                            : idx === 1
+                            ? 'bg-emerald-100/70 text-emerald-800'
+                            : idx === 2
+                            ? 'bg-amber-100/80 text-amber-900'
+                            : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        <span>
+                          {idx === 0
+                            ? '🎯 Cenário 1: Crédito Líquido Ideal'
+                            : idx === 1
+                            ? '💰 Cenário 2: Menor Parcela Mensal'
+                            : idx === 2
+                            ? '⚡ Cenário 3: Menor Lance Mín. (12m)'
+                            : '➕ Cenário 4: Comparativo Extra'}
+                        </span>
                       </div>
                     )}
                   </div>
