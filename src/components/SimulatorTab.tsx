@@ -343,48 +343,97 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
     const candidates: CandidateScenario[] = [];
 
     for (const item of pool) {
-      const acceptsEmb = item.tags.includes('Lance Embutido');
-      const embPerc = targetUsarEmbutido && acceptsEmb ? 30 : targetUsarEmbutido ? 30 : 0;
-      const fatorLiq = 1 - embPerc / 100;
+      // Testa com o percentual de embutido escolhido (e também testa 0% em grupos de Lance Fixo 20/30 quando há lance do bolso suficiente)
+      const embOptions = targetUsarEmbutido ? [30, 0] : [0];
 
-      for (let cotas = 1; cotas <= 3; cotas++) {
-        const creditoBruto = item.valorBem * cotas;
-        const creditoLiquido = creditoBruto * fatorLiq;
-        const parcelaInicial = item.parcela * cotas;
+      for (const embPerc of embOptions) {
+        // Se o usuário pediu embutido, só usa embPerc=0 se for grupo de Lance Fixo <= 30% e tiver lance do bolso
+        if (targetUsarEmbutido && embPerc === 0 && item.percMinContemp > 30) continue;
 
-        let bolsoPerc = 15;
-        if (bolsoReais > 0 && creditoBruto > 0) {
-          bolsoPerc = Math.min(69, Number(((bolsoReais / creditoBruto) * 100).toFixed(2)));
-        } else if (!targetUsarEmbutido && item.tags.includes('Lance Fixo 20%')) {
-          bolsoPerc = 20;
+        const fatorLiq = 1 - embPerc / 100;
+
+        for (let cotas = 1; cotas <= 4; cotas++) {
+          const creditoBruto = item.valorBem * cotas;
+          const creditoLiquido = creditoBruto * fatorLiq;
+          const parcelaInicial = item.parcela * cotas;
+
+          let bolsoPerc = 15;
+          if (bolsoReais > 0 && creditoBruto > 0) {
+            // Mantém precisão total para que o valor em R$ bata exatamente (sem quebrar em R$ 100.009,92)
+            bolsoPerc = Math.min(69, (bolsoReais / creditoBruto) * 100);
+          } else if (embPerc === 0 && item.tags.includes('Lance Fixo 20%')) {
+            bolsoPerc = 20;
+          } else if (bolsoReais === 0 && targetUsarEmbutido) {
+            bolsoPerc = 0;
+          }
+
+          const lanceTotalPerc = embPerc + bolsoPerc;
+          const lanceTotalValor = creditoBruto * (lanceTotalPerc / 100);
+          const saldoTotal = parcelaInicial * item.prazo;
+          const parcelaPosLance =
+            item.prazo > 1
+              ? Math.max(0, (saldoTotal - parcelaInicial - lanceTotalValor) / (item.prazo - 1))
+              : parcelaInicial;
+
+          // Distância percentual para o crédito líquido desejado
+          const scoreCredito =
+            liquidoDesejado > 0
+              ? Math.abs(creditoLiquido - liquidoDesejado) / liquidoDesejado
+              : mensalidadeMax > 0
+              ? Math.abs(parcelaPosLance - mensalidadeMax) / mensalidadeMax
+              : 0;
+
+          // Verifica se cabe na mensalidade máxima (considerando a parcela pós-lance se houver lance, ou inicial)
+          const refParcela = lanceTotalPerc > 0 ? parcelaPosLance : parcelaInicial;
+          const withinBudget = mensalidadeMax <= 0 || refParcela <= mensalidadeMax * 1.12;
+
+          // Aceita candidatos cujo crédito líquido esteja próximo do pedido (-6% a +14%)
+          const reasonableCredit =
+            liquidoDesejado <= 0 ||
+            (creditoLiquido >= liquidoDesejado * 0.94 &&
+              creditoLiquido <= liquidoDesejado * 1.15);
+
+          if (reasonableCredit) {
+            candidates.push({
+              item,
+              cotas,
+              embPerc,
+              bolsoPerc,
+              creditoBruto,
+              creditoLiquido,
+              parcelaInicial,
+              parcelaPosLance,
+              scoreCredito,
+              withinBudget,
+            });
+          }
         }
+      }
+    }
 
-        const lanceTotalValor = creditoBruto * ((embPerc + bolsoPerc) / 100);
-        const saldoTotal = parcelaInicial * item.prazo;
-        const parcelaPosLance =
-          item.prazo > 1
-            ? Math.max(0, (saldoTotal - parcelaInicial - lanceTotalValor) / (item.prazo - 1))
-            : parcelaInicial;
-
-        // Distância percentual para o crédito líquido desejado
-        const scoreCredito =
-          liquidoDesejado > 0
-            ? Math.abs(creditoLiquido - liquidoDesejado) / liquidoDesejado
-            : mensalidadeMax > 0
-            ? Math.abs(parcelaPosLance - mensalidadeMax) / mensalidadeMax
-            : 0;
-
-        // Verifica se cabe na mensalidade máxima (considerando a parcela pós-lance se houver lance, ou inicial)
-        const refParcela = embPerc + bolsoPerc > 0 ? parcelaPosLance : parcelaInicial;
-        const withinBudget = mensalidadeMax <= 0 || refParcela <= mensalidadeMax * 1.12;
-
-        // Aceita candidatos cujo crédito líquido esteja entre -15% e +35% do pedido (ou se o usuário só preencheu mensalidade)
-        const reasonableCredit =
-          liquidoDesejado <= 0 ||
-          (creditoLiquido >= liquidoDesejado * 0.82 &&
-            creditoLiquido <= liquidoDesejado * 1.45);
-
-        if (reasonableCredit) {
+    // Fallback se a faixa estrita (-6% a +14%) não encontrar opções suficientes
+    if (candidates.length < 3 && liquidoDesejado > 0) {
+      for (const item of pool) {
+        const embPerc = targetUsarEmbutido ? 30 : 0;
+        const fatorLiq = 1 - embPerc / 100;
+        for (let cotas = 1; cotas <= 4; cotas++) {
+          const creditoBruto = item.valorBem * cotas;
+          const creditoLiquido = creditoBruto * fatorLiq;
+          if (creditoLiquido < liquidoDesejado * 0.85 || creditoLiquido > liquidoDesejado * 1.30)
+            continue;
+          const parcelaInicial = item.parcela * cotas;
+          const bolsoPerc =
+            bolsoReais > 0 && creditoBruto > 0
+              ? Math.min(69, (bolsoReais / creditoBruto) * 100)
+              : 0;
+          const lanceTotalValor = creditoBruto * ((embPerc + bolsoPerc) / 100);
+          const saldoTotal = parcelaInicial * item.prazo;
+          const parcelaPosLance =
+            item.prazo > 1
+              ? Math.max(0, (saldoTotal - parcelaInicial - lanceTotalValor) / (item.prazo - 1))
+              : parcelaInicial;
+          const scoreCredito = Math.abs(creditoLiquido - liquidoDesejado) / liquidoDesejado;
+          const withinBudget = mensalidadeMax <= 0 || parcelaPosLance <= mensalidadeMax * 1.15;
           candidates.push({
             item,
             cotas,
@@ -1149,17 +1198,17 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                           <div className="text-[11px] font-bold text-slate-700">
                             Lance Recurso Próprio (Bolso — digite em % ou R$):
                           </div>
-                          <div className="grid grid-cols-2 gap-2">
-                            <div>
+                          <div className="grid grid-cols-12 gap-1.5">
+                            <div className="col-span-5">
                               <span className="block text-[10px] text-slate-500 mb-0.5">
-                                Em Percentual (%)
+                                Em %
                               </span>
                               <input
                                 type="number"
                                 min={0}
                                 max={95}
                                 step={0.5}
-                                value={slot.lanceRecursoProprioPerc}
+                                value={Number(slot.lanceRecursoProprioPerc.toFixed(2))}
                                 onChange={(e) =>
                                   updateSlot(idx, {
                                     lanceRecursoProprioPerc: Math.max(
@@ -1171,7 +1220,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                                 className="w-full px-2 py-1 text-xs border border-slate-300 rounded bg-white font-bold text-bb-blue"
                               />
                             </div>
-                            <div>
+                            <div className="col-span-7">
                               <span className="block text-[10px] text-slate-500 mb-0.5">
                                 Ou Valor em R$
                               </span>
@@ -1180,7 +1229,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                                 onChange={(reais) => {
                                   const perc =
                                     calc.creditoBruto > 0
-                                      ? Number(((reais / calc.creditoBruto) * 100).toFixed(2))
+                                      ? (reais / calc.creditoBruto) * 100
                                       : 0;
                                   updateSlot(idx, {
                                     lanceRecursoProprioPerc: Math.min(95, perc),
@@ -1278,12 +1327,30 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                         <div className="flex justify-between text-slate-700">
                           <span>Lance do Bolso:</span>
                           <span className="font-bold">
-                            {formatBRL(calc.valorLanceRecursoProprio)} ({calc.lanceRecursoProprioPerc}%)
+                            {formatBRL(calc.valorLanceRecursoProprio)} (
+                            {formatPercent(calc.lanceRecursoProprioPerc, 1)})
                           </span>
                         </div>
                         <div className="flex justify-between text-bb-dark font-extrabold">
-                          <span>Pós-Lance ({formatPercent(calc.lanceTotalPerc, 0)}):</span>
+                          <span>Pós-Lance ({formatPercent(calc.lanceTotalPerc, 1)}):</span>
                           <span>{formatBRL(calc.parcelaPosLance)}</span>
+                        </div>
+                        <div
+                          className={`mt-1 px-2 py-1 rounded text-[10px] font-bold flex items-center justify-between ${
+                            calc.lanceTotalPerc >= calc.item.percMinContemp
+                              ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
+                              : 'bg-amber-50 text-amber-800 border border-amber-200'
+                          }`}
+                        >
+                          <span>
+                            {calc.lanceTotalPerc >= calc.item.percMinContemp
+                              ? '🔥 Acima da média 12m'
+                              : '⚠️ Abaixo da média 12m'}
+                          </span>
+                          <span>
+                            Seu: {formatPercent(calc.lanceTotalPerc, 1)} | Grupo:{' '}
+                            {formatPercent(calc.item.percMinContemp, 1)}
+                          </span>
                         </div>
                       </>
                     )}

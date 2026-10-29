@@ -62,7 +62,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   return (
     <div className={`relative flex items-center ${className}`}>
       <span
-        className={`absolute left-3 text-xs font-extrabold pointer-events-none select-none ${prefixClassName}`}
+        className={`absolute left-2.5 text-[11px] font-extrabold pointer-events-none select-none ${prefixClassName}`}
       >
         R$
       </span>
@@ -73,8 +73,8 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className={`w-full pl-9 ${
-          showClear && value > 0 ? 'pr-7' : 'pr-3'
+        className={`w-full pl-8 ${
+          showClear && value > 0 ? 'pr-7' : 'pr-2'
         } py-2 rounded-lg text-xs font-extrabold focus:outline-none ${inputClassName}`}
       />
       {showClear && value > 0 && (
