@@ -874,18 +874,33 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         )}
       </form>
 
-      {/* Painel Principal de Configuração das 4 Propostas */}
+      {/* Painel Principal: Resultado da Simulação e Ajuste Fino das Propostas */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print:hidden space-y-5">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
-            <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
+            <h2 className="text-base font-extrabold text-bb-dark flex items-center gap-2 uppercase tracking-tight">
               <Calculator className="w-5 h-5 text-bb-blue" />
-              Configurador Manual de Propostas Lado a Lado (Até 4 Cenários)
+              Resultado da Simulação —{' '}
+              <span className="text-bb-blue">
+                {OBJETIVOS_COMPRA.find((o) => o.id === objetivo)?.emoji}{' '}
+                {OBJETIVOS_COMPRA.find((o) => o.id === objetivo)?.label} (
+                {MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality})
+              </span>
             </h2>
-            <p className="text-xs text-slate-500">
-              Ajuste fino das cartas selecionadas: alterne entre{' '}
-              <strong>Master, Flex e Tabela Especial 93</strong>, selecione{' '}
-              <strong>PF ou PJ</strong> e ajuste os lances em % ou R$.
+            <p className="text-xs text-slate-500 mt-0.5">
+              Compare abaixo os cenários montados para{' '}
+              {targetLiquido > 0 ? (
+                <strong>crédito líquido de {formatBRL(targetLiquido)}</strong>
+              ) : (
+                <strong>sua simulação</strong>
+              )}
+              {targetBolsoReais > 0 ? (
+                <>
+                  {' '}
+                  com <strong>{formatBRL(targetBolsoReais)} de lance do bolso</strong>
+                </>
+              ) : null}
+              . Você pode ajustar qualquer grupo, carta ou lance abaixo:
             </p>
           </div>
 
@@ -1004,7 +1019,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                 <div className="space-y-3">
                   {/* Topo do Card */}
                   <div className="flex items-center justify-between">
-                    <label className="inline-flex items-center gap-2 cursor-pointer">
+                    <label className="inline-flex items-center gap-1.5 cursor-pointer">
                       <input
                         type="checkbox"
                         checked={slot.enabled}
@@ -1021,6 +1036,15 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                       <span className="text-xs font-extrabold text-slate-800 uppercase tracking-wide">
                         Proposta {idx + 1}
                       </span>
+                      {slot.enabled && idx < 3 && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-bb-yellow/40 text-bb-dark font-bold">
+                          {idx === 0
+                            ? '🎯 Crédito Ideal'
+                            : idx === 1
+                            ? '💰 Menor Parcela'
+                            : '⚡ Menor Lance'}
+                        </span>
+                      )}
                     </label>
 
                     {slot.enabled && selectedItem && (
