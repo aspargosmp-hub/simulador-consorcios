@@ -794,30 +794,32 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
   return (
     <div className="space-y-5">
-      {/* CALCULADORA REVERSA 2.0: O QUE O CLIENTE QUER COMPRAR + CRÉDITO + MENSALIDADE */}
+      {/* SIMULADOR INTELIGENTE: OBJETIVO DE COMPRA + CRÉDITO + MENSALIDADE + LANCE */}
       <form
         onSubmit={handleAutoBuildProposal}
-        className="bg-gradient-to-br from-bb-dark via-bb-blue to-blue-900 text-white rounded-xl p-5 shadow-md print:hidden space-y-4 border border-blue-700"
+        className="bg-gradient-to-br from-bb-dark via-bb-blue to-blue-900 text-white rounded-2xl p-5 sm:p-6 shadow-lg print:hidden space-y-5 border border-blue-700/80"
       >
-        <div className="flex flex-wrap items-center justify-between gap-2">
+        {/* Cabeçalho do Simulador Inteligente */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-white/15">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-bb-yellow uppercase tracking-wider">
-              <Wand2 className="w-4 h-4" />
-              Montador Inteligente de Propostas (Calculadora Reversa)
+            <div className="inline-flex items-center gap-2 text-lg sm:text-xl font-black text-bb-yellow uppercase tracking-tight">
+              <Wand2 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
+              Simulador Inteligente
             </div>
-            <p className="text-xs text-blue-100 mt-0.5">
-              1º Escolha <strong>o que o cliente quer comprar</strong>, 2º digite o{' '}
-              <strong>crédito líquido</strong> e a <strong>mensalidade que cabe no bolso dele</strong>. O sistema monta até 3 cenários ideais na hora!
+            <p className="text-xs sm:text-sm text-blue-100 mt-1">
+              Escolha o bem que o cliente deseja adquirir, informe quanto ele precisa receber{' '}
+              <strong className="text-white">livre na mão</strong> e a{' '}
+              <strong className="text-white">parcela mensal</strong> ideal.
             </p>
           </div>
 
-          <div className="inline-flex rounded-lg bg-white/10 p-0.5 border border-white/15">
+          <div className="inline-flex rounded-xl bg-blue-950/60 p-1 border border-white/20 self-start md:self-center shrink-0">
             <button
               type="button"
               onClick={() => setPlanoPreferido('Flex')}
-              className={`px-3 py-1 rounded-md text-xs font-extrabold transition ${
+              className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition ${
                 planoPreferido === 'Flex'
-                  ? 'bg-bb-yellow text-bb-dark'
+                  ? 'bg-bb-yellow text-bb-dark shadow-sm'
                   : 'text-blue-100 hover:text-white'
               }`}
             >
@@ -826,9 +828,9 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             <button
               type="button"
               onClick={() => setPlanoPreferido('Master')}
-              className={`px-3 py-1 rounded-md text-xs font-extrabold transition ${
+              className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition ${
                 planoPreferido === 'Master'
-                  ? 'bg-bb-yellow text-bb-dark'
+                  ? 'bg-bb-yellow text-bb-dark shadow-sm'
                   : 'text-blue-100 hover:text-white'
               }`}
             >
@@ -837,12 +839,12 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
           </div>
         </div>
 
-        {/* Passo 1: O que o cliente quer comprar? */}
+        {/* Passo 1: O que o cliente deseja comprar? */}
         <div>
-          <span className="block text-[11px] font-bold text-bb-yellow uppercase tracking-wider mb-1.5">
-            1. O que o cliente quer comprar?
+          <span className="block text-xs sm:text-sm font-extrabold text-bb-yellow uppercase tracking-wide mb-2">
+            1. O que o cliente deseja comprar?
           </span>
-          <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-1.5">
+          <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-2">
             {OBJETIVOS_COMPRA.map((obj) => {
               const active = objetivo === obj.id;
               return (
@@ -850,42 +852,46 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   key={obj.id}
                   type="button"
                   onClick={() => setObjetivo(obj.id)}
-                  className={`px-2.5 py-2 rounded-lg text-left transition border flex flex-col justify-between ${
+                  className={`px-3 py-2.5 rounded-xl text-left transition border flex flex-col justify-between ${
                     active
-                      ? 'bg-bb-yellow text-bb-dark border-bb-yellow font-extrabold shadow'
-                      : 'bg-white/10 text-white border-white/15 hover:bg-white/20 font-medium'
+                      ? 'bg-bb-yellow text-bb-dark border-bb-yellow font-black shadow-md ring-2 ring-white/40'
+                      : 'bg-white/10 text-white border-white/15 hover:bg-white/20 font-semibold'
                   }`}
                 >
-                  <span className="text-base leading-none">{obj.emoji}</span>
-                  <span className="text-[11px] leading-tight mt-1">{obj.label}</span>
+                  <span className="text-lg sm:text-xl leading-none">{obj.emoji}</span>
+                  <span className="text-[11px] sm:text-xs leading-tight mt-1.5">{obj.label}</span>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Passo 2: Valores do Cliente (Crédito Líquido, Mensalidade Ideal, Recurso Próprio) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-start pt-2 border-t border-white/15">
-          <div>
-            <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              2. Crédito Líquido Desejado
+        {/* Passo 2: Valores do Cliente (3 Colunas Amplas e Alinhadas) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-white/15">
+          {/* Coluna 1: Crédito Líquido */}
+          <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+            <label className="block text-xs sm:text-sm text-bb-yellow font-extrabold uppercase tracking-wide">
+              2. Valor do Crédito Líquido
             </label>
+            <span className="block text-[11px] text-blue-100 mb-2">
+              Quanto o cliente precisa livre na mão para comprar o bem
+            </span>
             <CurrencyInput
               value={targetLiquido}
               onChange={setTargetLiquido}
               placeholder="Ex: 350.000,00"
               prefixClassName="text-bb-blue"
-              inputClassName="bg-white text-slate-900 focus:ring-2 focus:ring-bb-yellow"
+              inputClassName="bg-white text-slate-900 py-2.5 text-sm focus:ring-2 focus:ring-bb-yellow"
             />
-            <div className="flex flex-wrap gap-1 mt-1">
+            <div className="grid grid-cols-5 gap-1 mt-2">
               {[100000, 200000, 350000, 500000, 1000000].map((v) => (
                 <button
                   key={v}
                   type="button"
                   onClick={() => setTargetLiquido(v)}
-                  className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition ${
+                  className={`text-[11px] py-1 rounded-md font-extrabold text-center transition ${
                     targetLiquido === v
-                      ? 'bg-bb-yellow text-bb-dark'
+                      ? 'bg-bb-yellow text-bb-dark shadow-sm'
                       : 'bg-white/10 text-blue-100 hover:bg-white/20'
                   }`}
                 >
@@ -895,26 +901,30 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
           </div>
 
-          <div>
-            <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              3. Mensalidade Ideal (Opcional)
+          {/* Coluna 2: Parcela Mensal Ideal */}
+          <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+            <label className="block text-xs sm:text-sm text-bb-yellow font-extrabold uppercase tracking-wide">
+              3. Parcela Mensal Ideal
             </label>
+            <span className="block text-[11px] text-blue-100 mb-2">
+              Valor máximo que cabe no bolso por mês (ou deixe Livre)
+            </span>
             <CurrencyInput
               value={targetMensalidadeMax}
               onChange={setTargetMensalidadeMax}
-              placeholder="Sem limite (0,00)"
+              placeholder="Sem limite (Livre)"
               prefixClassName="text-bb-blue"
-              inputClassName="bg-white text-slate-900 focus:ring-2 focus:ring-bb-yellow"
+              inputClassName="bg-white text-slate-900 py-2.5 text-sm focus:ring-2 focus:ring-bb-yellow"
             />
-            <div className="flex flex-wrap gap-1 mt-1">
+            <div className="grid grid-cols-5 gap-1 mt-2">
               {[0, 1500, 2500, 3500, 5000].map((v) => (
                 <button
                   key={v}
                   type="button"
                   onClick={() => setTargetMensalidadeMax(v)}
-                  className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition ${
+                  className={`text-[11px] py-1 rounded-md font-extrabold text-center transition ${
                     targetMensalidadeMax === v
-                      ? 'bg-bb-yellow text-bb-dark'
+                      ? 'bg-bb-yellow text-bb-dark shadow-sm'
                       : 'bg-white/10 text-blue-100 hover:bg-white/20'
                   }`}
                 >
@@ -924,26 +934,30 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
           </div>
 
-          <div>
-            <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              4. Lance do Bolso (Opcional)
+          {/* Coluna 3: Lance do Bolso */}
+          <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+            <label className="block text-xs sm:text-sm text-bb-yellow font-extrabold uppercase tracking-wide">
+              4. Lance do Bolso (Entrada)
             </label>
+            <span className="block text-[11px] text-blue-100 mb-2">
+              Valor em dinheiro próprio para ofertar de lance (Opcional)
+            </span>
             <CurrencyInput
               value={targetBolsoReais}
               onChange={setTargetBolsoReais}
-              placeholder="Ex: 50.000,00"
+              placeholder="Sem lance do bolso (0,00)"
               prefixClassName="text-bb-blue"
-              inputClassName="bg-white text-slate-900 focus:ring-2 focus:ring-bb-yellow"
+              inputClassName="bg-white text-slate-900 py-2.5 text-sm focus:ring-2 focus:ring-bb-yellow"
             />
-            <div className="flex flex-wrap gap-1 mt-1">
+            <div className="grid grid-cols-5 gap-1 mt-2">
               {[0, 30000, 50000, 100000, 150000].map((v) => (
                 <button
                   key={v}
                   type="button"
                   onClick={() => setTargetBolsoReais(v)}
-                  className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition ${
+                  className={`text-[11px] py-1 rounded-md font-extrabold text-center transition ${
                     targetBolsoReais === v
-                      ? 'bg-bb-yellow text-bb-dark'
+                      ? 'bg-bb-yellow text-bb-dark shadow-sm'
                       : 'bg-white/10 text-blue-100 hover:bg-white/20'
                   }`}
                 >
@@ -952,33 +966,42 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               ))}
             </div>
           </div>
+        </div>
 
-          <div className="pt-5">
-            <label className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-xs font-bold cursor-pointer h-[36px]">
-              <input
-                type="checkbox"
-                checked={targetUsarEmbutido}
-                onChange={(e) => setTargetUsarEmbutido(e.target.checked)}
-                className="rounded text-bb-yellow"
-              />
-              <span>Usar 30% Lance Embutido</span>
-            </label>
-          </div>
+        {/* Barra Inferior: Opção de Lance Embutido + 2 Botões de Ação com Mesma Evidência */}
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 pt-2 border-t border-white/15">
+          <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 cursor-pointer transition">
+            <input
+              type="checkbox"
+              checked={targetUsarEmbutido}
+              onChange={(e) => setTargetUsarEmbutido(e.target.checked)}
+              className="w-4 h-4 rounded text-bb-yellow focus:ring-bb-yellow"
+            />
+            <div>
+              <span className="block text-xs sm:text-sm font-extrabold text-white">
+                Somar 30% de Lance Embutido (da própria carta)
+              </span>
+              <span className="block text-[11px] text-blue-200">
+                Usa parte da carta como lance e já ajusta o valor bruto para entregar o crédito líquido exato
+              </span>
+            </div>
+          </label>
 
-          <div className="pt-5 space-y-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 shrink-0">
             <button
               type="submit"
-              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 h-[36px] rounded-lg bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark text-xs font-black shadow-md transition"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide shadow-md transition"
             >
-              <Target className="w-4 h-4" />
-              Simular Proposta Ideal
+              <Target className="w-4 h-4 shrink-0" />
+              Simular 1 Proposta Ideal
             </button>
             <button
               type="button"
               onClick={() => runProposalBuilder('compare3')}
-              className="w-full text-center text-[10px] font-bold text-blue-200 hover:text-bb-yellow transition py-0.5"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-blue-50 text-bb-dark border-2 border-bb-yellow text-xs sm:text-sm font-black uppercase tracking-wide shadow-md transition"
             >
-              + Ou comparar 3 cenários lado a lado
+              <Layers className="w-4 h-4 text-bb-blue shrink-0" />
+              Simular 3 Propostas
             </button>
           </div>
         </div>
