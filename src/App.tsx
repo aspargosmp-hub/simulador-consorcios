@@ -168,6 +168,16 @@ export function App() {
     setActiveTab('assembleias');
   };
 
+  const handleApplyAutoProposal = (
+    newMod: CodigoModalidade,
+    newSlots: ProposalSlot[],
+    newAgrupar: boolean
+  ) => {
+    setSimModality(newMod);
+    setSlots(newSlots);
+    setAgrupar(newAgrupar);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       {/* Cabeçalho Limpo e Direto com a Logo Oficial BB Consórcios */}
@@ -255,6 +265,7 @@ export function App() {
             onChangeSlots={setSlots}
             agrupar={agrupar}
             onChangeAgrupar={setAgrupar}
+            onApplyAutoProposal={handleApplyAutoProposal}
             onSaveSimulation={(newSim) => {
               setSavedSimulations((prev) => [newSim, ...prev]);
             }}

@@ -46,6 +46,11 @@ interface SimulatorTabProps {
   onChangeSlots: (slots: ProposalSlot[]) => void;
   agrupar: boolean;
   onChangeAgrupar: (val: boolean) => void;
+  onApplyAutoProposal?: (
+    mod: CodigoModalidade,
+    slots: ProposalSlot[],
+    agrupar: boolean
+  ) => void;
   onSaveSimulation: (sim: SavedSimulation) => void;
   onOpenAssembleiaGroup?: (grupo: string) => void;
 }
@@ -185,6 +190,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
   onChangeSlots,
   agrupar,
   onChangeAgrupar,
+  onApplyAutoProposal,
   onSaveSimulation,
   onOpenAssembleiaGroup,
 }) => {
@@ -197,6 +203,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
   const [comentario, setComentario] = useState<string>('');
   const [copiedWhats, setCopiedWhats] = useState<boolean>(false);
   const [savedToast, setSavedToast] = useState<boolean>(false);
+  const [justUpdated, setJustUpdated] = useState<boolean>(false);
 
   const [slotGroupFilter, setSlotGroupFilter] = useState<Record<number, string>>({});
 
@@ -500,9 +507,6 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
       );
     }
 
-    onChangeModality(targetMod);
-    onChangeAgrupar(false);
-
     const nextSlots: ProposalSlot[] = [0, 1, 2, 3].map((idx) => {
       const sc = chosenScenarios[idx];
       if (sc) {
@@ -525,7 +529,13 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
       };
     });
 
-    onChangeSlots(nextSlots);
+    if (onApplyAutoProposal) {
+      onApplyAutoProposal(targetMod, nextSlots, false);
+    } else {
+      onChangeModality(targetMod);
+      onChangeAgrupar(false);
+      onChangeSlots(nextSlots);
+    }
 
     const newGroupFilters: Record<number, string> = {};
     chosenScenarios.forEach((sc, idx) => {
@@ -533,9 +543,18 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
     });
     setSlotGroupFilter(newGroupFilters);
 
+    setJustUpdated(true);
+    setTimeout(() => setJustUpdated(false), 1200);
+
+    const hora = new Date().toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+
     if (mode === 'single') {
       setAssistantFeedback(
-        `Proposta ideal montada para ${objConfig.label} (${targetMod}): Grupo ${
+        `[${hora}] Simulação atualizada para ${objConfig.label} (${targetMod}): Grupo ${
           c1.item.grupo
         } (${c1.cotas} cota${c1.cotas > 1 ? 's' : ''}) • Crédito Líquido: ${formatBRL(
           c1.creditoLiquido
@@ -543,9 +562,9 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
       );
     } else {
       setAssistantFeedback(
-        `Comparativo de ${chosenScenarios.length} cenários para ${formatBRL(
+        `[${hora}] Comparativo de ${chosenScenarios.length} cenários para ${formatBRL(
           liquidoDesejado
-        )} líquidos em ${objConfig.label} (${targetMod}) montado abaixo!`
+        )} líquidos em ${objConfig.label} (${targetMod}) atualizado abaixo!`
       );
     }
   };
@@ -904,7 +923,13 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
       </form>
 
       {/* Painel Principal: Resultado da Simulação e Ajuste Fino das Propostas */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 print:hidden space-y-5">
+      <div
+        className={`bg-white rounded-xl shadow-sm border p-5 print:hidden space-y-5 transition-all duration-300 ${
+          justUpdated
+            ? 'border-bb-yellow ring-2 ring-bb-yellow bg-amber-50/10'
+            : 'border-slate-200'
+        }`}
+      >
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
           <div>
             <h2 className="text-base font-extrabold text-bb-dark flex items-center gap-2 uppercase tracking-tight">
