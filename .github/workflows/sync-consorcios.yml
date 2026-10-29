@@ -1,0 +1,64 @@
+name: Sincronização Diária e Publicação BB Consórcios
+
+on:
+  schedule:
+    # Roda todos os dias às 07:00 BRT (10:00 UTC)
+    - cron: '0 10 * * *'
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Executar Robô de Sincronização BB Consórcios (1x por dia)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          BB_PARCEIROS_USER: ${{ secrets.BB_PARCEIROS_USER }}
+          BB_PARCEIROS_PASS: ${{ secrets.BB_PARCEIROS_PASS }}
+          MAX_CONSORCIOS_USER: ${{ secrets.MAX_CONSORCIOS_USER }}
+          MAX_CONSORCIOS_PASS: ${{ secrets.MAX_CONSORCIOS_PASS }}
+        run: |
+          python3 scripts/sync_bb.py || true
+          git config user.name "Robô BB Consórcios"
+          git config user.email "bot@consorcios.local"
+          git add src/data/consorciosSeed.json src/data/bemMap.json
+          git diff --staged --quiet || (git commit -m "chore(data): atualização diária automática BB Consórcios" && git push)
+
+      - name: Configurar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências e gerar build de produção
+        run: |
+          npm ci
+          npm run build
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload do artefato para GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+      - name: Publicar no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

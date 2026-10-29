@@ -1,0 +1,2998 @@
+{
+  "001231": [
+    {
+      "grupo": "001231",
+      "assembleia": "110",
+      "data": "26/08/2026",
+      "qtdContemplados": 76,
+      "maiorLance": 42.78,
+      "menorLance": 38.892
+    },
+    {
+      "grupo": "001231",
+      "assembleia": "111",
+      "data": "25/09/2026",
+      "qtdContemplados": 68,
+      "maiorLance": 42.17,
+      "menorLance": 36.01
+    },
+    {
+      "grupo": "001231",
+      "assembleia": "112",
+      "data": "27/10/2026",
+      "qtdContemplados": 80,
+      "maiorLance": 41.56,
+      "menorLance": 40.0281
+    }
+  ],
+  "001274": [
+    {
+      "grupo": "001274",
+      "assembleia": "095",
+      "data": "26/08/2026",
+      "qtdContemplados": 88,
+      "maiorLance": 21.98,
+      "menorLance": 20.8325
+    },
+    {
+      "grupo": "001274",
+      "assembleia": "096",
+      "data": "25/09/2026",
+      "qtdContemplados": 99,
+      "maiorLance": 21.06,
+      "menorLance": 11.0
+    },
+    {
+      "grupo": "001274",
+      "assembleia": "097",
+      "data": "27/10/2026",
+      "qtdContemplados": 114,
+      "maiorLance": 20.15,
+      "menorLance": 13.2485
+    }
+  ],
+  "001391": [
+    {
+      "grupo": "001391",
+      "assembleia": "067",
+      "data": "26/08/2026",
+      "qtdContemplados": 117,
+      "maiorLance": 23.36,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001391",
+      "assembleia": "068",
+      "data": "25/09/2026",
+      "qtdContemplados": 125,
+      "maiorLance": 21.98,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001391",
+      "assembleia": "069",
+      "data": "27/10/2026",
+      "qtdContemplados": 134,
+      "maiorLance": 20.61,
+      "menorLance": 10.0
+    }
+  ],
+  "001403": [
+    {
+      "grupo": "001403",
+      "assembleia": "064",
+      "data": "26/08/2026",
+      "qtdContemplados": 139,
+      "maiorLance": 27.48,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001403",
+      "assembleia": "065",
+      "data": "25/09/2026",
+      "qtdContemplados": 133,
+      "maiorLance": 26.1,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001403",
+      "assembleia": "066",
+      "data": "27/10/2026",
+      "qtdContemplados": 144,
+      "maiorLance": 24.73,
+      "menorLance": 10.0
+    }
+  ],
+  "001406": [
+    {
+      "grupo": "001406",
+      "assembleia": "064",
+      "data": "26/08/2026",
+      "qtdContemplados": 71,
+      "maiorLance": 52.71,
+      "menorLance": 38.1
+    },
+    {
+      "grupo": "001406",
+      "assembleia": "065",
+      "data": "25/09/2026",
+      "qtdContemplados": 68,
+      "maiorLance": 50.1,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001406",
+      "assembleia": "066",
+      "data": "27/10/2026",
+      "qtdContemplados": 79,
+      "maiorLance": 50.79,
+      "menorLance": 45.8
+    }
+  ],
+  "001407": [
+    {
+      "grupo": "001407",
+      "assembleia": "063",
+      "data": "26/08/2026",
+      "qtdContemplados": 125,
+      "maiorLance": 50.96,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001407",
+      "assembleia": "064",
+      "data": "25/09/2026",
+      "qtdContemplados": 152,
+      "maiorLance": 50.05,
+      "menorLance": 29.9766
+    },
+    {
+      "grupo": "001407",
+      "assembleia": "065",
+      "data": "27/10/2026",
+      "qtdContemplados": 209,
+      "maiorLance": 49.14,
+      "menorLance": 32.9901
+    }
+  ],
+  "001411": [
+    {
+      "grupo": "001411",
+      "assembleia": "064",
+      "data": "26/08/2026",
+      "qtdContemplados": 98,
+      "maiorLance": 50.25,
+      "menorLance": 41.2
+    },
+    {
+      "grupo": "001411",
+      "assembleia": "065",
+      "data": "25/09/2026",
+      "qtdContemplados": 119,
+      "maiorLance": 49.34,
+      "menorLance": 36.7
+    },
+    {
+      "grupo": "001411",
+      "assembleia": "066",
+      "data": "27/10/2026",
+      "qtdContemplados": 141,
+      "maiorLance": 48.43,
+      "menorLance": 37.99
+    }
+  ],
+  "001412": [
+    {
+      "grupo": "001412",
+      "assembleia": "062",
+      "data": "26/08/2026",
+      "qtdContemplados": 51,
+      "maiorLance": 30.49,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001412",
+      "assembleia": "063",
+      "data": "25/09/2026",
+      "qtdContemplados": 52,
+      "maiorLance": 29.1,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001412",
+      "assembleia": "064",
+      "data": "27/10/2026",
+      "qtdContemplados": 63,
+      "maiorLance": 27.72,
+      "menorLance": 10.0
+    }
+  ],
+  "001414": [
+    {
+      "grupo": "001414",
+      "assembleia": "063",
+      "data": "26/08/2026",
+      "qtdContemplados": 107,
+      "maiorLance": 53.27,
+      "menorLance": 38.89
+    },
+    {
+      "grupo": "001414",
+      "assembleia": "064",
+      "data": "25/09/2026",
+      "qtdContemplados": 127,
+      "maiorLance": 52.25,
+      "menorLance": 41.0
+    },
+    {
+      "grupo": "001414",
+      "assembleia": "065",
+      "data": "27/10/2026",
+      "qtdContemplados": 129,
+      "maiorLance": 51.3,
+      "menorLance": 43.7993
+    }
+  ],
+  "001415": [
+    {
+      "grupo": "001415",
+      "assembleia": "062",
+      "data": "26/08/2026",
+      "qtdContemplados": 71,
+      "maiorLance": 30.4,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001415",
+      "assembleia": "063",
+      "data": "25/09/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 29.02,
+      "menorLance": 11.0
+    },
+    {
+      "grupo": "001415",
+      "assembleia": "064",
+      "data": "27/10/2026",
+      "qtdContemplados": 79,
+      "maiorLance": 27.63,
+      "menorLance": 10.0
+    }
+  ],
+  "001421": [
+    {
+      "grupo": "001421",
+      "assembleia": "061",
+      "data": "26/08/2026",
+      "qtdContemplados": 150,
+      "maiorLance": 44.19,
+      "menorLance": 30.1601
+    },
+    {
+      "grupo": "001421",
+      "assembleia": "062",
+      "data": "25/09/2026",
+      "qtdContemplados": 142,
+      "maiorLance": 43.06,
+      "menorLance": 34.0
+    },
+    {
+      "grupo": "001421",
+      "assembleia": "063",
+      "data": "27/10/2026",
+      "qtdContemplados": 146,
+      "maiorLance": 41.8,
+      "menorLance": 35.0008
+    }
+  ],
+  "001423": [
+    {
+      "grupo": "001423",
+      "assembleia": "061",
+      "data": "26/08/2026",
+      "qtdContemplados": 56,
+      "maiorLance": 52.68,
+      "menorLance": 43.4487
+    },
+    {
+      "grupo": "001423",
+      "assembleia": "062",
+      "data": "25/09/2026",
+      "qtdContemplados": 80,
+      "maiorLance": 51.77,
+      "menorLance": 38.0
+    },
+    {
+      "grupo": "001423",
+      "assembleia": "063",
+      "data": "27/10/2026",
+      "qtdContemplados": 79,
+      "maiorLance": 50.86,
+      "menorLance": 40.0
+    }
+  ],
+  "001425": [
+    {
+      "grupo": "001425",
+      "assembleia": "060",
+      "data": "26/08/2026",
+      "qtdContemplados": 54,
+      "maiorLance": 33.99,
+      "menorLance": 11.1722
+    },
+    {
+      "grupo": "001425",
+      "assembleia": "061",
+      "data": "25/09/2026",
+      "qtdContemplados": 36,
+      "maiorLance": 32.57,
+      "menorLance": 10.6929
+    },
+    {
+      "grupo": "001425",
+      "assembleia": "062",
+      "data": "27/10/2026",
+      "qtdContemplados": 64,
+      "maiorLance": 31.15,
+      "menorLance": 10.0
+    }
+  ],
+  "001429": [
+    {
+      "grupo": "001429",
+      "assembleia": "060",
+      "data": "26/08/2026",
+      "qtdContemplados": 118,
+      "maiorLance": 43.2,
+      "menorLance": 37.1329
+    },
+    {
+      "grupo": "001429",
+      "assembleia": "061",
+      "data": "25/09/2026",
+      "qtdContemplados": 108,
+      "maiorLance": 42.12,
+      "menorLance": 36.8
+    },
+    {
+      "grupo": "001429",
+      "assembleia": "062",
+      "data": "27/10/2026",
+      "qtdContemplados": 114,
+      "maiorLance": 41.04,
+      "menorLance": 36.0
+    }
+  ],
+  "001431": [
+    {
+      "grupo": "001431",
+      "assembleia": "060",
+      "data": "26/08/2026",
+      "qtdContemplados": 66,
+      "maiorLance": 54.33,
+      "menorLance": 44.51
+    },
+    {
+      "grupo": "001431",
+      "assembleia": "061",
+      "data": "25/09/2026",
+      "qtdContemplados": 73,
+      "maiorLance": 54.13,
+      "menorLance": 39.2633
+    },
+    {
+      "grupo": "001431",
+      "assembleia": "062",
+      "data": "27/10/2026",
+      "qtdContemplados": 90,
+      "maiorLance": 53.2,
+      "menorLance": 38.66
+    }
+  ],
+  "001442": [
+    {
+      "grupo": "001442",
+      "assembleia": "058",
+      "data": "26/08/2026",
+      "qtdContemplados": 78,
+      "maiorLance": 54.38,
+      "menorLance": 41.1878
+    },
+    {
+      "grupo": "001442",
+      "assembleia": "059",
+      "data": "25/09/2026",
+      "qtdContemplados": 89,
+      "maiorLance": 53.49,
+      "menorLance": 37.9414
+    },
+    {
+      "grupo": "001442",
+      "assembleia": "060",
+      "data": "27/10/2026",
+      "qtdContemplados": 95,
+      "maiorLance": 52.6,
+      "menorLance": 42.0
+    }
+  ],
+  "001445": [
+    {
+      "grupo": "001445",
+      "assembleia": "059",
+      "data": "26/08/2026",
+      "qtdContemplados": 97,
+      "maiorLance": 43.87,
+      "menorLance": 36.0
+    },
+    {
+      "grupo": "001445",
+      "assembleia": "060",
+      "data": "25/09/2026",
+      "qtdContemplados": 92,
+      "maiorLance": 42.8,
+      "menorLance": 34.7869
+    },
+    {
+      "grupo": "001445",
+      "assembleia": "061",
+      "data": "27/10/2026",
+      "qtdContemplados": 97,
+      "maiorLance": 41.73,
+      "menorLance": 35.0
+    }
+  ],
+  "001446": [
+    {
+      "grupo": "001446",
+      "assembleia": "059",
+      "data": "26/08/2026",
+      "qtdContemplados": 33,
+      "maiorLance": 35.4001,
+      "menorLance": 11.5103
+    },
+    {
+      "grupo": "001446",
+      "assembleia": "060",
+      "data": "25/09/2026",
+      "qtdContemplados": 64,
+      "maiorLance": 33.984,
+      "menorLance": 12.0
+    },
+    {
+      "grupo": "001446",
+      "assembleia": "061",
+      "data": "27/10/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 32.57,
+      "menorLance": 10.0
+    }
+  ],
+  "001467": [
+    {
+      "grupo": "001467",
+      "assembleia": "058",
+      "data": "26/08/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 70.5285,
+      "menorLance": 59.0
+    },
+    {
+      "grupo": "001467",
+      "assembleia": "059",
+      "data": "25/09/2026",
+      "qtdContemplados": 81,
+      "maiorLance": 66.5623,
+      "menorLance": 51.0005
+    },
+    {
+      "grupo": "001467",
+      "assembleia": "060",
+      "data": "27/10/2026",
+      "qtdContemplados": 96,
+      "maiorLance": 73.16,
+      "menorLance": 60.82
+    }
+  ],
+  "001469": [
+    {
+      "grupo": "001469",
+      "assembleia": "057",
+      "data": "26/08/2026",
+      "qtdContemplados": 49,
+      "maiorLance": 56.93,
+      "menorLance": 45.5943
+    },
+    {
+      "grupo": "001469",
+      "assembleia": "058",
+      "data": "25/09/2026",
+      "qtdContemplados": 69,
+      "maiorLance": 56.02,
+      "menorLance": 38.502
+    },
+    {
+      "grupo": "001469",
+      "assembleia": "059",
+      "data": "27/10/2026",
+      "qtdContemplados": 77,
+      "maiorLance": 55.1,
+      "menorLance": 37.1
+    }
+  ],
+  "001472": [
+    {
+      "grupo": "001472",
+      "assembleia": "057",
+      "data": "26/08/2026",
+      "qtdContemplados": 33,
+      "maiorLance": 38.24,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001472",
+      "assembleia": "058",
+      "data": "25/09/2026",
+      "qtdContemplados": 43,
+      "maiorLance": 14.03,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001472",
+      "assembleia": "059",
+      "data": "27/10/2026",
+      "qtdContemplados": 44,
+      "maiorLance": 35.4,
+      "menorLance": 10.0
+    }
+  ],
+  "001474": [
+    {
+      "grupo": "001474",
+      "assembleia": "056",
+      "data": "26/08/2026",
+      "qtdContemplados": 40,
+      "maiorLance": 70.115,
+      "menorLance": 60.04
+    },
+    {
+      "grupo": "001474",
+      "assembleia": "057",
+      "data": "25/09/2026",
+      "qtdContemplados": 46,
+      "maiorLance": 70.0,
+      "menorLance": 65.0
+    },
+    {
+      "grupo": "001474",
+      "assembleia": "058",
+      "data": "27/10/2026",
+      "qtdContemplados": 29,
+      "maiorLance": 74.637,
+      "menorLance": 66.9903
+    }
+  ],
+  "001479": [
+    {
+      "grupo": "001479",
+      "assembleia": "057",
+      "data": "26/08/2026",
+      "qtdContemplados": 122,
+      "maiorLance": 46.99,
+      "menorLance": 31.5
+    },
+    {
+      "grupo": "001479",
+      "assembleia": "058",
+      "data": "25/09/2026",
+      "qtdContemplados": 84,
+      "maiorLance": 45.94,
+      "menorLance": 35.2
+    },
+    {
+      "grupo": "001479",
+      "assembleia": "059",
+      "data": "27/10/2026",
+      "qtdContemplados": 83,
+      "maiorLance": 44.85,
+      "menorLance": 38.1
+    }
+  ],
+  "001483": [
+    {
+      "grupo": "001483",
+      "assembleia": "056",
+      "data": "26/08/2026",
+      "qtdContemplados": 143,
+      "maiorLance": 48.94,
+      "menorLance": 43.0002
+    },
+    {
+      "grupo": "001483",
+      "assembleia": "057",
+      "data": "25/09/2026",
+      "qtdContemplados": 132,
+      "maiorLance": 47.83,
+      "menorLance": 40.83
+    },
+    {
+      "grupo": "001483",
+      "assembleia": "058",
+      "data": "27/10/2026",
+      "qtdContemplados": 160,
+      "maiorLance": 46.71,
+      "menorLance": 41.3
+    }
+  ],
+  "001485": [
+    {
+      "grupo": "001485",
+      "assembleia": "056",
+      "data": "26/08/2026",
+      "qtdContemplados": 64,
+      "maiorLance": 39.65,
+      "menorLance": 10.1036
+    },
+    {
+      "grupo": "001485",
+      "assembleia": "057",
+      "data": "25/09/2026",
+      "qtdContemplados": 38,
+      "maiorLance": 38.23,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001485",
+      "assembleia": "058",
+      "data": "27/10/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 36.82,
+      "menorLance": 14.0
+    }
+  ],
+  "001487": [
+    {
+      "grupo": "001487",
+      "assembleia": "056",
+      "data": "26/08/2026",
+      "qtdContemplados": 74,
+      "maiorLance": 51.5,
+      "menorLance": 37.0
+    },
+    {
+      "grupo": "001487",
+      "assembleia": "057",
+      "data": "25/09/2026",
+      "qtdContemplados": 88,
+      "maiorLance": 56.83,
+      "menorLance": 37.99
+    },
+    {
+      "grupo": "001487",
+      "assembleia": "058",
+      "data": "27/10/2026",
+      "qtdContemplados": 89,
+      "maiorLance": 55.91,
+      "menorLance": 39.0
+    }
+  ],
+  "001488": [
+    {
+      "grupo": "001488",
+      "assembleia": "056",
+      "data": "26/08/2026",
+      "qtdContemplados": 65,
+      "maiorLance": 69.01,
+      "menorLance": 61.0
+    },
+    {
+      "grupo": "001488",
+      "assembleia": "057",
+      "data": "25/09/2026",
+      "qtdContemplados": 93,
+      "maiorLance": 71.0,
+      "menorLance": 55.0
+    },
+    {
+      "grupo": "001488",
+      "assembleia": "058",
+      "data": "27/10/2026",
+      "qtdContemplados": 73,
+      "maiorLance": 73.6971,
+      "menorLance": 64.88
+    }
+  ],
+  "001491": [
+    {
+      "grupo": "001491",
+      "assembleia": "056",
+      "data": "26/08/2026",
+      "qtdContemplados": 79,
+      "maiorLance": 49.66,
+      "menorLance": 44.15
+    },
+    {
+      "grupo": "001491",
+      "assembleia": "057",
+      "data": "25/09/2026",
+      "qtdContemplados": 82,
+      "maiorLance": 48.53,
+      "menorLance": 45.0
+    },
+    {
+      "grupo": "001491",
+      "assembleia": "058",
+      "data": "27/10/2026",
+      "qtdContemplados": 93,
+      "maiorLance": 47.4,
+      "menorLance": 45.0817
+    }
+  ],
+  "001505": [
+    {
+      "grupo": "001505",
+      "assembleia": "054",
+      "data": "26/08/2026",
+      "qtdContemplados": 32,
+      "maiorLance": 92.23,
+      "menorLance": 62.15
+    },
+    {
+      "grupo": "001505",
+      "assembleia": "055",
+      "data": "25/09/2026",
+      "qtdContemplados": 36,
+      "maiorLance": 68.21,
+      "menorLance": 49.99
+    },
+    {
+      "grupo": "001505",
+      "assembleia": "056",
+      "data": "27/10/2026",
+      "qtdContemplados": 52,
+      "maiorLance": 73.4677,
+      "menorLance": 65.5416
+    }
+  ],
+  "001507": [
+    {
+      "grupo": "001507",
+      "assembleia": "054",
+      "data": "26/08/2026",
+      "qtdContemplados": 122,
+      "maiorLance": 51.33,
+      "menorLance": 35.21
+    },
+    {
+      "grupo": "001507",
+      "assembleia": "055",
+      "data": "25/09/2026",
+      "qtdContemplados": 120,
+      "maiorLance": 50.22,
+      "menorLance": 38.4607
+    },
+    {
+      "grupo": "001507",
+      "assembleia": "056",
+      "data": "27/10/2026",
+      "qtdContemplados": 119,
+      "maiorLance": 49.1,
+      "menorLance": 41.0
+    }
+  ],
+  "001514": [
+    {
+      "grupo": "001514",
+      "assembleia": "054",
+      "data": "26/08/2026",
+      "qtdContemplados": 173,
+      "maiorLance": 49.22,
+      "menorLance": 45.27
+    },
+    {
+      "grupo": "001514",
+      "assembleia": "055",
+      "data": "25/09/2026",
+      "qtdContemplados": 135,
+      "maiorLance": 48.15,
+      "menorLance": 47.7
+    },
+    {
+      "grupo": "001514",
+      "assembleia": "056",
+      "data": "27/10/2026",
+      "qtdContemplados": 124,
+      "maiorLance": 47.08,
+      "menorLance": 47.08
+    }
+  ],
+  "001517": [
+    {
+      "grupo": "001517",
+      "assembleia": "053",
+      "data": "26/08/2026",
+      "qtdContemplados": 94,
+      "maiorLance": 29.0,
+      "menorLance": 11.19
+    },
+    {
+      "grupo": "001517",
+      "assembleia": "054",
+      "data": "25/09/2026",
+      "qtdContemplados": 72,
+      "maiorLance": 27.48,
+      "menorLance": 11.0
+    },
+    {
+      "grupo": "001517",
+      "assembleia": "055",
+      "data": "27/10/2026",
+      "qtdContemplados": 76,
+      "maiorLance": 25.95,
+      "menorLance": 12.0
+    }
+  ],
+  "001525": [
+    {
+      "grupo": "001525",
+      "assembleia": "052",
+      "data": "26/08/2026",
+      "qtdContemplados": 142,
+      "maiorLance": 52.8,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001525",
+      "assembleia": "053",
+      "data": "25/09/2026",
+      "qtdContemplados": 169,
+      "maiorLance": 51.7,
+      "menorLance": 30.0
+    },
+    {
+      "grupo": "001525",
+      "assembleia": "054",
+      "data": "27/10/2026",
+      "qtdContemplados": 210,
+      "maiorLance": 50.6,
+      "menorLance": 41.01
+    }
+  ],
+  "001529": [
+    {
+      "grupo": "001529",
+      "assembleia": "051",
+      "data": "26/08/2026",
+      "qtdContemplados": 59,
+      "maiorLance": 45.73,
+      "menorLance": 23.1857
+    },
+    {
+      "grupo": "001529",
+      "assembleia": "052",
+      "data": "25/09/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 44.35,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001529",
+      "assembleia": "053",
+      "data": "27/10/2026",
+      "qtdContemplados": 78,
+      "maiorLance": 42.96,
+      "menorLance": 20.02
+    }
+  ],
+  "001531": [
+    {
+      "grupo": "001531",
+      "assembleia": "051",
+      "data": "26/08/2026",
+      "qtdContemplados": 55,
+      "maiorLance": 68.01,
+      "menorLance": 30.0
+    },
+    {
+      "grupo": "001531",
+      "assembleia": "052",
+      "data": "25/09/2026",
+      "qtdContemplados": 55,
+      "maiorLance": 67.8,
+      "menorLance": 30.0
+    },
+    {
+      "grupo": "001531",
+      "assembleia": "053",
+      "data": "27/10/2026",
+      "qtdContemplados": 50,
+      "maiorLance": 74.036,
+      "menorLance": 30.0
+    }
+  ],
+  "001536": [
+    {
+      "grupo": "001536",
+      "assembleia": "051",
+      "data": "26/08/2026",
+      "qtdContemplados": 61,
+      "maiorLance": 60.0,
+      "menorLance": 42.51
+    },
+    {
+      "grupo": "001536",
+      "assembleia": "052",
+      "data": "25/09/2026",
+      "qtdContemplados": 55,
+      "maiorLance": 59.99,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001536",
+      "assembleia": "053",
+      "data": "27/10/2026",
+      "qtdContemplados": 79,
+      "maiorLance": 62.04,
+      "menorLance": 42.0
+    }
+  ],
+  "001543": [
+    {
+      "grupo": "001543",
+      "assembleia": "050",
+      "data": "26/08/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 62.67,
+      "menorLance": 40.49
+    },
+    {
+      "grupo": "001543",
+      "assembleia": "051",
+      "data": "25/09/2026",
+      "qtdContemplados": 71,
+      "maiorLance": 61.76,
+      "menorLance": 35.71
+    },
+    {
+      "grupo": "001543",
+      "assembleia": "052",
+      "data": "27/10/2026",
+      "qtdContemplados": 74,
+      "maiorLance": 60.85,
+      "menorLance": 43.8723
+    }
+  ],
+  "001550": [
+    {
+      "grupo": "001550",
+      "assembleia": "049",
+      "data": "26/08/2026",
+      "qtdContemplados": 143,
+      "maiorLance": 55.08,
+      "menorLance": 42.0
+    },
+    {
+      "grupo": "001550",
+      "assembleia": "050",
+      "data": "25/09/2026",
+      "qtdContemplados": 173,
+      "maiorLance": 54.0,
+      "menorLance": 31.3312
+    },
+    {
+      "grupo": "001550",
+      "assembleia": "051",
+      "data": "27/10/2026",
+      "qtdContemplados": 199,
+      "maiorLance": 52.92,
+      "menorLance": 36.87
+    }
+  ],
+  "001558": [
+    {
+      "grupo": "001558",
+      "assembleia": "048",
+      "data": "26/08/2026",
+      "qtdContemplados": 39,
+      "maiorLance": 52.25,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001558",
+      "assembleia": "049",
+      "data": "25/09/2026",
+      "qtdContemplados": 43,
+      "maiorLance": 33.43,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001558",
+      "assembleia": "050",
+      "data": "27/10/2026",
+      "qtdContemplados": 88,
+      "maiorLance": 49.34,
+      "menorLance": 24.6539
+    }
+  ],
+  "001560": [
+    {
+      "grupo": "001560",
+      "assembleia": "048",
+      "data": "26/08/2026",
+      "qtdContemplados": 10,
+      "maiorLance": 68.99,
+      "menorLance": 63.51
+    },
+    {
+      "grupo": "001560",
+      "assembleia": "049",
+      "data": "25/09/2026",
+      "qtdContemplados": 13,
+      "maiorLance": 66.25,
+      "menorLance": 66.0
+    },
+    {
+      "grupo": "001560",
+      "assembleia": "050",
+      "data": "27/10/2026",
+      "qtdContemplados": 11,
+      "maiorLance": 71.81,
+      "menorLance": 70.2
+    }
+  ],
+  "001564": [
+    {
+      "grupo": "001564",
+      "assembleia": "048",
+      "data": "26/08/2026",
+      "qtdContemplados": 28,
+      "maiorLance": 60.8773,
+      "menorLance": 45.0
+    },
+    {
+      "grupo": "001564",
+      "assembleia": "049",
+      "data": "25/09/2026",
+      "qtdContemplados": 43,
+      "maiorLance": 56.99,
+      "menorLance": 35.0
+    },
+    {
+      "grupo": "001564",
+      "assembleia": "050",
+      "data": "27/10/2026",
+      "qtdContemplados": 44,
+      "maiorLance": 58.6116,
+      "menorLance": 47.1639
+    }
+  ],
+  "001575": [
+    {
+      "grupo": "001575",
+      "assembleia": "046",
+      "data": "26/08/2026",
+      "qtdContemplados": 43,
+      "maiorLance": 66.5,
+      "menorLance": 30.0
+    },
+    {
+      "grupo": "001575",
+      "assembleia": "047",
+      "data": "25/09/2026",
+      "qtdContemplados": 48,
+      "maiorLance": 64.3436,
+      "menorLance": 30.0
+    },
+    {
+      "grupo": "001575",
+      "assembleia": "048",
+      "data": "27/10/2026",
+      "qtdContemplados": 42,
+      "maiorLance": 66.5632,
+      "menorLance": 30.0
+    }
+  ],
+  "001581": [
+    {
+      "grupo": "001581",
+      "assembleia": "045",
+      "data": "26/08/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 74.5518,
+      "menorLance": 65.0
+    },
+    {
+      "grupo": "001581",
+      "assembleia": "046",
+      "data": "25/09/2026",
+      "qtdContemplados": 69,
+      "maiorLance": 85.875,
+      "menorLance": 64.12
+    },
+    {
+      "grupo": "001581",
+      "assembleia": "047",
+      "data": "27/10/2026",
+      "qtdContemplados": 80,
+      "maiorLance": 81.1678,
+      "menorLance": 63.1
+    }
+  ],
+  "001583": [
+    {
+      "grupo": "001583",
+      "assembleia": "045",
+      "data": "26/08/2026",
+      "qtdContemplados": 139,
+      "maiorLance": 59.1178,
+      "menorLance": 35.3107
+    },
+    {
+      "grupo": "001583",
+      "assembleia": "046",
+      "data": "25/09/2026",
+      "qtdContemplados": 169,
+      "maiorLance": 58.21,
+      "menorLance": 42.2
+    },
+    {
+      "grupo": "001583",
+      "assembleia": "047",
+      "data": "27/10/2026",
+      "qtdContemplados": 101,
+      "maiorLance": 57.13,
+      "menorLance": 46.9
+    }
+  ],
+  "001589": [
+    {
+      "grupo": "001589",
+      "assembleia": "044",
+      "data": "26/08/2026",
+      "qtdContemplados": 141,
+      "maiorLance": 63.76,
+      "menorLance": 45.79
+    },
+    {
+      "grupo": "001589",
+      "assembleia": "045",
+      "data": "25/09/2026",
+      "qtdContemplados": 137,
+      "maiorLance": 62.62,
+      "menorLance": 45.33
+    },
+    {
+      "grupo": "001589",
+      "assembleia": "046",
+      "data": "27/10/2026",
+      "qtdContemplados": 143,
+      "maiorLance": 61.49,
+      "menorLance": 46.2753
+    }
+  ],
+  "001597": [
+    {
+      "grupo": "001597",
+      "assembleia": "043",
+      "data": "26/08/2026",
+      "qtdContemplados": 49,
+      "maiorLance": 69.1503,
+      "menorLance": 55.5886
+    },
+    {
+      "grupo": "001597",
+      "assembleia": "044",
+      "data": "25/09/2026",
+      "qtdContemplados": 59,
+      "maiorLance": 72.4453,
+      "menorLance": 61.9
+    },
+    {
+      "grupo": "001597",
+      "assembleia": "045",
+      "data": "27/10/2026",
+      "qtdContemplados": 47,
+      "maiorLance": 94.18,
+      "menorLance": 63.9003
+    }
+  ],
+  "001599": [
+    {
+      "grupo": "001599",
+      "assembleia": "043",
+      "data": "26/08/2026",
+      "qtdContemplados": 177,
+      "maiorLance": 62.13,
+      "menorLance": 44.04
+    },
+    {
+      "grupo": "001599",
+      "assembleia": "044",
+      "data": "25/09/2026",
+      "qtdContemplados": 180,
+      "maiorLance": 61.03,
+      "menorLance": 40.12
+    },
+    {
+      "grupo": "001599",
+      "assembleia": "045",
+      "data": "27/10/2026",
+      "qtdContemplados": 206,
+      "maiorLance": 59.95,
+      "menorLance": 44.3746
+    }
+  ],
+  "001603": [
+    {
+      "grupo": "001603",
+      "assembleia": "043",
+      "data": "26/08/2026",
+      "qtdContemplados": 39,
+      "maiorLance": 50.3811,
+      "menorLance": 44.0
+    },
+    {
+      "grupo": "001603",
+      "assembleia": "044",
+      "data": "25/09/2026",
+      "qtdContemplados": 33,
+      "maiorLance": 54.2218,
+      "menorLance": 41.0
+    },
+    {
+      "grupo": "001603",
+      "assembleia": "045",
+      "data": "27/10/2026",
+      "qtdContemplados": 49,
+      "maiorLance": 70.42,
+      "menorLance": 49.5
+    }
+  ],
+  "001605": [
+    {
+      "grupo": "001605",
+      "assembleia": "042",
+      "data": "26/08/2026",
+      "qtdContemplados": 110,
+      "maiorLance": 66.56,
+      "menorLance": 50.0
+    },
+    {
+      "grupo": "001605",
+      "assembleia": "043",
+      "data": "25/09/2026",
+      "qtdContemplados": 110,
+      "maiorLance": 65.4143,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001605",
+      "assembleia": "044",
+      "data": "27/10/2026",
+      "qtdContemplados": 136,
+      "maiorLance": 63.56,
+      "menorLance": 44.0
+    }
+  ],
+  "001606": [
+    {
+      "grupo": "001606",
+      "assembleia": "042",
+      "data": "26/08/2026",
+      "qtdContemplados": 42,
+      "maiorLance": 65.33,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001606",
+      "assembleia": "043",
+      "data": "25/09/2026",
+      "qtdContemplados": 49,
+      "maiorLance": 96.88,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001606",
+      "assembleia": "044",
+      "data": "27/10/2026",
+      "qtdContemplados": 33,
+      "maiorLance": 69.5422,
+      "menorLance": 20.0
+    }
+  ],
+  "001608": [
+    {
+      "grupo": "001608",
+      "assembleia": "042",
+      "data": "26/08/2026",
+      "qtdContemplados": 106,
+      "maiorLance": 68.09,
+      "menorLance": 41.159
+    },
+    {
+      "grupo": "001608",
+      "assembleia": "043",
+      "data": "25/09/2026",
+      "qtdContemplados": 100,
+      "maiorLance": 66.92,
+      "menorLance": 34.9913
+    },
+    {
+      "grupo": "001608",
+      "assembleia": "044",
+      "data": "27/10/2026",
+      "qtdContemplados": 145,
+      "maiorLance": 63.56,
+      "menorLance": 45.3609
+    }
+  ],
+  "001612": [
+    {
+      "grupo": "001612",
+      "assembleia": "041",
+      "data": "26/08/2026",
+      "qtdContemplados": 125,
+      "maiorLance": 35.76,
+      "menorLance": 18.03
+    },
+    {
+      "grupo": "001612",
+      "assembleia": "042",
+      "data": "25/09/2026",
+      "qtdContemplados": 96,
+      "maiorLance": 33.87,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001612",
+      "assembleia": "043",
+      "data": "27/10/2026",
+      "qtdContemplados": 106,
+      "maiorLance": 31.99,
+      "menorLance": 15.2202
+    }
+  ],
+  "001615": [
+    {
+      "grupo": "001615",
+      "assembleia": "041",
+      "data": "26/08/2026",
+      "qtdContemplados": 88,
+      "maiorLance": 60.79,
+      "menorLance": 33.0
+    },
+    {
+      "grupo": "001615",
+      "assembleia": "042",
+      "data": "25/09/2026",
+      "qtdContemplados": 115,
+      "maiorLance": 50.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001615",
+      "assembleia": "043",
+      "data": "27/10/2026",
+      "qtdContemplados": 110,
+      "maiorLance": 57.99,
+      "menorLance": 35.0077
+    }
+  ],
+  "001617": [
+    {
+      "grupo": "001617",
+      "assembleia": "041",
+      "data": "26/08/2026",
+      "qtdContemplados": 19,
+      "maiorLance": 70.15,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001617",
+      "assembleia": "042",
+      "data": "25/09/2026",
+      "qtdContemplados": 23,
+      "maiorLance": 68.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001617",
+      "assembleia": "043",
+      "data": "27/10/2026",
+      "qtdContemplados": 18,
+      "maiorLance": 70.45,
+      "menorLance": 20.0
+    }
+  ],
+  "001622": [
+    {
+      "grupo": "001622",
+      "assembleia": "040",
+      "data": "26/08/2026",
+      "qtdContemplados": 26,
+      "maiorLance": 75.09,
+      "menorLance": 62.0
+    },
+    {
+      "grupo": "001622",
+      "assembleia": "041",
+      "data": "25/09/2026",
+      "qtdContemplados": 34,
+      "maiorLance": 66.9435,
+      "menorLance": 57.29
+    },
+    {
+      "grupo": "001622",
+      "assembleia": "042",
+      "data": "27/10/2026",
+      "qtdContemplados": 56,
+      "maiorLance": 71.8823,
+      "menorLance": 60.5261
+    }
+  ],
+  "001639": [
+    {
+      "grupo": "001639",
+      "assembleia": "038",
+      "data": "26/08/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 40.3,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001639",
+      "assembleia": "039",
+      "data": "25/09/2026",
+      "qtdContemplados": 71,
+      "maiorLance": 38.47,
+      "menorLance": 17.9328
+    },
+    {
+      "grupo": "001639",
+      "assembleia": "040",
+      "data": "27/10/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 36.63,
+      "menorLance": 13.1559
+    }
+  ],
+  "001640": [
+    {
+      "grupo": "001640",
+      "assembleia": "037",
+      "data": "26/08/2026",
+      "qtdContemplados": 24,
+      "maiorLance": 70.37,
+      "menorLance": 61.1
+    },
+    {
+      "grupo": "001640",
+      "assembleia": "038",
+      "data": "25/09/2026",
+      "qtdContemplados": 33,
+      "maiorLance": 65.0,
+      "menorLance": 52.2
+    },
+    {
+      "grupo": "001640",
+      "assembleia": "039",
+      "data": "27/10/2026",
+      "qtdContemplados": 39,
+      "maiorLance": 71.6,
+      "menorLance": 63.2552
+    }
+  ],
+  "001643": [
+    {
+      "grupo": "001643",
+      "assembleia": "037",
+      "data": "26/08/2026",
+      "qtdContemplados": 110,
+      "maiorLance": 71.4,
+      "menorLance": 46.61
+    },
+    {
+      "grupo": "001643",
+      "assembleia": "038",
+      "data": "25/09/2026",
+      "qtdContemplados": 135,
+      "maiorLance": 70.27,
+      "menorLance": 39.98
+    },
+    {
+      "grupo": "001643",
+      "assembleia": "039",
+      "data": "27/10/2026",
+      "qtdContemplados": 161,
+      "maiorLance": 69.14,
+      "menorLance": 43.7
+    }
+  ],
+  "001644": [
+    {
+      "grupo": "001644",
+      "assembleia": "038",
+      "data": "26/08/2026",
+      "qtdContemplados": 91,
+      "maiorLance": 40.03,
+      "menorLance": 15.0
+    },
+    {
+      "grupo": "001644",
+      "assembleia": "039",
+      "data": "25/09/2026",
+      "qtdContemplados": 81,
+      "maiorLance": 26.1724,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001644",
+      "assembleia": "040",
+      "data": "27/10/2026",
+      "qtdContemplados": 109,
+      "maiorLance": 36.39,
+      "menorLance": 11.2872
+    }
+  ],
+  "001646": [
+    {
+      "grupo": "001646",
+      "assembleia": "037",
+      "data": "26/08/2026",
+      "qtdContemplados": 157,
+      "maiorLance": 42.44,
+      "menorLance": 15.2301
+    },
+    {
+      "grupo": "001646",
+      "assembleia": "038",
+      "data": "25/09/2026",
+      "qtdContemplados": 119,
+      "maiorLance": 40.58,
+      "menorLance": 15.361
+    },
+    {
+      "grupo": "001646",
+      "assembleia": "039",
+      "data": "27/10/2026",
+      "qtdContemplados": 112,
+      "maiorLance": 38.75,
+      "menorLance": 15.15
+    }
+  ],
+  "001648": [
+    {
+      "grupo": "001648",
+      "assembleia": "037",
+      "data": "26/08/2026",
+      "qtdContemplados": 13,
+      "maiorLance": 65.49,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001648",
+      "assembleia": "038",
+      "data": "25/09/2026",
+      "qtdContemplados": 10,
+      "maiorLance": 66.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001648",
+      "assembleia": "039",
+      "data": "27/10/2026",
+      "qtdContemplados": 13,
+      "maiorLance": 70.77,
+      "menorLance": 20.0
+    }
+  ],
+  "001654": [
+    {
+      "grupo": "001654",
+      "assembleia": "036",
+      "data": "26/08/2026",
+      "qtdContemplados": 180,
+      "maiorLance": 69.95,
+      "menorLance": 43.85
+    },
+    {
+      "grupo": "001654",
+      "assembleia": "037",
+      "data": "25/09/2026",
+      "qtdContemplados": 140,
+      "maiorLance": 60.278,
+      "menorLance": 47.0
+    },
+    {
+      "grupo": "001654",
+      "assembleia": "038",
+      "data": "27/10/2026",
+      "qtdContemplados": 131,
+      "maiorLance": 67.76,
+      "menorLance": 50.07
+    }
+  ],
+  "001655": [
+    {
+      "grupo": "001655",
+      "assembleia": "036",
+      "data": "26/08/2026",
+      "qtdContemplados": 85,
+      "maiorLance": 44.4,
+      "menorLance": 20.0177
+    },
+    {
+      "grupo": "001655",
+      "assembleia": "037",
+      "data": "25/09/2026",
+      "qtdContemplados": 70,
+      "maiorLance": 42.5479,
+      "menorLance": 22.0
+    },
+    {
+      "grupo": "001655",
+      "assembleia": "038",
+      "data": "27/10/2026",
+      "qtdContemplados": 73,
+      "maiorLance": 41.57,
+      "menorLance": 22.0356
+    }
+  ],
+  "001659": [
+    {
+      "grupo": "001659",
+      "assembleia": "035",
+      "data": "26/08/2026",
+      "qtdContemplados": 235,
+      "maiorLance": 67.5259,
+      "menorLance": 42.05
+    },
+    {
+      "grupo": "001659",
+      "assembleia": "036",
+      "data": "25/09/2026",
+      "qtdContemplados": 167,
+      "maiorLance": 68.43,
+      "menorLance": 45.4
+    },
+    {
+      "grupo": "001659",
+      "assembleia": "037",
+      "data": "27/10/2026",
+      "qtdContemplados": 164,
+      "maiorLance": 72.32,
+      "menorLance": 48.156
+    }
+  ],
+  "001660": [
+    {
+      "grupo": "001660",
+      "assembleia": "035",
+      "data": "26/08/2026",
+      "qtdContemplados": 117,
+      "maiorLance": 62.5622,
+      "menorLance": 41.0
+    },
+    {
+      "grupo": "001660",
+      "assembleia": "036",
+      "data": "25/09/2026",
+      "qtdContemplados": 142,
+      "maiorLance": 59.9366,
+      "menorLance": 47.9915
+    },
+    {
+      "grupo": "001660",
+      "assembleia": "037",
+      "data": "27/10/2026",
+      "qtdContemplados": 104,
+      "maiorLance": 72.55,
+      "menorLance": 50.01
+    }
+  ],
+  "001666": [
+    {
+      "grupo": "001666",
+      "assembleia": "034",
+      "data": "26/08/2026",
+      "qtdContemplados": 115,
+      "maiorLance": 65.8359,
+      "menorLance": 45.06
+    },
+    {
+      "grupo": "001666",
+      "assembleia": "035",
+      "data": "25/09/2026",
+      "qtdContemplados": 88,
+      "maiorLance": 63.7415,
+      "menorLance": 48.62
+    },
+    {
+      "grupo": "001666",
+      "assembleia": "036",
+      "data": "27/10/2026",
+      "qtdContemplados": 86,
+      "maiorLance": 70.0,
+      "menorLance": 50.6
+    }
+  ],
+  "001667": [
+    {
+      "grupo": "001667",
+      "assembleia": "034",
+      "data": "26/08/2026",
+      "qtdContemplados": 132,
+      "maiorLance": 69.002,
+      "menorLance": 51.9
+    },
+    {
+      "grupo": "001667",
+      "assembleia": "035",
+      "data": "25/09/2026",
+      "qtdContemplados": 132,
+      "maiorLance": 73.67,
+      "menorLance": 50.2545
+    },
+    {
+      "grupo": "001667",
+      "assembleia": "036",
+      "data": "27/10/2026",
+      "qtdContemplados": 154,
+      "maiorLance": 67.1113,
+      "menorLance": 50.0
+    }
+  ],
+  "001670": [
+    {
+      "grupo": "001670",
+      "assembleia": "034",
+      "data": "26/08/2026",
+      "qtdContemplados": 38,
+      "maiorLance": 50.08,
+      "menorLance": 42.55
+    },
+    {
+      "grupo": "001670",
+      "assembleia": "035",
+      "data": "25/09/2026",
+      "qtdContemplados": 49,
+      "maiorLance": 50.1,
+      "menorLance": 40.9857
+    },
+    {
+      "grupo": "001670",
+      "assembleia": "036",
+      "data": "27/10/2026",
+      "qtdContemplados": 46,
+      "maiorLance": 58.8613,
+      "menorLance": 50.75
+    }
+  ],
+  "001672": [
+    {
+      "grupo": "001672",
+      "assembleia": "034",
+      "data": "26/08/2026",
+      "qtdContemplados": 161,
+      "maiorLance": 47.01,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001672",
+      "assembleia": "035",
+      "data": "25/09/2026",
+      "qtdContemplados": 144,
+      "maiorLance": 45.2,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001672",
+      "assembleia": "036",
+      "data": "27/10/2026",
+      "qtdContemplados": 141,
+      "maiorLance": 43.4,
+      "menorLance": 20.0
+    }
+  ],
+  "001680": [
+    {
+      "grupo": "001680",
+      "assembleia": "033",
+      "data": "26/08/2026",
+      "qtdContemplados": 113,
+      "maiorLance": 49.41,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001680",
+      "assembleia": "034",
+      "data": "25/09/2026",
+      "qtdContemplados": 134,
+      "maiorLance": 47.58,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001680",
+      "assembleia": "035",
+      "data": "27/10/2026",
+      "qtdContemplados": 151,
+      "maiorLance": 45.75,
+      "menorLance": 20.0
+    }
+  ],
+  "001685": [
+    {
+      "grupo": "001685",
+      "assembleia": "031",
+      "data": "26/08/2026",
+      "qtdContemplados": 97,
+      "maiorLance": 52.44,
+      "menorLance": 25.0014
+    },
+    {
+      "grupo": "001685",
+      "assembleia": "032",
+      "data": "25/09/2026",
+      "qtdContemplados": 81,
+      "maiorLance": 50.63,
+      "menorLance": 27.0
+    },
+    {
+      "grupo": "001685",
+      "assembleia": "033",
+      "data": "27/10/2026",
+      "qtdContemplados": 88,
+      "maiorLance": 48.82,
+      "menorLance": 28.4466
+    }
+  ],
+  "001686": [
+    {
+      "grupo": "001686",
+      "assembleia": "031",
+      "data": "26/08/2026",
+      "qtdContemplados": 18,
+      "maiorLance": 86.0762,
+      "menorLance": 65.01
+    },
+    {
+      "grupo": "001686",
+      "assembleia": "032",
+      "data": "25/09/2026",
+      "qtdContemplados": 20,
+      "maiorLance": 74.96,
+      "menorLance": 64.99
+    },
+    {
+      "grupo": "001686",
+      "assembleia": "033",
+      "data": "27/10/2026",
+      "qtdContemplados": 20,
+      "maiorLance": 80.0,
+      "menorLance": 66.18
+    }
+  ],
+  "001690": [
+    {
+      "grupo": "001690",
+      "assembleia": "031",
+      "data": "26/08/2026",
+      "qtdContemplados": 96,
+      "maiorLance": 61.8113,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001690",
+      "assembleia": "032",
+      "data": "25/09/2026",
+      "qtdContemplados": 107,
+      "maiorLance": 65.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001690",
+      "assembleia": "033",
+      "data": "27/10/2026",
+      "qtdContemplados": 112,
+      "maiorLance": 69.193,
+      "menorLance": 20.0
+    }
+  ],
+  "001696": [
+    {
+      "grupo": "001696",
+      "assembleia": "030",
+      "data": "26/08/2026",
+      "qtdContemplados": 56,
+      "maiorLance": 50.0,
+      "menorLance": 33.11
+    },
+    {
+      "grupo": "001696",
+      "assembleia": "031",
+      "data": "25/09/2026",
+      "qtdContemplados": 70,
+      "maiorLance": 53.65,
+      "menorLance": 35.0
+    },
+    {
+      "grupo": "001696",
+      "assembleia": "032",
+      "data": "27/10/2026",
+      "qtdContemplados": 56,
+      "maiorLance": 53.6,
+      "menorLance": 35.99
+    }
+  ],
+  "001697": [
+    {
+      "grupo": "001697",
+      "assembleia": "030",
+      "data": "26/08/2026",
+      "qtdContemplados": 80,
+      "maiorLance": 65.0,
+      "menorLance": 50.0
+    },
+    {
+      "grupo": "001697",
+      "assembleia": "031",
+      "data": "25/09/2026",
+      "qtdContemplados": 95,
+      "maiorLance": 65.56,
+      "menorLance": 47.7684
+    },
+    {
+      "grupo": "001697",
+      "assembleia": "032",
+      "data": "27/10/2026",
+      "qtdContemplados": 81,
+      "maiorLance": 62.355,
+      "menorLance": 49.8375
+    }
+  ],
+  "001705": [
+    {
+      "grupo": "001705",
+      "assembleia": "028",
+      "data": "26/08/2026",
+      "qtdContemplados": 80,
+      "maiorLance": 42.4834,
+      "menorLance": 14.5657
+    },
+    {
+      "grupo": "001705",
+      "assembleia": "029",
+      "data": "25/09/2026",
+      "qtdContemplados": 80,
+      "maiorLance": 42.44,
+      "menorLance": 15.3
+    },
+    {
+      "grupo": "001705",
+      "assembleia": "030",
+      "data": "27/10/2026",
+      "qtdContemplados": 82,
+      "maiorLance": 40.08,
+      "menorLance": 16.05
+    }
+  ],
+  "001708": [
+    {
+      "grupo": "001708",
+      "assembleia": "027",
+      "data": "26/08/2026",
+      "qtdContemplados": 118,
+      "maiorLance": 30.0,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001708",
+      "assembleia": "028",
+      "data": "25/09/2026",
+      "qtdContemplados": 182,
+      "maiorLance": 56.41,
+      "menorLance": 10.0
+    },
+    {
+      "grupo": "001708",
+      "assembleia": "029",
+      "data": "27/10/2026",
+      "qtdContemplados": 161,
+      "maiorLance": 53.44,
+      "menorLance": 10.0
+    }
+  ],
+  "001712": [
+    {
+      "grupo": "001712",
+      "assembleia": "027",
+      "data": "26/08/2026",
+      "qtdContemplados": 64,
+      "maiorLance": 56.4546,
+      "menorLance": 36.99
+    },
+    {
+      "grupo": "001712",
+      "assembleia": "028",
+      "data": "25/09/2026",
+      "qtdContemplados": 79,
+      "maiorLance": 51.0905,
+      "menorLance": 32.0
+    },
+    {
+      "grupo": "001712",
+      "assembleia": "029",
+      "data": "27/10/2026",
+      "qtdContemplados": 90,
+      "maiorLance": 50.43,
+      "menorLance": 33.2871
+    }
+  ],
+  "001713": [
+    {
+      "grupo": "001713",
+      "assembleia": "025",
+      "data": "26/08/2026",
+      "qtdContemplados": 156,
+      "maiorLance": 66.0,
+      "menorLance": 48.0
+    },
+    {
+      "grupo": "001713",
+      "assembleia": "026",
+      "data": "25/09/2026",
+      "qtdContemplados": 155,
+      "maiorLance": 78.6445,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001713",
+      "assembleia": "027",
+      "data": "27/10/2026",
+      "qtdContemplados": 141,
+      "maiorLance": 81.27,
+      "menorLance": 52.6
+    }
+  ],
+  "001714": [
+    {
+      "grupo": "001714",
+      "assembleia": "025",
+      "data": "26/08/2026",
+      "qtdContemplados": 116,
+      "maiorLance": 51.13,
+      "menorLance": 26.138
+    },
+    {
+      "grupo": "001714",
+      "assembleia": "026",
+      "data": "25/09/2026",
+      "qtdContemplados": 143,
+      "maiorLance": 42.9903,
+      "menorLance": 18.19
+    },
+    {
+      "grupo": "001714",
+      "assembleia": "027",
+      "data": "27/10/2026",
+      "qtdContemplados": 117,
+      "maiorLance": 46.48,
+      "menorLance": 26.6839
+    }
+  ],
+  "001722": [
+    {
+      "grupo": "001722",
+      "assembleia": "024",
+      "data": "26/08/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 57.018,
+      "menorLance": 28.0
+    },
+    {
+      "grupo": "001722",
+      "assembleia": "025",
+      "data": "25/09/2026",
+      "qtdContemplados": 89,
+      "maiorLance": 55.5373,
+      "menorLance": 36.27
+    },
+    {
+      "grupo": "001722",
+      "assembleia": "026",
+      "data": "27/10/2026",
+      "qtdContemplados": 56,
+      "maiorLance": 60.66,
+      "menorLance": 40.5
+    }
+  ],
+  "001724": [
+    {
+      "grupo": "001724",
+      "assembleia": "021",
+      "data": "26/08/2026",
+      "qtdContemplados": 16,
+      "maiorLance": 79.2,
+      "menorLance": 66.4101
+    },
+    {
+      "grupo": "001724",
+      "assembleia": "022",
+      "data": "25/09/2026",
+      "qtdContemplados": 17,
+      "maiorLance": 72.04,
+      "menorLance": 66.4461
+    },
+    {
+      "grupo": "001724",
+      "assembleia": "023",
+      "data": "27/10/2026",
+      "qtdContemplados": 15,
+      "maiorLance": 75.0,
+      "menorLance": 68.14
+    }
+  ],
+  "001725": [
+    {
+      "grupo": "001725",
+      "assembleia": "022",
+      "data": "26/08/2026",
+      "qtdContemplados": 87,
+      "maiorLance": 65.2943,
+      "menorLance": 52.4133
+    },
+    {
+      "grupo": "001725",
+      "assembleia": "023",
+      "data": "25/09/2026",
+      "qtdContemplados": 94,
+      "maiorLance": 87.0,
+      "menorLance": 49.9472
+    },
+    {
+      "grupo": "001725",
+      "assembleia": "024",
+      "data": "27/10/2026",
+      "qtdContemplados": 95,
+      "maiorLance": 66.7105,
+      "menorLance": 53.4
+    }
+  ],
+  "001728": [
+    {
+      "grupo": "001728",
+      "assembleia": "022",
+      "data": "26/08/2026",
+      "qtdContemplados": 118,
+      "maiorLance": 56.62,
+      "menorLance": 25.02
+    },
+    {
+      "grupo": "001728",
+      "assembleia": "023",
+      "data": "25/09/2026",
+      "qtdContemplados": 110,
+      "maiorLance": 54.35,
+      "menorLance": 25.0
+    },
+    {
+      "grupo": "001728",
+      "assembleia": "024",
+      "data": "27/10/2026",
+      "qtdContemplados": 118,
+      "maiorLance": 52.09,
+      "menorLance": 27.13
+    }
+  ],
+  "001730": [
+    {
+      "grupo": "001730",
+      "assembleia": "021",
+      "data": "26/08/2026",
+      "qtdContemplados": 97,
+      "maiorLance": 58.88,
+      "menorLance": 32.0
+    },
+    {
+      "grupo": "001730",
+      "assembleia": "022",
+      "data": "25/09/2026",
+      "qtdContemplados": 111,
+      "maiorLance": 56.62,
+      "menorLance": 20.01
+    },
+    {
+      "grupo": "001730",
+      "assembleia": "023",
+      "data": "27/10/2026",
+      "qtdContemplados": 118,
+      "maiorLance": 54.35,
+      "menorLance": 27.15
+    }
+  ],
+  "001732": [
+    {
+      "grupo": "001732",
+      "assembleia": "021",
+      "data": "26/08/2026",
+      "qtdContemplados": 62,
+      "maiorLance": 59.0463,
+      "menorLance": 46.87
+    },
+    {
+      "grupo": "001732",
+      "assembleia": "022",
+      "data": "25/09/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 60.5018,
+      "menorLance": 40.5
+    },
+    {
+      "grupo": "001732",
+      "assembleia": "023",
+      "data": "27/10/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 63.6862,
+      "menorLance": 55.21
+    }
+  ],
+  "001734": [
+    {
+      "grupo": "001734",
+      "assembleia": "021",
+      "data": "26/08/2026",
+      "qtdContemplados": 109,
+      "maiorLance": 66.8877,
+      "menorLance": 51.0
+    },
+    {
+      "grupo": "001734",
+      "assembleia": "022",
+      "data": "25/09/2026",
+      "qtdContemplados": 114,
+      "maiorLance": 70.0,
+      "menorLance": 49.0
+    },
+    {
+      "grupo": "001734",
+      "assembleia": "023",
+      "data": "27/10/2026",
+      "qtdContemplados": 96,
+      "maiorLance": 83.15,
+      "menorLance": 53.11
+    }
+  ],
+  "001738": [
+    {
+      "grupo": "001738",
+      "assembleia": "020",
+      "data": "26/08/2026",
+      "qtdContemplados": 68,
+      "maiorLance": 80.78,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001738",
+      "assembleia": "021",
+      "data": "25/09/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 100.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001738",
+      "assembleia": "022",
+      "data": "27/10/2026",
+      "qtdContemplados": 70,
+      "maiorLance": 87.78,
+      "menorLance": 20.0
+    }
+  ],
+  "001739": [
+    {
+      "grupo": "001739",
+      "assembleia": "019",
+      "data": "26/08/2026",
+      "qtdContemplados": 76,
+      "maiorLance": 51.1542,
+      "menorLance": 20.09
+    },
+    {
+      "grupo": "001739",
+      "assembleia": "020",
+      "data": "25/09/2026",
+      "qtdContemplados": 87,
+      "maiorLance": 62.96,
+      "menorLance": 29.9731
+    },
+    {
+      "grupo": "001739",
+      "assembleia": "021",
+      "data": "27/10/2026",
+      "qtdContemplados": 89,
+      "maiorLance": 60.63,
+      "menorLance": 31.9969
+    }
+  ],
+  "001741": [
+    {
+      "grupo": "001741",
+      "assembleia": "018",
+      "data": "26/08/2026",
+      "qtdContemplados": 177,
+      "maiorLance": 68.392,
+      "menorLance": 50.0
+    },
+    {
+      "grupo": "001741",
+      "assembleia": "019",
+      "data": "25/09/2026",
+      "qtdContemplados": 189,
+      "maiorLance": 70.0,
+      "menorLance": 47.8744
+    },
+    {
+      "grupo": "001741",
+      "assembleia": "020",
+      "data": "27/10/2026",
+      "qtdContemplados": 217,
+      "maiorLance": 81.9514,
+      "menorLance": 55.6002
+    }
+  ],
+  "001742": [
+    {
+      "grupo": "001742",
+      "assembleia": "018",
+      "data": "26/08/2026",
+      "qtdContemplados": 97,
+      "maiorLance": 63.7959,
+      "menorLance": 26.9515
+    },
+    {
+      "grupo": "001742",
+      "assembleia": "019",
+      "data": "25/09/2026",
+      "qtdContemplados": 100,
+      "maiorLance": 52.0,
+      "menorLance": 29.19
+    },
+    {
+      "grupo": "001742",
+      "assembleia": "020",
+      "data": "27/10/2026",
+      "qtdContemplados": 88,
+      "maiorLance": 62.75,
+      "menorLance": 30.1862
+    }
+  ],
+  "001745": [
+    {
+      "grupo": "001745",
+      "assembleia": "018",
+      "data": "26/08/2026",
+      "qtdContemplados": 38,
+      "maiorLance": 78.6527,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001745",
+      "assembleia": "019",
+      "data": "25/09/2026",
+      "qtdContemplados": 34,
+      "maiorLance": 70.5534,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001745",
+      "assembleia": "020",
+      "data": "27/10/2026",
+      "qtdContemplados": 39,
+      "maiorLance": 70.6487,
+      "menorLance": 20.0
+    }
+  ],
+  "001746": [
+    {
+      "grupo": "001746",
+      "assembleia": "018",
+      "data": "26/08/2026",
+      "qtdContemplados": 181,
+      "maiorLance": 77.74,
+      "menorLance": 38.0
+    },
+    {
+      "grupo": "001746",
+      "assembleia": "019",
+      "data": "25/09/2026",
+      "qtdContemplados": 204,
+      "maiorLance": 57.4971,
+      "menorLance": 35.0
+    },
+    {
+      "grupo": "001746",
+      "assembleia": "020",
+      "data": "27/10/2026",
+      "qtdContemplados": 210,
+      "maiorLance": 73.23,
+      "menorLance": 35.0
+    }
+  ],
+  "001749": [
+    {
+      "grupo": "001749",
+      "assembleia": "017",
+      "data": "26/08/2026",
+      "qtdContemplados": 147,
+      "maiorLance": 94.16,
+      "menorLance": 50.15
+    },
+    {
+      "grupo": "001749",
+      "assembleia": "018",
+      "data": "25/09/2026",
+      "qtdContemplados": 165,
+      "maiorLance": 93.0203,
+      "menorLance": 55.0
+    },
+    {
+      "grupo": "001749",
+      "assembleia": "019",
+      "data": "27/10/2026",
+      "qtdContemplados": 121,
+      "maiorLance": 72.2474,
+      "menorLance": 60.0
+    }
+  ],
+  "001751": [
+    {
+      "grupo": "001751",
+      "assembleia": "016",
+      "data": "26/08/2026",
+      "qtdContemplados": 72,
+      "maiorLance": 70.546,
+      "menorLance": 40.02
+    },
+    {
+      "grupo": "001751",
+      "assembleia": "017",
+      "data": "25/09/2026",
+      "qtdContemplados": 82,
+      "maiorLance": 61.7714,
+      "menorLance": 37.91
+    },
+    {
+      "grupo": "001751",
+      "assembleia": "018",
+      "data": "27/10/2026",
+      "qtdContemplados": 86,
+      "maiorLance": 60.0,
+      "menorLance": 40.0
+    }
+  ],
+  "001754": [
+    {
+      "grupo": "001754",
+      "assembleia": "016",
+      "data": "26/08/2026",
+      "qtdContemplados": 73,
+      "maiorLance": 71.0,
+      "menorLance": 63.1
+    },
+    {
+      "grupo": "001754",
+      "assembleia": "017",
+      "data": "25/09/2026",
+      "qtdContemplados": 64,
+      "maiorLance": 91.5821,
+      "menorLance": 63.0
+    },
+    {
+      "grupo": "001754",
+      "assembleia": "018",
+      "data": "27/10/2026",
+      "qtdContemplados": 59,
+      "maiorLance": 75.0,
+      "menorLance": 64.0
+    }
+  ],
+  "001759": [
+    {
+      "grupo": "001759",
+      "assembleia": "014",
+      "data": "26/08/2026",
+      "qtdContemplados": 125,
+      "maiorLance": 75.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001759",
+      "assembleia": "015",
+      "data": "25/09/2026",
+      "qtdContemplados": 135,
+      "maiorLance": 74.62,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001759",
+      "assembleia": "016",
+      "data": "27/10/2026",
+      "qtdContemplados": 116,
+      "maiorLance": 72.27,
+      "menorLance": 20.0
+    }
+  ],
+  "001760": [
+    {
+      "grupo": "001760",
+      "assembleia": "014",
+      "data": "26/08/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 70.2839,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001760",
+      "assembleia": "015",
+      "data": "25/09/2026",
+      "qtdContemplados": 55,
+      "maiorLance": 76.8438,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001760",
+      "assembleia": "016",
+      "data": "27/10/2026",
+      "qtdContemplados": 50,
+      "maiorLance": 81.296,
+      "menorLance": 20.0
+    }
+  ],
+  "001762": [
+    {
+      "grupo": "001762",
+      "assembleia": "014",
+      "data": "26/08/2026",
+      "qtdContemplados": 60,
+      "maiorLance": 61.21,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001762",
+      "assembleia": "015",
+      "data": "25/09/2026",
+      "qtdContemplados": 59,
+      "maiorLance": 83.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001762",
+      "assembleia": "016",
+      "data": "27/10/2026",
+      "qtdContemplados": 52,
+      "maiorLance": 66.0,
+      "menorLance": 20.0
+    }
+  ],
+  "001764": [
+    {
+      "grupo": "001764",
+      "assembleia": "014",
+      "data": "26/08/2026",
+      "qtdContemplados": 125,
+      "maiorLance": 96.32,
+      "menorLance": 57.2956
+    },
+    {
+      "grupo": "001764",
+      "assembleia": "015",
+      "data": "25/09/2026",
+      "qtdContemplados": 128,
+      "maiorLance": 79.5773,
+      "menorLance": 52.0324
+    },
+    {
+      "grupo": "001764",
+      "assembleia": "016",
+      "data": "27/10/2026",
+      "qtdContemplados": 146,
+      "maiorLance": 68.22,
+      "menorLance": 54.0
+    }
+  ],
+  "001765": [
+    {
+      "grupo": "001765",
+      "assembleia": "013",
+      "data": "26/08/2026",
+      "qtdContemplados": 117,
+      "maiorLance": 79.412,
+      "menorLance": 63.05
+    },
+    {
+      "grupo": "001765",
+      "assembleia": "014",
+      "data": "25/09/2026",
+      "qtdContemplados": 128,
+      "maiorLance": 71.0,
+      "menorLance": 58.4181
+    },
+    {
+      "grupo": "001765",
+      "assembleia": "015",
+      "data": "27/10/2026",
+      "qtdContemplados": 170,
+      "maiorLance": 88.19,
+      "menorLance": 57.602
+    }
+  ],
+  "001766": [
+    {
+      "grupo": "001766",
+      "assembleia": "013",
+      "data": "26/08/2026",
+      "qtdContemplados": 235,
+      "maiorLance": 60.04,
+      "menorLance": 31.05
+    },
+    {
+      "grupo": "001766",
+      "assembleia": "014",
+      "data": "25/09/2026",
+      "qtdContemplados": 185,
+      "maiorLance": 74.8598,
+      "menorLance": 32.6
+    },
+    {
+      "grupo": "001766",
+      "assembleia": "015",
+      "data": "27/10/2026",
+      "qtdContemplados": 181,
+      "maiorLance": 72.8297,
+      "menorLance": 35.6341
+    }
+  ],
+  "001770": [
+    {
+      "grupo": "001770",
+      "assembleia": "011",
+      "data": "26/08/2026",
+      "qtdContemplados": 121,
+      "maiorLance": 60.125,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001770",
+      "assembleia": "012",
+      "data": "25/09/2026",
+      "qtdContemplados": 142,
+      "maiorLance": 60.0,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001770",
+      "assembleia": "013",
+      "data": "27/10/2026",
+      "qtdContemplados": 134,
+      "maiorLance": 65.0,
+      "menorLance": 41.66
+    }
+  ],
+  "001771": [
+    {
+      "grupo": "001771",
+      "assembleia": "011",
+      "data": "26/08/2026",
+      "qtdContemplados": 155,
+      "maiorLance": 75.07,
+      "menorLance": 52.324
+    },
+    {
+      "grupo": "001771",
+      "assembleia": "012",
+      "data": "25/09/2026",
+      "qtdContemplados": 158,
+      "maiorLance": 70.02,
+      "menorLance": 50.0
+    },
+    {
+      "grupo": "001771",
+      "assembleia": "013",
+      "data": "27/10/2026",
+      "qtdContemplados": 192,
+      "maiorLance": 93.5521,
+      "menorLance": 50.0
+    }
+  ],
+  "001772": [
+    {
+      "grupo": "001772",
+      "assembleia": "011",
+      "data": "26/08/2026",
+      "qtdContemplados": 140,
+      "maiorLance": 63.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001772",
+      "assembleia": "012",
+      "data": "25/09/2026",
+      "qtdContemplados": 120,
+      "maiorLance": 62.5,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001772",
+      "assembleia": "013",
+      "data": "27/10/2026",
+      "qtdContemplados": 141,
+      "maiorLance": 98.0,
+      "menorLance": 20.0
+    }
+  ],
+  "001775": [
+    {
+      "grupo": "001775",
+      "assembleia": "009",
+      "data": "26/08/2026",
+      "qtdContemplados": 94,
+      "maiorLance": 60.0,
+      "menorLance": 40.0004
+    },
+    {
+      "grupo": "001775",
+      "assembleia": "010",
+      "data": "25/09/2026",
+      "qtdContemplados": 106,
+      "maiorLance": 60.0,
+      "menorLance": 35.9
+    },
+    {
+      "grupo": "001775",
+      "assembleia": "011",
+      "data": "27/10/2026",
+      "qtdContemplados": 126,
+      "maiorLance": 81.6683,
+      "menorLance": 47.88
+    }
+  ],
+  "001779": [
+    {
+      "grupo": "001779",
+      "assembleia": "009",
+      "data": "26/08/2026",
+      "qtdContemplados": 135,
+      "maiorLance": 65.0,
+      "menorLance": 40.0
+    },
+    {
+      "grupo": "001779",
+      "assembleia": "010",
+      "data": "25/09/2026",
+      "qtdContemplados": 169,
+      "maiorLance": 60.01,
+      "menorLance": 39.12
+    },
+    {
+      "grupo": "001779",
+      "assembleia": "011",
+      "data": "27/10/2026",
+      "qtdContemplados": 159,
+      "maiorLance": 56.4459,
+      "menorLance": 41.0
+    }
+  ],
+  "001786": [
+    {
+      "grupo": "001786",
+      "assembleia": "007",
+      "data": "26/08/2026",
+      "qtdContemplados": 69,
+      "maiorLance": 75.0,
+      "menorLance": 51.0
+    },
+    {
+      "grupo": "001786",
+      "assembleia": "008",
+      "data": "25/09/2026",
+      "qtdContemplados": 63,
+      "maiorLance": 65.0,
+      "menorLance": 46.6667
+    },
+    {
+      "grupo": "001786",
+      "assembleia": "009",
+      "data": "27/10/2026",
+      "qtdContemplados": 65,
+      "maiorLance": 60.0,
+      "menorLance": 45.5
+    }
+  ],
+  "001788": [
+    {
+      "grupo": "001788",
+      "assembleia": "006",
+      "data": "26/08/2026",
+      "qtdContemplados": 67,
+      "maiorLance": 70.87,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001788",
+      "assembleia": "007",
+      "data": "25/09/2026",
+      "qtdContemplados": 71,
+      "maiorLance": 61.0,
+      "menorLance": 20.0
+    },
+    {
+      "grupo": "001788",
+      "assembleia": "008",
+      "data": "27/10/2026",
+      "qtdContemplados": 77,
+      "maiorLance": 75.1,
+      "menorLance": 20.0
+    }
+  ],
+  "001794": [
+    {
+      "grupo": "001794",
+      "assembleia": "005",
+      "data": "26/08/2026",
+      "qtdContemplados": 48,
+      "maiorLance": 61.7649,
+      "menorLance": 45.0
+    },
+    {
+      "grupo": "001794",
+      "assembleia": "006",
+      "data": "25/09/2026",
+      "qtdContemplados": 61,
+      "maiorLance": 71.3531,
+      "menorLance": 49.309
+    },
+    {
+      "grupo": "001794",
+      "assembleia": "007",
+      "data": "27/10/2026",
+      "qtdContemplados": 50,
+      "maiorLance": 62.165,
+      "menorLance": 51.1665
+    }
+  ],
+  "001799": [
+    {
+      "grupo": "001799",
+      "assembleia": "004",
+      "data": "26/08/2026",
+      "qtdContemplados": 53,
+      "maiorLance": 80.0,
+      "menorLance": 65.04
+    },
+    {
+      "grupo": "001799",
+      "assembleia": "005",
+      "data": "25/09/2026",
+      "qtdContemplados": 53,
+      "maiorLance": 72.5063,
+      "menorLance": 60.0
+    },
+    {
+      "grupo": "001799",
+      "assembleia": "006",
+      "data": "27/10/2026",
+      "qtdContemplados": 65,
+      "maiorLance": 83.3333,
+      "menorLance": 61.022
+    }
+  ],
+  "001801": [
+    {
+      "grupo": "001801",
+      "assembleia": "003",
+      "data": "26/08/2026",
+      "qtdContemplados": 40,
+      "maiorLance": 66.67,
+      "menorLance": 50.02
+    },
+    {
+      "grupo": "001801",
+      "assembleia": "004",
+      "data": "25/09/2026",
+      "qtdContemplados": 46,
+      "maiorLance": 60.0,
+      "menorLance": 42.0
+    },
+    {
+      "grupo": "001801",
+      "assembleia": "005",
+      "data": "27/10/2026",
+      "qtdContemplados": 57,
+      "maiorLance": 71.4286,
+      "menorLance": 46.74
+    }
+  ],
+  "001813": [
+    {
+      "grupo": "001813",
+      "assembleia": "001",
+      "data": "26/08/2026",
+      "qtdContemplados": 31,
+      "maiorLance": 65.0,
+      "menorLance": 50.0
+    },
+    {
+      "grupo": "001813",
+      "assembleia": "002",
+      "data": "25/09/2026",
+      "qtdContemplados": 39,
+      "maiorLance": 65.7143,
+      "menorLance": 57.5
+    },
+    {
+      "grupo": "001813",
+      "assembleia": "003",
+      "data": "27/10/2026",
+      "qtdContemplados": 30,
+      "maiorLance": 71.25,
+      "menorLance": 60.4233
+    }
+  ],
+  "001819": [
+    {
+      "grupo": "001819",
+      "assembleia": "001",
+      "data": "27/10/2026",
+      "qtdContemplados": 22,
+      "maiorLance": 80.0,
+      "menorLance": 71.69
+    }
+  ],
+  "001820": [
+    {
+      "grupo": "001820",
+      "assembleia": "001",
+      "data": "25/09/2026",
+      "qtdContemplados": 20,
+      "maiorLance": 100.0,
+      "menorLance": 58.87
+    },
+    {
+      "grupo": "001820",
+      "assembleia": "002",
+      "data": "27/10/2026",
+      "qtdContemplados": 26,
+      "maiorLance": 81.0,
+      "menorLance": 60.32
+    }
+  ],
+  "001822": [
+    {
+      "grupo": "001822",
+      "assembleia": "001",
+      "data": "27/10/2026",
+      "qtdContemplados": 11,
+      "maiorLance": 100.0,
+      "menorLance": 67.2
+    }
+  ],
+  "001825": [
+    {
+      "grupo": "001825",
+      "assembleia": "001",
+      "data": "27/10/2026",
+      "qtdContemplados": 14,
+      "maiorLance": 67.7131,
+      "menorLance": 45.0682
+    }
+  ],
+  "001826": [
+    {
+      "grupo": "001826",
+      "assembleia": "001",
+      "data": "27/10/2026",
+      "qtdContemplados": 40,
+      "maiorLance": 81.25,
+      "menorLance": 59.0275
+    }
+  ]
+}
