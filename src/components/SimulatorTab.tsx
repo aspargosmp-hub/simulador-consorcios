@@ -5,6 +5,7 @@ import {
   Building2,
   Calculator,
   Check,
+  CheckCircle2,
   Copy,
   CopyPlus,
   FileText,
@@ -48,6 +49,117 @@ interface SimulatorTabProps {
   onOpenAssembleiaGroup?: (grupo: string) => void;
 }
 
+type ObjetivoCompraId =
+  | 'TRATOR'
+  | 'CAMINHAO'
+  | 'IRRIGACAO'
+  | 'REBANHO'
+  | 'IMOVEL'
+  | 'CARRO_FIPE'
+  | 'CARRO_IPCA'
+  | 'SOLAR'
+  | 'MOTO';
+
+interface ObjetivoCompraOption {
+  id: ObjetivoCompraId;
+  label: string;
+  emoji: string;
+  seg: string;
+  defaultModFlex: CodigoModalidade;
+  defaultModMaster: CodigoModalidade;
+  filterFn: (item: ConsorcioItem) => boolean;
+}
+
+const OBJETIVOS_COMPRA: ObjetivoCompraOption[] = [
+  {
+    id: 'TRATOR',
+    label: 'Trator / Implemento',
+    emoji: '🚜',
+    seg: 'TC',
+    defaultModFlex: 'TC3',
+    defaultModMaster: 'TC4',
+    filterFn: (i) =>
+      i.segmento === 'TC' &&
+      (i.tags.includes('Trator / Implemento') ||
+        i.bemDescricao.includes('TRATOR') ||
+        i.bemDescricao.includes('PESADOS')),
+  },
+  {
+    id: 'CAMINHAO',
+    label: 'Caminhão / Pesados',
+    emoji: '🚛',
+    seg: 'TC',
+    defaultModFlex: 'TC3',
+    defaultModMaster: 'TC4',
+    filterFn: (i) =>
+      i.segmento === 'TC' &&
+      (!i.bemDescricao.includes('IRRIGACAO') && !i.bemDescricao.includes('REBANHO')),
+  },
+  {
+    id: 'IRRIGACAO',
+    label: 'Irrigação / Pivô',
+    emoji: '💧',
+    seg: 'TC',
+    defaultModFlex: 'TC3',
+    defaultModMaster: 'TC4',
+    filterFn: (i) => i.segmento === 'TC' && i.tags.includes('Irrigação'),
+  },
+  {
+    id: 'REBANHO',
+    label: 'Rebanho / Pecuária',
+    emoji: '🐄',
+    seg: 'TC',
+    defaultModFlex: 'TC3',
+    defaultModMaster: 'TC4',
+    filterFn: (i) => i.segmento === 'TC' && i.tags.includes('Rebanho e Genética'),
+  },
+  {
+    id: 'IMOVEL',
+    label: 'Casa / Imóvel / Terreno',
+    emoji: '🏠',
+    seg: 'IM',
+    defaultModFlex: 'IM3',
+    defaultModMaster: 'IM4',
+    filterFn: (i) => i.segmento === 'IM',
+  },
+  {
+    id: 'CARRO_FIPE',
+    label: 'Carro / Picape (FIPE)',
+    emoji: '🚗',
+    seg: 'AU',
+    defaultModFlex: 'AU3',
+    defaultModMaster: 'AU4',
+    filterFn: (i) => i.segmento === 'AU',
+  },
+  {
+    id: 'CARRO_IPCA',
+    label: 'Carro / Utilitário (IPCA)',
+    emoji: '🚙',
+    seg: 'AI',
+    defaultModFlex: 'AI3',
+    defaultModMaster: 'AI4',
+    filterFn: (i) => i.segmento === 'AI',
+  },
+  {
+    id: 'SOLAR',
+    label: 'Energia Solar / Equip.',
+    emoji: '☀️',
+    seg: 'EE',
+    defaultModFlex: 'EE3',
+    defaultModMaster: 'EE4',
+    filterFn: (i) => i.segmento === 'EE',
+  },
+  {
+    id: 'MOTO',
+    label: 'Motocicleta',
+    emoji: '🏍️',
+    seg: 'MO',
+    defaultModFlex: 'MO3',
+    defaultModMaster: 'MO4',
+    filterFn: (i) => i.segmento === 'MO',
+  },
+];
+
 const DIFERENCIAIS_LIST = [
   'Grupo em Andamento',
   'Atendimento Personalizado',
@@ -88,10 +200,14 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
   const [slotGroupFilter, setSlotGroupFilter] = useState<Record<number, string>>({});
 
-  // Assistente Reverso
-  const [targetLiquido, setTargetLiquido] = useState<string>('');
+  // Estados da Calculadora Reversa 2.0 (Assistente Inteligente por Objetivo + Crédito + Mensalidade)
+  const [objetivo, setObjetivo] = useState<ObjetivoCompraId>('TRATOR');
+  const [planoPreferido, setPlanoPreferido] = useState<'Flex' | 'Master'>('Flex');
+  const [targetLiquido, setTargetLiquido] = useState<string>('300000');
+  const [targetMensalidadeMax, setTargetMensalidadeMax] = useState<string>('');
   const [targetBolsoReais, setTargetBolsoReais] = useState<string>('');
   const [targetUsarEmbutido, setTargetUsarEmbutido] = useState<boolean>(true);
+  const [assistantFeedback, setAssistantFeedback] = useState<string>('');
 
   const [visibleRows, setVisibleRows] = useState<Record<string, boolean>>({
     bemRegra: true,
@@ -183,52 +299,188 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
     onChangeSlots(next);
   };
 
+  // MOTOR DE RECOMENDAÇÃO INTELIGENTE (Monta até 3 cenários estratégicos automaticamente!)
   const handleAutoBuildProposal = (e: React.FormEvent) => {
     e.preventDefault();
+    const objConfig = OBJETIVOS_COMPRA.find((o) => o.id === objetivo) || OBJETIVOS_COMPRA[0];
+    const targetMod =
+      planoPreferido === 'Flex' ? objConfig.defaultModFlex : objConfig.defaultModMaster;
+
     const liquidoDesejado = Number(targetLiquido) || 0;
-    if (liquidoDesejado <= 0 || modalityItems.length === 0) return;
+    const mensalidadeMax = Number(targetMensalidadeMax) || 0;
+    const bolsoReais = Number(targetBolsoReais) || 0;
 
-    const embPerc = targetUsarEmbutido ? 30 : 0;
-    const fatorLiquido = 1 - embPerc / 100;
-    const brutoNecessario = liquidoDesejado / fatorLiquido;
+    // Filtra os itens da modalidade e objetivo escolhido (priorizando grupos com vagas > 0)
+    let pool = items.filter(
+      (i) => i.codigoModalidade === targetMod && objConfig.filterFn(i) && i.vagas > 0
+    );
+    if (pool.length === 0) {
+      pool = items.filter((i) => i.codigoModalidade === targetMod && i.vagas > 0);
+    }
+    if (pool.length === 0) {
+      pool = items.filter((i) => i.codigoModalidade === targetMod);
+    }
+    if (pool.length === 0) return;
 
-    const candidatePool = targetUsarEmbutido
-      ? modalityItems.filter((i) => i.tags.includes('Lance Embutido'))
-      : modalityItems;
-    const pool = candidatePool.length > 0 ? candidatePool : modalityItems;
+    // Avalia candidatos (1 a 3 cotas) para encontrar os 3 melhores cenários:
+    // Cenário 1: Equilíbrio / Mais próximo do Crédito Líquido e dentro da Mensalidade
+    // Cenário 2: Menor Parcela Mensal (Prazo mais longo)
+    // Cenário 3: Contemplação Mais Rápida (Menor Lance Mínimo 12m ou Lance Fixo 20%)
+    interface CandidateScenario {
+      item: ConsorcioItem;
+      cotas: number;
+      embPerc: number;
+      bolsoPerc: number;
+      creditoBruto: number;
+      creditoLiquido: number;
+      parcelaInicial: number;
+      parcelaPosLance: number;
+      scoreCredito: number;
+      withinBudget: boolean;
+    }
 
-    let bestItem = pool[0];
-    let bestCotas = 1;
-    let bestDiff = Infinity;
+    const candidates: CandidateScenario[] = [];
 
     for (const item of pool) {
-      if (item.vagas === 0) continue;
-      for (let c = 1; c <= 4; c++) {
-        const totalBruto = item.valorBem * c;
-        const diff = totalBruto - brutoNecessario;
-        if (diff >= -5000 && Math.abs(diff) < bestDiff) {
-          bestDiff = Math.abs(diff);
-          bestItem = item;
-          bestCotas = c;
+      const acceptsEmb = item.tags.includes('Lance Embutido');
+      const embPerc = targetUsarEmbutido && acceptsEmb ? 30 : targetUsarEmbutido ? 30 : 0;
+      const fatorLiq = 1 - embPerc / 100;
+
+      for (let cotas = 1; cotas <= 3; cotas++) {
+        const creditoBruto = item.valorBem * cotas;
+        const creditoLiquido = creditoBruto * fatorLiq;
+        const parcelaInicial = item.parcela * cotas;
+
+        let bolsoPerc = 15;
+        if (bolsoReais > 0 && creditoBruto > 0) {
+          bolsoPerc = Math.min(69, Number(((bolsoReais / creditoBruto) * 100).toFixed(2)));
+        } else if (!targetUsarEmbutido && item.tags.includes('Lance Fixo 20%')) {
+          bolsoPerc = 20;
+        }
+
+        const lanceTotalValor = creditoBruto * ((embPerc + bolsoPerc) / 100);
+        const saldoTotal = parcelaInicial * item.prazo;
+        const parcelaPosLance =
+          item.prazo > 1
+            ? Math.max(0, (saldoTotal - parcelaInicial - lanceTotalValor) / (item.prazo - 1))
+            : parcelaInicial;
+
+        // Distância percentual para o crédito líquido desejado
+        const scoreCredito =
+          liquidoDesejado > 0
+            ? Math.abs(creditoLiquido - liquidoDesejado) / liquidoDesejado
+            : mensalidadeMax > 0
+            ? Math.abs(parcelaPosLance - mensalidadeMax) / mensalidadeMax
+            : 0;
+
+        // Verifica se cabe na mensalidade máxima (considerando a parcela pós-lance se houver lance, ou inicial)
+        const refParcela = embPerc + bolsoPerc > 0 ? parcelaPosLance : parcelaInicial;
+        const withinBudget = mensalidadeMax <= 0 || refParcela <= mensalidadeMax * 1.12;
+
+        // Aceita candidatos cujo crédito líquido esteja entre -15% e +35% do pedido (ou se o usuário só preencheu mensalidade)
+        const reasonableCredit =
+          liquidoDesejado <= 0 ||
+          (creditoLiquido >= liquidoDesejado * 0.82 &&
+            creditoLiquido <= liquidoDesejado * 1.45);
+
+        if (reasonableCredit) {
+          candidates.push({
+            item,
+            cotas,
+            embPerc,
+            bolsoPerc,
+            creditoBruto,
+            creditoLiquido,
+            parcelaInicial,
+            parcelaPosLance,
+            scoreCredito,
+            withinBudget,
+          });
         }
       }
     }
 
-    const creditoBrutoFinal = bestItem.valorBem * bestCotas;
-    const bolsoReais = Number(targetBolsoReais) || 0;
-    const bolsoPerc =
-      bolsoReais > 0 && creditoBrutoFinal > 0
-        ? Number(((bolsoReais / creditoBrutoFinal) * 100).toFixed(2))
-        : 15;
+    // Se o filtro estrito não achou, pega o mais próximo geral
+    const workingList =
+      candidates.filter((c) => c.withinBudget).length > 0
+        ? candidates.filter((c) => c.withinBudget)
+        : candidates;
 
-    updateSlot(0, {
-      enabled: true,
-      groupId: bestItem.id,
-      cotas: bestCotas,
-      lanceEmbutidoPerc: embPerc,
-      lanceRecursoProprioPerc: Math.min(69, bolsoPerc),
+    if (workingList.length === 0) return;
+
+    // 1. Melhor encaixe exato de Crédito Líquido
+    const byCreditFit = [...workingList].sort((a, b) => a.scoreCredito - b.scoreCredito);
+    const c1 = byCreditFit[0];
+
+    // 2. Menor Parcela Pós-Lance (em um grupo diferente do C1 se possível)
+    const byLowestInstallment = [...workingList].sort(
+      (a, b) => a.parcelaPosLance - b.parcelaPosLance
+    );
+    const c2 =
+      byLowestInstallment.find((c) => c.item.grupo !== c1.item.grupo) ||
+      byLowestInstallment.find((c) => c.item.id !== c1.item.id) ||
+      c1;
+
+    // 3. Menor Lance Mínimo Histórico 12m (Grupo mais fácil de contemplar)
+    const byFastestContemp = [...workingList].sort(
+      (a, b) => a.item.percMinContemp - b.item.percMinContemp
+    );
+    const c3 =
+      byFastestContemp.find(
+        (c) => c.item.grupo !== c1.item.grupo && c.item.grupo !== c2.item.grupo
+      ) ||
+      byFastestContemp[0] ||
+      c1;
+
+    const chosenScenarios = [c1, c2, c3].filter(
+      (v, index, self) =>
+        index ===
+        self.findIndex((t) => t.item.id === v.item.id && t.cotas === v.cotas)
+    );
+
+    onChangeModality(targetMod);
+    onChangeAgrupar(false); // Desmarca agrupar para comparar os 3 cenários lado a lado!
+
+    const nextSlots: ProposalSlot[] = [0, 1, 2, 3].map((idx) => {
+      const sc = chosenScenarios[idx];
+      if (sc) {
+        return {
+          slotIndex: idx,
+          enabled: true,
+          groupId: sc.item.id,
+          cotas: sc.cotas,
+          lanceEmbutidoPerc: sc.embPerc,
+          lanceRecursoProprioPerc: sc.bolsoPerc,
+        };
+      }
+      return {
+        slotIndex: idx,
+        enabled: false,
+        groupId: null,
+        cotas: 1,
+        lanceRecursoProprioPerc: 0,
+        lanceEmbutidoPerc: 0,
+      };
     });
-    setSlotGroupFilter((prev) => ({ ...prev, 0: bestItem.grupo }));
+
+    onChangeSlots(nextSlots);
+
+    const newGroupFilters: Record<number, string> = {};
+    chosenScenarios.forEach((sc, idx) => {
+      newGroupFilters[idx] = sc.item.grupo;
+    });
+    setSlotGroupFilter(newGroupFilters);
+
+    setAssistantFeedback(
+      `Montamos ${chosenScenarios.length} opções ideais para ${objConfig.label} (${targetMod}): Opção 1 (Crédito exato: ${formatBRL(
+        c1.creditoLiquido
+      )} líq.), Opção 2 (Menor parcela: ${formatBRL(
+        c2.parcelaPosLance
+      )}/mês) e Opção 3 (Menor lance mín. 12m: Grupo ${c3.item.grupo} com ${formatPercent(
+        c3.item.percMinContemp,
+        1
+      )}).`
+    );
   };
 
   const calculatedProposals: CalculatedProposal[] = useMemo(() => {
@@ -382,67 +634,149 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
   return (
     <div className="space-y-5">
-      {/* ASSISTENTE RÁPIDO DO CONSULTOR */}
+      {/* CALCULADORA REVERSA 2.0: O QUE O CLIENTE QUER COMPRAR + CRÉDITO + MENSALIDADE */}
       <form
         onSubmit={handleAutoBuildProposal}
-        className="bg-gradient-to-r from-bb-dark to-bb-blue text-white rounded-xl p-4 shadow-sm print:hidden flex flex-wrap items-end justify-between gap-3"
+        className="bg-gradient-to-br from-bb-dark via-bb-blue to-blue-900 text-white rounded-xl p-5 shadow-md print:hidden space-y-4 border border-blue-700"
       >
-        <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-bb-yellow uppercase tracking-wide">
-            <Wand2 className="w-4 h-4" />
-            Calculadora Reversa Rápida (Para Atendimento no Telefone / WhatsApp)
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold text-bb-yellow uppercase tracking-wider">
+              <Wand2 className="w-4 h-4" />
+              Montador Inteligente de Propostas (Calculadora Reversa)
+            </div>
+            <p className="text-xs text-blue-100 mt-0.5">
+              1º Escolha <strong>o que o cliente quer comprar</strong>, 2º digite o{' '}
+              <strong>crédito líquido</strong> e a <strong>mensalidade que cabe no bolso dele</strong>. O sistema monta até 3 cenários ideais na hora!
+            </p>
           </div>
-          <p className="text-xs text-blue-100">
-            Digite quanto o cliente precisa <strong>líquido na mão</strong> e quanto ele tem{' '}
-            <strong>no bolso para lance</strong> — o sistema já acha a carta ideal descontando os 30% de Lance Embutido!
-          </p>
+
+          <div className="inline-flex rounded-lg bg-white/10 p-0.5 border border-white/15">
+            <button
+              type="button"
+              onClick={() => setPlanoPreferido('Flex')}
+              className={`px-3 py-1 rounded-md text-xs font-extrabold transition ${
+                planoPreferido === 'Flex'
+                  ? 'bg-bb-yellow text-bb-dark'
+                  : 'text-blue-100 hover:text-white'
+              }`}
+            >
+              Plano Flex (-2% Taxa)
+            </button>
+            <button
+              type="button"
+              onClick={() => setPlanoPreferido('Master')}
+              className={`px-3 py-1 rounded-md text-xs font-extrabold transition ${
+                planoPreferido === 'Master'
+                  ? 'bg-bb-yellow text-bb-dark'
+                  : 'text-blue-100 hover:text-white'
+              }`}
+            >
+              Plano Master (Taxa Cheia)
+            </button>
+          </div>
         </div>
 
-        <div className="flex flex-wrap items-end gap-2.5">
+        {/* Passo 1: O que o cliente quer comprar? */}
+        <div>
+          <span className="block text-[11px] font-bold text-bb-yellow uppercase tracking-wider mb-1.5">
+            1. O que o cliente quer comprar?
+          </span>
+          <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-1.5">
+            {OBJETIVOS_COMPRA.map((obj) => {
+              const active = objetivo === obj.id;
+              return (
+                <button
+                  key={obj.id}
+                  type="button"
+                  onClick={() => setObjetivo(obj.id)}
+                  className={`px-2.5 py-2 rounded-lg text-left transition border flex flex-col justify-between ${
+                    active
+                      ? 'bg-bb-yellow text-bb-dark border-bb-yellow font-extrabold shadow'
+                      : 'bg-white/10 text-white border-white/15 hover:bg-white/20 font-medium'
+                  }`}
+                >
+                  <span className="text-base leading-none">{obj.emoji}</span>
+                  <span className="text-[11px] leading-tight mt-1">{obj.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Passo 2: Valores do Cliente (Crédito Líquido, Mensalidade Ideal, Recurso Próprio) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end pt-2 border-t border-white/15">
           <div>
             <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              Crédito Líquido Desejado (R$)
+              2. Valor do Crédito Líquido (R$)
             </label>
             <input
               type="number"
+              step={1000}
               value={targetLiquido}
               onChange={(e) => setTargetLiquido(e.target.value)}
-              placeholder="Ex: 350000"
-              className="w-40 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
+              placeholder="Ex: 300000"
+              className="w-full px-3 py-2 rounded-lg text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
             />
           </div>
 
           <div>
             <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              Lance do Bolso em R$ (Opcional)
+              3. Mensalidade Máxima Ideal (R$)
             </label>
             <input
               type="number"
-              value={targetBolsoReais}
-              onChange={(e) => setTargetBolsoReais(e.target.value)}
-              placeholder="Ex: 50000"
-              className="w-36 px-3 py-1.5 rounded-lg text-xs font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
+              step={100}
+              value={targetMensalidadeMax}
+              onChange={(e) => setTargetMensalidadeMax(e.target.value)}
+              placeholder="Ex: 3500 (Opcional)"
+              className="w-full px-3 py-2 rounded-lg text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
             />
           </div>
 
-          <label className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 text-xs font-semibold cursor-pointer h-[32px]">
+          <div>
+            <label className="block text-[11px] text-blue-100 font-semibold mb-1">
+              4. Lance do Bolso em R$ (Opcional)
+            </label>
             <input
-              type="checkbox"
-              checked={targetUsarEmbutido}
-              onChange={(e) => setTargetUsarEmbutido(e.target.checked)}
-              className="rounded text-bb-yellow"
+              type="number"
+              step={1000}
+              value={targetBolsoReais}
+              onChange={(e) => setTargetBolsoReais(e.target.value)}
+              placeholder="Ex: 45000 (Opcional)"
+              className="w-full px-3 py-2 rounded-lg text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
             />
-            Usar 30% Embutido
-          </label>
+          </div>
 
-          <button
-            type="submit"
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 h-[32px] rounded-lg bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark text-xs font-extrabold shadow transition"
-          >
-            <Target className="w-3.5 h-3.5" />
-            Encontrar Carta Ideal
-          </button>
+          <div>
+            <label className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-xs font-bold cursor-pointer h-[36px]">
+              <input
+                type="checkbox"
+                checked={targetUsarEmbutido}
+                onChange={(e) => setTargetUsarEmbutido(e.target.checked)}
+                className="rounded text-bb-yellow"
+              />
+              <span>Usar 30% Lance Embutido</span>
+            </label>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 h-[36px] rounded-lg bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark text-xs font-black shadow-md transition"
+            >
+              <Target className="w-4 h-4" />
+              Montar 3 Melhores Opções
+            </button>
+          </div>
         </div>
+
+        {assistantFeedback && (
+          <div className="bg-emerald-500/20 border border-emerald-300/40 rounded-lg px-3.5 py-2 text-xs text-emerald-100 flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-bb-yellow shrink-0" />
+            <span>{assistantFeedback}</span>
+          </div>
+        )}
       </form>
 
       {/* Painel Principal de Configuração das 4 Propostas */}
@@ -451,11 +785,12 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
           <div>
             <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
               <Calculator className="w-5 h-5 text-bb-blue" />
-              Configurador de Propostas Lado a Lado (Até 4 Cenários)
+              Configurador Manual de Propostas Lado a Lado (Até 4 Cenários)
             </h2>
             <p className="text-xs text-slate-500">
-              Alterne entre <strong>Master, Flex e Tabela Especial 93</strong>, selecione{' '}
-              <strong>Pessoa Física (PF) ou Jurídica (PJ)</strong> e digite lances em % ou R$.
+              Ajuste fino das cartas selecionadas: alterne entre{' '}
+              <strong>Master, Flex e Tabela Especial 93</strong>, selecione{' '}
+              <strong>PF ou PJ</strong> e ajuste os lances em % ou R$.
             </p>
           </div>
 
@@ -1202,7 +1537,6 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                     )}
                   </tr>
 
-                  {/* Seguro Prestamista PF / PJ */}
                   <tr className={!visibleRows.seguroPrestamista ? 'opacity-40 print:hidden' : ''}>
                     <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
                       <label className="inline-flex items-center gap-2 cursor-pointer">
