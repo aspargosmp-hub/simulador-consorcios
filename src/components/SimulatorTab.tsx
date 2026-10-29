@@ -36,6 +36,7 @@ import {
   formatPercent,
   MODALIDADES_LIST,
 } from '../utils/calculations';
+import { CurrencyInput } from './CurrencyInput';
 
 interface SimulatorTabProps {
   items: ConsorcioItem[];
@@ -203,9 +204,9 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
   // Estados da Calculadora Reversa 2.0 (Assistente Inteligente por Objetivo + Crédito + Mensalidade)
   const [objetivo, setObjetivo] = useState<ObjetivoCompraId>('TRATOR');
   const [planoPreferido, setPlanoPreferido] = useState<'Flex' | 'Master'>('Flex');
-  const [targetLiquido, setTargetLiquido] = useState<string>('300000');
-  const [targetMensalidadeMax, setTargetMensalidadeMax] = useState<string>('');
-  const [targetBolsoReais, setTargetBolsoReais] = useState<string>('');
+  const [targetLiquido, setTargetLiquido] = useState<number>(350000);
+  const [targetMensalidadeMax, setTargetMensalidadeMax] = useState<number>(0);
+  const [targetBolsoReais, setTargetBolsoReais] = useState<number>(0);
   const [targetUsarEmbutido, setTargetUsarEmbutido] = useState<boolean>(true);
   const [assistantFeedback, setAssistantFeedback] = useState<string>('');
 
@@ -705,50 +706,95 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         </div>
 
         {/* Passo 2: Valores do Cliente (Crédito Líquido, Mensalidade Ideal, Recurso Próprio) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end pt-2 border-t border-white/15">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-start pt-2 border-t border-white/15">
           <div>
             <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              2. Valor do Crédito Líquido (R$)
+              2. Crédito Líquido Desejado
             </label>
-            <input
-              type="number"
-              step={1000}
+            <CurrencyInput
               value={targetLiquido}
-              onChange={(e) => setTargetLiquido(e.target.value)}
-              placeholder="Ex: 300000"
-              className="w-full px-3 py-2 rounded-lg text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
+              onChange={setTargetLiquido}
+              placeholder="Ex: 350.000,00"
+              prefixClassName="text-bb-blue"
+              inputClassName="bg-white text-slate-900 focus:ring-2 focus:ring-bb-yellow"
             />
+            <div className="flex flex-wrap gap-1 mt-1">
+              {[100000, 200000, 350000, 500000, 1000000].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setTargetLiquido(v)}
+                  className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition ${
+                    targetLiquido === v
+                      ? 'bg-bb-yellow text-bb-dark'
+                      : 'bg-white/10 text-blue-100 hover:bg-white/20'
+                  }`}
+                >
+                  {v >= 1000000 ? '1 Mi' : `${v / 1000} mil`}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div>
             <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              3. Mensalidade Máxima Ideal (R$)
+              3. Mensalidade Ideal (Opcional)
             </label>
-            <input
-              type="number"
-              step={100}
+            <CurrencyInput
               value={targetMensalidadeMax}
-              onChange={(e) => setTargetMensalidadeMax(e.target.value)}
-              placeholder="Ex: 3500 (Opcional)"
-              className="w-full px-3 py-2 rounded-lg text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
+              onChange={setTargetMensalidadeMax}
+              placeholder="Sem limite (0,00)"
+              prefixClassName="text-bb-blue"
+              inputClassName="bg-white text-slate-900 focus:ring-2 focus:ring-bb-yellow"
             />
+            <div className="flex flex-wrap gap-1 mt-1">
+              {[0, 1500, 2500, 3500, 5000].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setTargetMensalidadeMax(v)}
+                  className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition ${
+                    targetMensalidadeMax === v
+                      ? 'bg-bb-yellow text-bb-dark'
+                      : 'bg-white/10 text-blue-100 hover:bg-white/20'
+                  }`}
+                >
+                  {v === 0 ? 'Livre' : `${(v / 1000).toLocaleString('pt-BR')} mil`}
+                </button>
+              ))}
+            </div>
           </div>
 
           <div>
             <label className="block text-[11px] text-blue-100 font-semibold mb-1">
-              4. Lance do Bolso em R$ (Opcional)
+              4. Lance do Bolso (Opcional)
             </label>
-            <input
-              type="number"
-              step={1000}
+            <CurrencyInput
               value={targetBolsoReais}
-              onChange={(e) => setTargetBolsoReais(e.target.value)}
-              placeholder="Ex: 45000 (Opcional)"
-              className="w-full px-3 py-2 rounded-lg text-xs font-extrabold text-slate-900 focus:outline-none focus:ring-2 focus:ring-bb-yellow"
+              onChange={setTargetBolsoReais}
+              placeholder="Ex: 50.000,00"
+              prefixClassName="text-bb-blue"
+              inputClassName="bg-white text-slate-900 focus:ring-2 focus:ring-bb-yellow"
             />
+            <div className="flex flex-wrap gap-1 mt-1">
+              {[0, 30000, 50000, 100000, 150000].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setTargetBolsoReais(v)}
+                  className={`text-[10px] px-1.5 py-0.5 rounded font-bold transition ${
+                    targetBolsoReais === v
+                      ? 'bg-bb-yellow text-bb-dark'
+                      : 'bg-white/10 text-blue-100 hover:bg-white/20'
+                  }`}
+                >
+                  {v === 0 ? 'Zero' : `${v / 1000} mil`}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div>
+          <div className="pt-5">
             <label className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-xs font-bold cursor-pointer h-[36px]">
               <input
                 type="checkbox"
@@ -760,7 +806,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </label>
           </div>
 
-          <div>
+          <div className="pt-5">
             <button
               type="submit"
               className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 h-[36px] rounded-lg bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark text-xs font-black shadow-md transition"
@@ -1129,13 +1175,9 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                               <span className="block text-[10px] text-slate-500 mb-0.5">
                                 Ou Valor em R$
                               </span>
-                              <input
-                                type="number"
-                                min={0}
-                                step={1000}
-                                value={Math.round(calc.valorLanceRecursoProprio)}
-                                onChange={(e) => {
-                                  const reais = Math.max(0, Number(e.target.value) || 0);
+                              <CurrencyInput
+                                value={Number(calc.valorLanceRecursoProprio.toFixed(2))}
+                                onChange={(reais) => {
                                   const perc =
                                     calc.creditoBruto > 0
                                       ? Number(((reais / calc.creditoBruto) * 100).toFixed(2))
@@ -1144,7 +1186,11 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                                     lanceRecursoProprioPerc: Math.min(95, perc),
                                   });
                                 }}
-                                className="w-full px-2 py-1 text-xs border border-slate-300 rounded bg-white font-bold text-emerald-800"
+                                placeholder="0,00"
+                                showClear={false}
+                                allowZeroDisplay={true}
+                                prefixClassName="text-emerald-700"
+                                inputClassName="py-1 border border-slate-300 rounded bg-white font-bold text-emerald-800"
                               />
                             </div>
                           </div>
