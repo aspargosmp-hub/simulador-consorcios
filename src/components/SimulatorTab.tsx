@@ -4,17 +4,18 @@ import {
   BarChart3,
   Building2,
   Calculator,
+  Camera,
   Check,
   CheckCircle2,
   Copy,
   CopyPlus,
-  FileText,
+  Download,
   Layers,
   Plus,
   Printer,
   Save,
   Shield,
-  Sparkles,
+  SlidersHorizontal,
   Target,
   TrendingDown,
   User,
@@ -36,6 +37,7 @@ import {
   formatPercent,
   MODALIDADES_LIST,
 } from '../utils/calculations';
+import { generateProposalPngBlob } from '../utils/exportProposalImage';
 import { CurrencyInput } from './CurrencyInput';
 
 interface SimulatorTabProps {
@@ -202,8 +204,10 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
   const [telefoneEspecialista, setTelefoneEspecialista] = useState<string>('(11) 99999-9999');
   const [comentario, setComentario] = useState<string>('');
   const [copiedWhats, setCopiedWhats] = useState<boolean>(false);
+  const [copiedImage, setCopiedImage] = useState<boolean>(false);
   const [savedToast, setSavedToast] = useState<boolean>(false);
   const [justUpdated, setJustUpdated] = useState<boolean>(false);
+  const [showRowConfig, setShowRowConfig] = useState<boolean>(false);
 
   const [slotGroupFilter, setSlotGroupFilter] = useState<Record<number, string>>({});
 
@@ -686,6 +690,71 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
     navigator.clipboard.writeText(lines.join('\n'));
     setCopiedWhats(true);
     setTimeout(() => setCopiedWhats(false), 3000);
+  };
+
+  const handleCopyImage = async () => {
+    if (calculatedProposals.length === 0) return;
+    const modObj = MODALIDADES_LIST.find((m) => m.code === modality);
+    const objObj = OBJETIVOS_COMPRA.find((o) => o.id === objetivo);
+    const blob = await generateProposalPngBlob({
+      proposals: calculatedProposals,
+      aggregated,
+      agrupar,
+      modalidadeLabel: modObj?.label || modality,
+      objetivoLabel: objObj?.label || '',
+      tipoPessoa,
+      incluirSeguro,
+      cliente,
+      telefone,
+      especialista,
+      telefoneEspecialista,
+      visibleRows,
+    });
+    if (!blob) return;
+    try {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'image/png': blob,
+        }),
+      ]);
+      setCopiedImage(true);
+      setTimeout(() => setCopiedImage(false), 3500);
+    } catch {
+      // Fallback para download caso o navegador bloqueie escrita de imagem no clipboard
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `proposta-bb-${modality.toLowerCase()}-${Date.now().toString().slice(-4)}.png`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const handleDownloadImage = async () => {
+    if (calculatedProposals.length === 0) return;
+    const modObj = MODALIDADES_LIST.find((m) => m.code === modality);
+    const objObj = OBJETIVOS_COMPRA.find((o) => o.id === objetivo);
+    const blob = await generateProposalPngBlob({
+      proposals: calculatedProposals,
+      aggregated,
+      agrupar,
+      modalidadeLabel: modObj?.label || modality,
+      objetivoLabel: objObj?.label || '',
+      tipoPessoa,
+      incluirSeguro,
+      cliente,
+      telefone,
+      especialista,
+      telefoneEspecialista,
+      visibleRows,
+    });
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `proposta-bb-${modality.toLowerCase()}-${Date.now().toString().slice(-4)}.png`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   const handleSave = () => {
@@ -1536,689 +1605,633 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         </div>
       </div>
 
-      {/* FOLHA DE PROPOSTA OFICIAL */}
+      {/* QUADRO VISUAL DE PROPOSTA (PRONTO PARA PRINT / COPIAR IMAGEM / PDF) */}
       {calculatedProposals.length > 0 ? (
-        <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden print:shadow-none print:border-none">
-          <div className="bg-bb-blue text-white px-6 py-5 border-b-4 border-bb-yellow flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="bg-white rounded-xl px-3 py-1.5 shadow-sm flex items-center justify-center shrink-0">
-                <img
-                  src="./logo-bb-consorcios.png"
-                  alt="BB Consórcios"
-                  className="h-10 w-auto object-contain"
-                />
-              </div>
-              <div>
-                <div className="text-[11px] uppercase tracking-widest text-bb-yellow font-bold flex items-center gap-2">
-                  <span>Proposta Comercial — BB Consórcios</span>
-                  <span className="bg-white/20 text-white px-2 py-0.5 rounded text-[10px]">
-                    {tipoPessoa === 'PF' ? 'Pessoa Física (CPF)' : 'Pessoa Jurídica (CNPJ)'}
-                  </span>
-                </div>
-                <h3 className="text-xl font-extrabold mt-0.5">
-                  Simulação de Consórcio:{' '}
-                  {OBJETIVOS_COMPRA.find((o) => o.id === objetivo)?.label || ''} —{' '}
-                  {MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality}
-                </h3>
-                {cliente && (
-                  <p className="text-xs text-blue-100 mt-1">
-                    Cliente: <strong>{cliente}</strong> {telefone ? `(${telefone})` : ''}
-                  </p>
-                )}
-              </div>
+        <div className="bg-white rounded-xl shadow-md border border-slate-200 p-5 print:p-0 print:shadow-none print:border-none space-y-5">
+          {/* Barra Superior de Exportação da Imagem / Print */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200 print:hidden">
+            <div>
+              <h3 className="text-sm font-extrabold text-bb-dark uppercase tracking-wide flex items-center gap-2">
+                <Camera className="w-4 h-4 text-bb-blue" />
+                Quadro Visual da Proposta (Pronto para Print ou Copiar Imagem)
+              </h3>
+              <p className="text-xs text-slate-500">
+                Visual limpo e sem caixinhas na tela: tire print direto ou clique em{' '}
+                <strong>Copiar Imagem</strong> para colar (Ctrl+V) no WhatsApp do cliente!
+              </p>
             </div>
-            <div className="text-right text-xs">
-              <div className="font-bold text-bb-yellow">{especialista}</div>
-              {telefoneEspecialista && <div className="text-blue-100">{telefoneEspecialista}</div>}
-              <div className="text-[11px] text-blue-200 mt-0.5">
-                Data: {new Date().toLocaleDateString('pt-BR')}
-              </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setShowRowConfig((v) => !v)}
+                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border transition ${
+                  showRowConfig
+                    ? 'bg-slate-800 text-white border-slate-800'
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
+                }`}
+              >
+                <SlidersHorizontal className="w-3.5 h-3.5" />
+                Personalizar Linhas
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCopyImage}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-black bg-bb-blue hover:bg-bb-dark text-white shadow-sm transition"
+              >
+                {copiedImage ? (
+                  <Check className="w-4 h-4 text-bb-yellow" />
+                ) : (
+                  <Camera className="w-4 h-4 text-bb-yellow" />
+                )}
+                {copiedImage ? 'Imagem Copiada! (Cole no WhatsApp)' : 'Copiar Imagem p/ WhatsApp'}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDownloadImage}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Baixar PNG
+              </button>
+
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark transition"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                PDF / Imprimir
+              </button>
             </div>
           </div>
 
-          <div className="p-6">
-            <div className="mb-3 text-xs text-slate-500 flex items-center justify-between print:hidden">
-              <span className="flex items-center gap-1.5">
-                <FileText className="w-4 h-4 text-bb-blue" />
-                Desmarque qualquer caixa na coluna esquerda caso queira ocultar aquela linha na impressão / PDF.
-              </span>
+          {/* Gaveta Opcional para Ocultar/Exibir Linhas (Fora da área de Print!) */}
+          {showRowConfig && (
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 print:hidden">
+              <div className="text-xs font-bold text-slate-700 mb-2">
+                Marque ou desmarque as informações que deseja exibir no quadro abaixo:
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2 text-xs">
+                {[
+                  { key: 'creditoBruto', label: 'Crédito Bruto' },
+                  { key: 'lanceEmbutido', label: 'Lance Embutido' },
+                  { key: 'creditoLiquido', label: 'Crédito a Liberar' },
+                  { key: 'prazo', label: 'Qtd. Parcelas' },
+                  { key: 'parcelaMensal', label: 'Parcela Mensal' },
+                  { key: 'lanceTotal', label: 'Lance Proposto' },
+                  { key: 'lanceRecursoProprio', label: 'Lance do Bolso' },
+                  { key: 'parcelaPosLance', label: 'Parcela Pós-Lance' },
+                  { key: 'valorUnitario', label: 'Valor Unitário' },
+                  { key: 'cotas', label: 'Qtd. Cotas' },
+                  { key: 'taxaMensalizada', label: 'Taxa Mensalizada' },
+                  { key: 'taxaAnual', label: 'Taxa Anual' },
+                  { key: 'indiceCorrecao', label: 'Índice Correção' },
+                  { key: 'prazoPosLance', label: 'Prazo Após Lance' },
+                ].map((item) => (
+                  <label
+                    key={item.key}
+                    className="inline-flex items-center gap-1.5 cursor-pointer text-slate-700 font-medium"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={visibleRows[item.key]}
+                      onChange={() => toggleRow(item.key)}
+                      className="rounded text-bb-blue"
+                    />
+                    <span>{item.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ÁREA DE PRINT LIMPA E CENTRALIZADA (ESTILO EXECUTIVO BB CONSÓRCIOS) */}
+          <div
+            className={`mx-auto bg-white p-4 sm:p-6 rounded-xl border border-slate-200 shadow-sm print:shadow-none print:border-none ${
+              calculatedProposals.length === 1 ? 'max-w-[680px]' : 'max-w-[960px]'
+            }`}
+          >
+            {/* Topo Amarelo Ouro Oficial BB Consórcios */}
+            <div className="bg-[#FFCC00] rounded-lg py-3.5 px-6 flex items-center justify-center shadow-sm mb-2">
+              <img
+                src="./logo-bb-consorcios.png"
+                alt="BB Consórcios"
+                className="h-14 sm:h-16 w-auto object-contain"
+              />
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs border-collapse border border-slate-200">
-                <thead>
-                  <tr className="bg-slate-800 text-white">
-                    <th className="py-2.5 px-3 text-left w-64">Grupo / Parâmetros</th>
-                    {calculatedProposals.map((p, idx) => (
-                      <th key={idx} className="py-2.5 px-3 text-center">
-                        <div>Grupo {p.item.grupo}</div>
-                        <div className="text-[10px] font-normal text-bb-yellow">
-                          Opção {idx + 1} ({p.item.plano})
-                        </div>
-                      </th>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <th className="py-2.5 px-3 text-center bg-bb-dark text-bb-yellow">
-                        <div>Total Agrupado</div>
-                        <div className="text-[10px] font-normal text-white">
-                          ({aggregated.cotasTotal} cotas)
-                        </div>
-                      </th>
-                    )}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-200">
-                  <tr className={!visibleRows.bemRegra ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.bemRegra}
-                          onChange={() => toggleRow('bemRegra')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Bem de Referência / Regra BB
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-medium text-slate-700">
-                        {p.item.bemDescricao}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40 font-semibold text-slate-700">
-                        Múltiplas Cotas
-                      </td>
-                    )}
-                  </tr>
+            {/* Sub-barra Azul Escuro Institucional ("Modalidade: ...") */}
+            <div className="bg-[#0F4C81] text-white px-4 py-2.5 border-2 border-slate-900 border-b-0 flex flex-wrap items-center justify-between gap-2">
+              <div className="font-extrabold text-sm tracking-tight">
+                Modalidade:{' '}
+                {MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality}
+                {incluirSeguro ? ` • Seguro ${tipoPessoa}` : ''}
+              </div>
+              <div className="flex items-center gap-3 text-xs">
+                {cliente.trim() && (
+                  <span className="font-bold text-[#FFCC00]">Cliente: {cliente.trim()}</span>
+                )}
+                {calculatedProposals.length > 1 && (
+                  <span className="text-blue-100 font-semibold">
+                    Comparativo ({calculatedProposals.length} opções)
+                  </span>
+                )}
+              </div>
+            </div>
 
-                  <tr className={!visibleRows.creditoBruto ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.creditoBruto}
-                          onChange={() => toggleRow('creditoBruto')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Valor da Carta (Crédito Bruto)
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-bold text-slate-900">
-                        {formatBRL(p.creditoBruto)}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-extrabold text-bb-blue bg-blue-50/40">
-                        {formatBRL(aggregated.creditoBrutoTotal)}
-                      </td>
-                    )}
-                  </tr>
-
-                  <tr
-                    className={
-                      !visibleRows.lanceEmbutido ? 'opacity-40 print:hidden' : 'bg-indigo-50/40'
-                    }
-                  >
-                    <td className="py-2 px-3 font-semibold text-indigo-900 bg-indigo-50/70">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.lanceEmbutido}
-                          onChange={() => toggleRow('lanceEmbutido')}
-                          className="print:hidden rounded text-indigo-600"
-                        />
-                        (-) Lance Embutido (da própria carta)
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-semibold text-indigo-800">
-                        {p.lanceEmbutidoPerc > 0
-                          ? `${formatPercent(p.lanceEmbutidoPerc, 1)} (${formatBRL(
-                              p.valorLanceEmbutido
-                            )})`
-                          : 'Não utilizado (0%)'}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-bold text-indigo-900 bg-indigo-100/50">
-                        {aggregated.lanceEmbutidoTotal > 0
-                          ? `${formatPercent(aggregated.lanceEmbutidoPercMedio, 1)} (${formatBRL(
-                              aggregated.lanceEmbutidoTotal
-                            )})`
-                          : 'R$ 0,00'}
-                      </td>
-                    )}
-                  </tr>
-
-                  <tr
-                    className={
-                      !visibleRows.creditoLiquido ? 'opacity-40 print:hidden' : 'bg-emerald-50/60'
-                    }
-                  >
-                    <td className="py-2.5 px-3 font-extrabold text-emerald-900 bg-emerald-100/60">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.creditoLiquido}
-                          onChange={() => toggleRow('creditoLiquido')}
-                          className="print:hidden rounded text-emerald-700"
-                        />
-                        (=) Crédito Líquido a Liberar
-                      </label>
+            {/* BLOCO 1: Dados Principais do Grupo, Crédito e Lance */}
+            <div className="border-2 border-slate-900 overflow-hidden">
+              <table className="w-full text-xs sm:text-sm border-collapse">
+                <tbody className="divide-y divide-slate-300">
+                  {/* Linha Grupo */}
+                  <tr className="bg-white">
+                    <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
+                      Grupo
                     </td>
                     {calculatedProposals.map((p, idx) => (
                       <td
                         key={idx}
-                        className="py-2.5 px-3 text-center font-extrabold text-emerald-800 text-sm"
+                        className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
                       >
-                        {formatBRL(p.creditoLiquido)}
+                        {p.item.grupo.replace(/^0+/, '') || p.item.grupo}
                       </td>
                     ))}
                     {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2.5 px-3 text-center font-extrabold text-emerald-900 bg-emerald-100/80 text-sm">
-                        {formatBRL(aggregated.creditoLiquidoTotal)}
+                      <td className="py-2 px-3 text-center font-extrabold text-bb-dark bg-amber-50">
+                        Soma ({aggregated.cotasTotal} cotas)
                       </td>
                     )}
                   </tr>
 
-                  <tr className={!visibleRows.prazo ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.prazo}
-                          onChange={() => toggleRow('prazo')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Qtd. Parcelas em Meses
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-semibold">
-                        {p.prazo} meses
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40 font-semibold">-</td>
-                    )}
-                  </tr>
-
-                  <tr className={!visibleRows.seguroPrestamista ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.seguroPrestamista}
-                          onChange={() => toggleRow('seguroPrestamista')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Seguro Prestamista ({tipoPessoa})
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center text-slate-700">
-                        {incluirSeguro
-                          ? `${formatBRL(p.valorSeguroMensal)}/mês (${p.aliquotaSeguroMensal}% a.m.)`
-                          : 'Opcional / Não incluso (R$ 0,00)'}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-semibold bg-blue-50/40">
-                        {incluirSeguro
-                          ? `${formatBRL(aggregated.valorSeguroMensalTotal)}/mês`
-                          : 'R$ 0,00'}
-                      </td>
-                    )}
-                  </tr>
-
-                  <tr className={!visibleRows.parcelaMensal ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.parcelaMensal}
-                          onChange={() => toggleRow('parcelaMensal')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Parcela Mensal {incluirSeguro ? `(c/ Seguro ${tipoPessoa})` : '(Antes do Lance)'}
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-bold text-bb-blue">
-                        {formatBRL(p.parcelaMensalTotal)}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-extrabold text-bb-blue bg-blue-50/40">
-                        {formatBRL(aggregated.parcelaMensalTotal)}
-                      </td>
-                    )}
-                  </tr>
-
-                  <tr className={!visibleRows.lanceRecursoProprio ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.lanceRecursoProprio}
-                          onChange={() => toggleRow('lanceRecursoProprio')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Lance Recurso Próprio (Desembolso)
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-semibold text-slate-800">
-                        {formatPercent(p.lanceRecursoProprioPerc, 1)} (
-                        {formatBRL(p.valorLanceRecursoProprio)})
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-bold text-slate-900 bg-blue-50/40">
-                        {formatPercent(aggregated.lanceProprioPercMedio, 2)} (
-                        {formatBRL(aggregated.lanceRecursoProprioTotal)})
-                      </td>
-                    )}
-                  </tr>
-
-                  <tr className={!visibleRows.lanceTotal ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.lanceTotal}
-                          onChange={() => toggleRow('lanceTotal')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Lance Total Ofertado (Bolso + Embutido)
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-bold text-slate-900">
-                        {formatPercent(p.lanceTotalPerc, 1)} ({formatBRL(p.valorLanceTotal)})
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-extrabold text-slate-900 bg-blue-50/40">
-                        {formatPercent(aggregated.lanceTotalPercMedio, 2)} (
-                        {formatBRL(aggregated.lanceTotalValor)})
-                      </td>
-                    )}
-                  </tr>
-
-                  <tr
-                    className={
-                      !visibleRows.parcelaPosLance ? 'opacity-40 print:hidden' : 'bg-amber-50/50'
-                    }
-                  >
-                    <td className="py-2.5 px-3 font-bold text-slate-800 bg-amber-100/50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.parcelaPosLance}
-                          onChange={() => toggleRow('parcelaPosLance')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Parcela Após Diluir o Lance
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2.5 px-3 text-center font-extrabold text-bb-dark">
-                        {formatBRL(p.parcelaPosLance)}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2.5 px-3 text-center font-extrabold text-bb-dark bg-amber-100/60">
-                        {aggregated.faixasParcelaPosLance.map((fx, i) => (
-                          <div key={i}>{fx}</div>
+                  {/* Se houver Lance Embutido, exibe Valor da Carta Bruto e Lance Embutido para transparência total */}
+                  {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
+                    visibleRows.creditoBruto && (
+                      <tr className="bg-slate-100/90">
+                        <td className="py-2 px-3.5 font-bold text-[#0F4C81] border-r border-slate-400">
+                          Valor da Carta (Bruto)
+                        </td>
+                        {calculatedProposals.map((p, idx) => (
+                          <td
+                            key={idx}
+                            className="py-2 px-3 text-center font-bold text-slate-700 border-r border-slate-300 last:border-r-0"
+                          >
+                            {formatBRL(p.creditoBruto)}
+                          </td>
                         ))}
-                      </td>
+                        {agrupar && calculatedProposals.length > 1 && (
+                          <td className="py-2 px-3 text-center font-bold text-slate-800 bg-amber-50/60">
+                            {formatBRL(aggregated.creditoBrutoTotal)}
+                          </td>
+                        )}
+                      </tr>
                     )}
-                  </tr>
 
-                  <tr className={!visibleRows.prazoPosLance ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.prazoPosLance}
-                          onChange={() => toggleRow('prazoPosLance')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Qtd. Parcelas Após Abater Prazo
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-semibold">
-                        {p.prazoPosLance} meses
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-bold bg-blue-50/40">
-                        {aggregated.prazoPosLanceMax} meses
-                      </td>
+                  {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
+                    visibleRows.lanceEmbutido && (
+                      <tr className="bg-white">
+                        <td className="py-2 px-3.5 font-bold text-indigo-900 border-r border-slate-400">
+                          (-) Lance Embutido da Carta
+                        </td>
+                        {calculatedProposals.map((p, idx) => (
+                          <td
+                            key={idx}
+                            className="py-2 px-3 text-center font-bold text-indigo-800 border-r border-slate-300 last:border-r-0"
+                          >
+                            {p.lanceEmbutidoPerc > 0
+                              ? `${formatBRL(p.valorLanceEmbutido)} (${formatPercent(
+                                  p.lanceEmbutidoPerc,
+                                  0
+                                )})`
+                              : 'Não utilizado'}
+                          </td>
+                        ))}
+                        {agrupar && calculatedProposals.length > 1 && (
+                          <td className="py-2 px-3 text-center font-bold text-indigo-900 bg-amber-50/60">
+                            {formatBRL(aggregated.lanceEmbutidoTotal)}
+                          </td>
+                        )}
+                      </tr>
                     )}
-                  </tr>
 
-                  <tr className={!visibleRows.valorUnitario ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.valorUnitario}
-                          onChange={() => toggleRow('valorUnitario')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Valor Unitário da Cota
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center">
-                        {formatBRL(p.valorUnitario)}
+                  {/* Crédito a Liberar */}
+                  {visibleRows.creditoLiquido && (
+                    <tr className="bg-emerald-50/90">
+                      <td className="py-2.5 px-3.5 font-extrabold text-emerald-900 border-r border-slate-400">
+                        Crédito a Liberar
                       </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40">
-                        {formatBRL(aggregated.creditoBrutoTotal)}
-                      </td>
-                    )}
-                  </tr>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2.5 px-3 text-center font-black text-emerald-800 text-sm sm:text-base border-r border-slate-300 last:border-r-0"
+                        >
+                          {formatBRL(p.creditoLiquido)}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2.5 px-3 text-center font-black text-emerald-900 bg-emerald-100 text-sm sm:text-base">
+                          {formatBRL(aggregated.creditoLiquidoTotal)}
+                        </td>
+                      )}
+                    </tr>
+                  )}
 
-                  <tr className={!visibleRows.cotas ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.cotas}
-                          onChange={() => toggleRow('cotas')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Qtd. de Cotas
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-semibold">
-                        {p.cotas}
+                  {/* Qntd. Parcelas em Meses */}
+                  {visibleRows.prazo && (
+                    <tr className="bg-white">
+                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        Qntd. Parcelas em Meses
                       </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-bold bg-blue-50/40">
-                        {aggregated.cotasTotal}
-                      </td>
-                    )}
-                  </tr>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        >
+                          {p.prazo}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          {Math.max(...calculatedProposals.map((p) => p.prazo))}
+                        </td>
+                      )}
+                    </tr>
+                  )}
 
-                  <tr className={!visibleRows.taxaMensalizada ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.taxaMensalizada}
-                          onChange={() => toggleRow('taxaMensalizada')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Taxa de Adm. Mensalizada
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center">
-                        {formatPercent(p.taxaMensalizada, 2)} a.m.
+                  {/* Parcela Mensal */}
+                  {visibleRows.parcelaMensal && (
+                    <tr className="bg-slate-100/90">
+                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        Parcela Mensal{incluirSeguro ? ` (c/ Seg. ${tipoPessoa})` : ''}
                       </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40">
-                        {formatPercent(aggregated.taxaMensalizadaMedia, 2)} a.m.
-                      </td>
-                    )}
-                  </tr>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        >
+                          {formatBRL(p.parcelaMensalTotal)}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          {formatBRL(aggregated.parcelaMensalTotal)}
+                        </td>
+                      )}
+                    </tr>
+                  )}
 
-                  <tr className={!visibleRows.taxaAnual ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.taxaAnual}
-                          onChange={() => toggleRow('taxaAnual')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Taxa de Adm. Anualizada
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center">
-                        {formatPercent(p.taxaAnual, 2)} a.a.
+                  {/* Lance Proposto (%) */}
+                  {visibleRows.lanceTotal && (
+                    <tr className="bg-white">
+                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        Lance Proposto
                       </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40">
-                        {formatPercent(aggregated.taxaAnualMedia, 2)} a.a.
-                      </td>
-                    )}
-                  </tr>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        >
+                          {formatPercent(p.lanceTotalPerc, 2)}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          {formatPercent(aggregated.lanceTotalPercMedio, 2)}
+                        </td>
+                      )}
+                    </tr>
+                  )}
 
-                  <tr className={!visibleRows.taxaAdm ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.taxaAdm}
-                          onChange={() => toggleRow('taxaAdm')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Taxa de Administração Total
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center">
-                        {formatPercent(p.taxaAdm, 2)}
+                  {/* Valor do Lance (R$) */}
+                  {visibleRows.lanceTotal && (
+                    <tr className="bg-slate-100/90">
+                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        Valor do Lance
                       </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40">
-                        {formatPercent(aggregated.taxaAdmMedia, 2)}
-                      </td>
-                    )}
-                  </tr>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        >
+                          {formatBRL(p.valorLanceTotal)}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          {formatBRL(aggregated.lanceTotalValor)}
+                        </td>
+                      )}
+                    </tr>
+                  )}
 
-                  <tr className={!visibleRows.fundoReserva ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.fundoReserva}
-                          onChange={() => toggleRow('fundoReserva')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Fundo de Reserva
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center">
-                        {formatPercent(p.fundoReserva, 2)}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40">
-                        {formatPercent(aggregated.fundoReservaMedio, 2)}
-                      </td>
+                  {/* Se houver Lance Embutido + Bolso, explicita quanto sai do bolso */}
+                  {calculatedProposals.some(
+                    (p) => p.lanceEmbutidoPerc > 0 && p.lanceRecursoProprioPerc > 0
+                  ) &&
+                    visibleRows.lanceRecursoProprio && (
+                      <tr className="bg-white">
+                        <td className="py-2 px-3.5 font-bold text-slate-700 border-r border-slate-400">
+                          Lance do Bolso (Recurso Próprio)
+                        </td>
+                        {calculatedProposals.map((p, idx) => (
+                          <td
+                            key={idx}
+                            className="py-2 px-3 text-center font-bold text-slate-800 border-r border-slate-300 last:border-r-0"
+                          >
+                            {formatBRL(p.valorLanceRecursoProprio)} (
+                            {formatPercent(p.lanceRecursoProprioPerc, 1)})
+                          </td>
+                        ))}
+                        {agrupar && calculatedProposals.length > 1 && (
+                          <td className="py-2 px-3 text-center font-bold text-slate-900 bg-amber-50/60">
+                            {formatBRL(aggregated.lanceRecursoProprioTotal)}
+                          </td>
+                        )}
+                      </tr>
                     )}
-                  </tr>
 
-                  <tr className={!visibleRows.indiceCorrecao ? 'opacity-40 print:hidden' : ''}>
-                    <td className="py-2 px-3 font-semibold text-slate-700 bg-slate-50">
-                      <label className="inline-flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={visibleRows.indiceCorrecao}
-                          onChange={() => toggleRow('indiceCorrecao')}
-                          className="print:hidden rounded text-bb-blue"
-                        />
-                        Índice de Correção Anual
-                      </label>
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td key={idx} className="py-2 px-3 text-center font-semibold">
-                        {p.indiceCorrecao}
+                  {/* Parcela Após Diluir o Lance */}
+                  {visibleRows.parcelaPosLance && (
+                    <tr className="bg-blue-50/90">
+                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        Parcela Após Diluir o Lance
                       </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center bg-blue-50/40">-</td>
-                    )}
-                  </tr>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2.5 px-3 text-center font-black text-[#0F4C81] text-sm sm:text-base border-r border-slate-300 last:border-r-0"
+                        >
+                          {formatBRL(p.parcelaPosLance)}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2.5 px-3 text-center font-black text-[#0F4C81] bg-blue-100/80 text-sm">
+                          {formatBRL(aggregated.parcelaPosLanceTotal)}
+                        </td>
+                      )}
+                    </tr>
+                  )}
+
+                  {/* Valor Unitário */}
+                  {visibleRows.valorUnitario && (
+                    <tr className="bg-slate-100/90">
+                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        Valor Unitário
+                      </td>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        >
+                          {formatBRL(p.valorUnitario)}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2 px-3 text-center font-bold text-slate-600 bg-amber-50/60">
+                          -
+                        </td>
+                      )}
+                    </tr>
+                  )}
+
+                  {/* Qntd. Cotas */}
+                  {visibleRows.cotas && (
+                    <tr className="bg-white">
+                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        Qntd. Cotas
+                      </td>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        >
+                          {p.cotas}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          {aggregated.cotasTotal}
+                        </td>
+                      )}
+                    </tr>
+                  )}
                 </tbody>
               </table>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div
-                className={`border border-slate-200 rounded-lg p-4 ${
-                  !visibleRows.diferenciais ? 'opacity-40 print:hidden' : ''
-                }`}
-              >
-                <div className="font-bold text-xs text-bb-blue uppercase tracking-wider mb-2 flex items-center justify-between">
-                  <label className="inline-flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={visibleRows.diferenciais}
-                      onChange={() => toggleRow('diferenciais')}
-                      className="print:hidden rounded text-bb-blue"
-                    />
-                    Diferenciais do Plano
-                  </label>
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                </div>
-                <ul className="space-y-1 text-xs text-slate-700 list-disc list-inside">
-                  {DIFERENCIAIS_LIST.map((d, i) => (
-                    <li key={i}>{d}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div
-                className={`border border-slate-200 rounded-lg p-4 ${
-                  !visibleRows.beneficios ? 'opacity-40 print:hidden' : ''
-                }`}
-              >
-                <div className="font-bold text-xs text-bb-blue uppercase tracking-wider mb-2 flex items-center justify-between">
-                  <label className="inline-flex items-center gap-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={visibleRows.beneficios}
-                      onChange={() => toggleRow('beneficios')}
-                      className="print:hidden rounded text-bb-blue"
-                    />
-                    Principais Benefícios BB Consórcios
-                  </label>
-                </div>
-                <ul className="space-y-1 text-xs text-slate-700 list-disc list-inside">
-                  {BENEFICIOS_LIST.map((b, i) => (
-                    <li key={i}>{b}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-4 text-[10px] text-slate-400 text-center">
-              Simulação sujeita à disponibilidade de vagas no grupo na data da adesão. Valores em Reais (R$) atualizados conforme tabela vigente BB Consórcios.
-            </div>
-
-            {/* Barra Repetida no Rodapé da Proposta Comercial (para não precisar rolar de volta ao topo) */}
-            <div className="mt-6 pt-5 border-t border-slate-200 print:hidden">
-              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">
-                    Nome do Cliente ({tipoPessoa})
-                  </label>
-                  <input
-                    type="text"
-                    value={cliente}
-                    onChange={(e) => setCliente(e.target.value)}
-                    placeholder={
-                      tipoPessoa === 'PF'
-                        ? 'Ex: João da Silva'
-                        : 'Ex: Agropecuária Boa Vista LTDA'
-                    }
-                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">
-                    Telefone / WhatsApp Cliente
-                  </label>
-                  <input
-                    type="text"
-                    value={telefone}
-                    onChange={(e) => setTelefone(e.target.value)}
-                    placeholder="(00) 90000-0000"
-                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">
-                    Especialista Responsável
-                  </label>
-                  <input
-                    type="text"
-                    value={especialista}
-                    onChange={(e) => setEspecialista(e.target.value)}
-                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-600 mb-1">
-                    Observação Interna (CRM)
-                  </label>
-                  <input
-                    type="text"
-                    value={comentario}
-                    onChange={(e) => setComentario(e.target.value)}
-                    placeholder="Ex: Cliente quer Trator c/ 30% embutido"
-                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-1.5">
-                  <button
-                    type="button"
-                    onClick={handleSave}
-                    className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition"
-                  >
-                    {savedToast ? (
-                      <Check className="w-3.5 h-3.5" />
-                    ) : (
-                      <Save className="w-3.5 h-3.5" />
+            {/* BLOCO 2: Taxa Mensalizada, Taxa Anual e Índice de Correção (Separado igual ao modelo clássico) */}
+            {(visibleRows.taxaMensalizada ||
+              visibleRows.taxaAnual ||
+              visibleRows.indiceCorrecao) && (
+              <div className="border-2 border-slate-900 mt-3.5 overflow-hidden">
+                <table className="w-full text-xs sm:text-sm border-collapse">
+                  <tbody className="divide-y divide-slate-300">
+                    {visibleRows.taxaMensalizada && (
+                      <tr className="bg-slate-100/90">
+                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
+                          Taxa Mensalizada
+                        </td>
+                        {calculatedProposals.map((p, idx) => (
+                          <td
+                            key={idx}
+                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          >
+                            {formatPercent(p.taxaMensalizada, 2)}
+                          </td>
+                        ))}
+                        {agrupar && calculatedProposals.length > 1 && (
+                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                            {formatPercent(aggregated.taxaMensalizadaMedia, 2)}
+                          </td>
+                        )}
+                      </tr>
                     )}
-                    {savedToast ? 'Salvo!' : 'Salvar'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleCopyWhatsApp}
-                    className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white whitespace-nowrap transition"
-                  >
-                    {copiedWhats ? (
-                      <Check className="w-3.5 h-3.5" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5" />
+
+                    {visibleRows.taxaAnual && (
+                      <tr className="bg-white">
+                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                          Taxa Anual
+                        </td>
+                        {calculatedProposals.map((p, idx) => (
+                          <td
+                            key={idx}
+                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          >
+                            {formatPercent(p.taxaAnual, 2)}
+                          </td>
+                        ))}
+                        {agrupar && calculatedProposals.length > 1 && (
+                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                            {formatPercent(aggregated.taxaAnualMedia, 2)}
+                          </td>
+                        )}
+                      </tr>
                     )}
-                    {copiedWhats ? 'Copiado!' : 'WhatsApp'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => window.print()}
-                    className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition"
-                  >
-                    <Printer className="w-3.5 h-3.5" />
-                    PDF / Imprimir
-                  </button>
-                </div>
+
+                    {visibleRows.indiceCorrecao && (
+                      <tr className="bg-slate-100/90">
+                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                          Índice de Correção
+                        </td>
+                        {calculatedProposals.map((p, idx) => (
+                          <td
+                            key={idx}
+                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          >
+                            {p.indiceCorrecao}
+                          </td>
+                        ))}
+                        {agrupar && calculatedProposals.length > 1 && (
+                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                            {calculatedProposals[0]?.indiceCorrecao}
+                          </td>
+                        )}
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* BLOCO 3: Qntd. Parcelas Após Diluir o Lance (Separado no rodapé igual ao modelo clássico) */}
+            {visibleRows.prazoPosLance && (
+              <div className="border-2 border-slate-900 mt-3.5 overflow-hidden">
+                <table className="w-full text-xs sm:text-sm border-collapse">
+                  <tbody>
+                    <tr className="bg-white">
+                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
+                        Qntd. Parcelas Após Diluir o Lance
+                      </td>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        >
+                          {p.prazoPosLance}
+                        </td>
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          {aggregated.prazoPosLanceMax}
+                        </td>
+                      )}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Rodapé Institucional Discreto */}
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 font-medium px-1">
+              <span>
+                Simulação BB Consórcios ({tipoPessoa}) • {new Date().toLocaleDateString('pt-BR')}
+              </span>
+              {especialista.trim() && (
+                <span className="font-bold text-[#0F4C81]">
+                  {especialista.trim()}
+                  {telefoneEspecialista.trim() ? ` • ${telefoneEspecialista.trim()}` : ''}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Barra Repetida no Rodapé da Proposta Comercial (para não precisar rolar de volta ao topo) */}
+          <div className="pt-5 border-t border-slate-200 print:hidden">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+              <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                  Nome do Cliente ({tipoPessoa})
+                </label>
+                <input
+                  type="text"
+                  value={cliente}
+                  onChange={(e) => setCliente(e.target.value)}
+                  placeholder={
+                    tipoPessoa === 'PF'
+                      ? 'Ex: João da Silva'
+                      : 'Ex: Agropecuária Boa Vista LTDA'
+                  }
+                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                  Telefone / WhatsApp Cliente
+                </label>
+                <input
+                  type="text"
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
+                  placeholder="(00) 90000-0000"
+                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                  Especialista Responsável
+                </label>
+                <input
+                  type="text"
+                  value={especialista}
+                  onChange={(e) => setEspecialista(e.target.value)}
+                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">
+                  Observação Interna (CRM)
+                </label>
+                <input
+                  type="text"
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  placeholder="Ex: Cliente quer Trator c/ 30% embutido"
+                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleSave}
+                  className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition"
+                >
+                  {savedToast ? (
+                    <Check className="w-3.5 h-3.5" />
+                  ) : (
+                    <Save className="w-3.5 h-3.5" />
+                  )}
+                  {savedToast ? 'Salvo!' : 'Salvar'}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCopyImage}
+                  className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white whitespace-nowrap transition"
+                  title="Copia a imagem PNG pronta para colar (Ctrl+V) no WhatsApp"
+                >
+                  {copiedImage ? (
+                    <Check className="w-3.5 h-3.5" />
+                  ) : (
+                    <Camera className="w-3.5 h-3.5" />
+                  )}
+                  {copiedImage ? 'Copiada!' : 'Imagem'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => window.print()}
+                  className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  PDF / Imprimir
+                </button>
               </div>
             </div>
           </div>
         </div>
       ) : (
         <div className="bg-white rounded-xl border border-slate-200 p-12 text-center text-slate-500">
-          Selecione pelo menos um grupo em uma das 4 propostas acima para visualizar a Folha de Proposta.
+          Selecione pelo menos um grupo em uma das 4 propostas acima para visualizar o Quadro da Proposta.
         </div>
       )}
     </div>
