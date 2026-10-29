@@ -1482,29 +1482,29 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-3 gap-1.5">
             <button
               type="button"
               onClick={handleSave}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white transition"
+              className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition"
             >
-              {savedToast ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
+              {savedToast ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
               {savedToast ? 'Salvo!' : 'Salvar'}
             </button>
             <button
               type="button"
               onClick={handleCopyWhatsApp}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition"
+              className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white whitespace-nowrap transition"
             >
-              {copiedWhats ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+              {copiedWhats ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
               {copiedWhats ? 'Copiado!' : 'WhatsApp'}
             </button>
             <button
               type="button"
               onClick={() => window.print()}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark transition"
+              className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition"
             >
-              <Printer className="w-4 h-4" />
+              <Printer className="w-3.5 h-3.5" />
               PDF / Imprimir
             </button>
           </div>
@@ -2097,6 +2097,97 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
             <div className="mt-4 text-[10px] text-slate-400 text-center">
               Simulação sujeita à disponibilidade de vagas no grupo na data da adesão. Valores em Reais (R$) atualizados conforme tabela vigente BB Consórcios.
+            </div>
+
+            {/* Barra Repetida no Rodapé da Proposta Comercial (para não precisar rolar de volta ao topo) */}
+            <div className="mt-6 pt-5 border-t border-slate-200 print:hidden">
+              <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Nome do Cliente ({tipoPessoa})
+                  </label>
+                  <input
+                    type="text"
+                    value={cliente}
+                    onChange={(e) => setCliente(e.target.value)}
+                    placeholder={
+                      tipoPessoa === 'PF'
+                        ? 'Ex: João da Silva'
+                        : 'Ex: Agropecuária Boa Vista LTDA'
+                    }
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Telefone / WhatsApp Cliente
+                  </label>
+                  <input
+                    type="text"
+                    value={telefone}
+                    onChange={(e) => setTelefone(e.target.value)}
+                    placeholder="(00) 90000-0000"
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Especialista Responsável
+                  </label>
+                  <input
+                    type="text"
+                    value={especialista}
+                    onChange={(e) => setEspecialista(e.target.value)}
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Observação Interna (CRM)
+                  </label>
+                  <input
+                    type="text"
+                    value={comentario}
+                    onChange={(e) => setComentario(e.target.value)}
+                    placeholder="Ex: Cliente quer Trator c/ 30% embutido"
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
+                <div className="grid grid-cols-3 gap-1.5">
+                  <button
+                    type="button"
+                    onClick={handleSave}
+                    className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition"
+                  >
+                    {savedToast ? (
+                      <Check className="w-3.5 h-3.5" />
+                    ) : (
+                      <Save className="w-3.5 h-3.5" />
+                    )}
+                    {savedToast ? 'Salvo!' : 'Salvar'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopyWhatsApp}
+                    className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white whitespace-nowrap transition"
+                  >
+                    {copiedWhats ? (
+                      <Check className="w-3.5 h-3.5" />
+                    ) : (
+                      <Copy className="w-3.5 h-3.5" />
+                    )}
+                    {copiedWhats ? 'Copiado!' : 'WhatsApp'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition"
+                  >
+                    <Printer className="w-3.5 h-3.5" />
+                    PDF / Imprimir
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
