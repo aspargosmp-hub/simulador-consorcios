@@ -80,10 +80,7 @@ const OBJETIVOS_COMPRA: ObjetivoCompraOption[] = [
     defaultModFlex: 'TC3',
     defaultModMaster: 'TC4',
     filterFn: (i) =>
-      i.segmento === 'TC' &&
-      (i.tags.includes('Trator / Implemento') ||
-        i.bemDescricao.includes('TRATOR') ||
-        i.bemDescricao.includes('PESADOS')),
+      i.segmento === 'TC' && !i.bemDescricao.includes('SUSTENTAVEIS'),
   },
   {
     id: 'CAMINHAO',
@@ -93,8 +90,7 @@ const OBJETIVOS_COMPRA: ObjetivoCompraOption[] = [
     defaultModFlex: 'TC3',
     defaultModMaster: 'TC4',
     filterFn: (i) =>
-      i.segmento === 'TC' &&
-      (!i.bemDescricao.includes('IRRIGACAO') && !i.bemDescricao.includes('REBANHO')),
+      i.segmento === 'TC' && !i.bemDescricao.includes('SUSTENTAVEIS'),
   },
   {
     id: 'IRRIGACAO',
@@ -103,16 +99,19 @@ const OBJETIVOS_COMPRA: ObjetivoCompraOption[] = [
     seg: 'TC',
     defaultModFlex: 'TC3',
     defaultModMaster: 'TC4',
-    filterFn: (i) => i.segmento === 'TC' && i.tags.includes('Irrigação'),
+    // Na BB Consórcios, qualquer grupo PESADOS / TRATOR / IRRIGAÇÃO do segmento TC fatura Pivô e Irrigação
+    filterFn: (i) =>
+      i.segmento === 'TC' && !i.bemDescricao.includes('SUSTENTAVEIS'),
   },
   {
     id: 'REBANHO',
     label: 'Rebanho / Pecuária',
     emoji: '🐄',
-    seg: 'TC',
-    defaultModFlex: 'TC3',
-    defaultModMaster: 'TC4',
-    filterFn: (i) => i.segmento === 'TC' && i.tags.includes('Rebanho e Genética'),
+    seg: 'EE',
+    defaultModFlex: 'EE3',
+    defaultModMaster: 'EE4',
+    filterFn: (i) =>
+      i.tags.includes('Rebanho e Genética') || i.bemDescricao.includes('REBANHO'),
   },
   {
     id: 'IMOVEL',
@@ -300,9 +299,8 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
     onChangeSlots(next);
   };
 
-  // MOTOR DE RECOMENDAÇÃO INTELIGENTE (Monta até 3 cenários estratégicos automaticamente!)
-  const handleAutoBuildProposal = (e: React.FormEvent) => {
-    e.preventDefault();
+  // MOTOR DE RECOMENDAÇÃO INTELIGENTE (Modo 1 Proposta Exata ou Comparativo de 3 Cenários)
+  const runProposalBuilder = (mode: 'single' | 'compare3') => {
     const objConfig = OBJETIVOS_COMPRA.find((o) => o.id === objetivo) || OBJETIVOS_COMPRA[0];
     const targetMod =
       planoPreferido === 'Flex' ? objConfig.defaultModFlex : objConfig.defaultModMaster;
@@ -323,10 +321,6 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
     }
     if (pool.length === 0) return;
 
-    // Avalia candidatos (1 a 3 cotas) para encontrar os 3 melhores cenários:
-    // Cenário 1: Equilíbrio / Mais próximo do Crédito Líquido e dentro da Mensalidade
-    // Cenário 2: Menor Parcela Mensal (Prazo mais longo)
-    // Cenário 3: Contemplação Mais Rápida (Menor Lance Mínimo 12m ou Lance Fixo 20%)
     interface CandidateScenario {
       item: ConsorcioItem;
       cotas: number;
@@ -336,30 +330,32 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
       creditoLiquido: number;
       parcelaInicial: number;
       parcelaPosLance: number;
+      lanceTotalPerc: number;
       scoreCredito: number;
       withinBudget: boolean;
+      beatsGroupMin: boolean;
     }
 
     const candidates: CandidateScenario[] = [];
 
     for (const item of pool) {
-      // Testa com o percentual de embutido escolhido (e também testa 0% em grupos de Lance Fixo 20/30 quando há lance do bolso suficiente)
       const embOptions = targetUsarEmbutido ? [30, 0] : [0];
 
       for (const embPerc of embOptions) {
-        // Se o usuário pediu embutido, só usa embPerc=0 se for grupo de Lance Fixo <= 30% e tiver lance do bolso
-        if (targetUsarEmbutido && embPerc === 0 && item.percMinContemp > 30) continue;
+        if (targetUsarEmbutido && embPerc === 0 && item.percMinContemp > 30 && bolsoReais === 0) {
+          continue;
+        }
 
         const fatorLiq = 1 - embPerc / 100;
 
-        for (let cotas = 1; cotas <= 4; cotas++) {
+        // Avalia de 1 até 12 cotas para atender desde cartas pequenas até R$ 1 Milhão+
+        for (let cotas = 1; cotas <= 12; cotas++) {
           const creditoBruto = item.valorBem * cotas;
           const creditoLiquido = creditoBruto * fatorLiq;
           const parcelaInicial = item.parcela * cotas;
 
           let bolsoPerc = 15;
           if (bolsoReais > 0 && creditoBruto > 0) {
-            // Mantém precisão total para que o valor em R$ bata exatamente (sem quebrar em R$ 100.009,92)
             bolsoPerc = Math.min(69, (bolsoReais / creditoBruto) * 100);
           } else if (embPerc === 0 && item.tags.includes('Lance Fixo 20%')) {
             bolsoPerc = 20;
@@ -375,7 +371,6 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               ? Math.max(0, (saldoTotal - parcelaInicial - lanceTotalValor) / (item.prazo - 1))
               : parcelaInicial;
 
-          // Distância percentual para o crédito líquido desejado
           const scoreCredito =
             liquidoDesejado > 0
               ? Math.abs(creditoLiquido - liquidoDesejado) / liquidoDesejado
@@ -383,15 +378,15 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               ? Math.abs(parcelaPosLance - mensalidadeMax) / mensalidadeMax
               : 0;
 
-          // Verifica se cabe na mensalidade máxima (considerando a parcela pós-lance se houver lance, ou inicial)
           const refParcela = lanceTotalPerc > 0 ? parcelaPosLance : parcelaInicial;
           const withinBudget = mensalidadeMax <= 0 || refParcela <= mensalidadeMax * 1.12;
+          const beatsGroupMin = lanceTotalPerc >= item.percMinContemp;
 
-          // Aceita candidatos cujo crédito líquido esteja próximo do pedido (-6% a +14%)
+          // Margem estrita (-8% a +14% do crédito líquido pedido) para nunca sugerir valores desconexos
           const reasonableCredit =
             liquidoDesejado <= 0 ||
-            (creditoLiquido >= liquidoDesejado * 0.94 &&
-              creditoLiquido <= liquidoDesejado * 1.15);
+            (creditoLiquido >= liquidoDesejado * 0.92 &&
+              creditoLiquido <= liquidoDesejado * 1.14);
 
           if (reasonableCredit) {
             candidates.push({
@@ -403,30 +398,31 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               creditoLiquido,
               parcelaInicial,
               parcelaPosLance,
+              lanceTotalPerc,
               scoreCredito,
               withinBudget,
+              beatsGroupMin,
             });
           }
         }
       }
     }
 
-    // Fallback se a faixa estrita (-6% a +14%) não encontrar opções suficientes
-    if (candidates.length < 3 && liquidoDesejado > 0) {
+    // Fallback caso o valor digitado seja muito baixo ou muito alto para a faixa de -8% a +14%
+    if (candidates.length === 0 && liquidoDesejado > 0) {
       for (const item of pool) {
         const embPerc = targetUsarEmbutido ? 30 : 0;
         const fatorLiq = 1 - embPerc / 100;
-        for (let cotas = 1; cotas <= 4; cotas++) {
+        for (let cotas = 1; cotas <= 15; cotas++) {
           const creditoBruto = item.valorBem * cotas;
           const creditoLiquido = creditoBruto * fatorLiq;
-          if (creditoLiquido < liquidoDesejado * 0.85 || creditoLiquido > liquidoDesejado * 1.30)
-            continue;
           const parcelaInicial = item.parcela * cotas;
           const bolsoPerc =
             bolsoReais > 0 && creditoBruto > 0
               ? Math.min(69, (bolsoReais / creditoBruto) * 100)
               : 0;
-          const lanceTotalValor = creditoBruto * ((embPerc + bolsoPerc) / 100);
+          const lanceTotalPerc = embPerc + bolsoPerc;
+          const lanceTotalValor = creditoBruto * (lanceTotalPerc / 100);
           const saldoTotal = parcelaInicial * item.prazo;
           const parcelaPosLance =
             item.prazo > 1
@@ -443,14 +439,15 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             creditoLiquido,
             parcelaInicial,
             parcelaPosLance,
+            lanceTotalPerc,
             scoreCredito,
             withinBudget,
+            beatsGroupMin: lanceTotalPerc >= item.percMinContemp,
           });
         }
       }
     }
 
-    // Se o filtro estrito não achou, pega o mais próximo geral
     const workingList =
       candidates.filter((c) => c.withinBudget).length > 0
         ? candidates.filter((c) => c.withinBudget)
@@ -458,38 +455,53 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
     if (workingList.length === 0) return;
 
-    // 1. Melhor encaixe exato de Crédito Líquido
-    const byCreditFit = [...workingList].sort((a, b) => a.scoreCredito - b.scoreCredito);
-    const c1 = byCreditFit[0];
+    // 1. Proposta Principal (Prioriza quem usa a preferência de embutido, supera a média do grupo e crava o crédito líquido)
+    const preferredEmb = targetUsarEmbutido ? 30 : 0;
+    const byBestFit = [...workingList].sort((a, b) => {
+      const aPref = a.embPerc === preferredEmb ? 0 : 1;
+      const bPref = b.embPerc === preferredEmb ? 0 : 1;
+      if (aPref !== bPref) return aPref - bPref;
+      if (a.beatsGroupMin !== b.beatsGroupMin) return a.beatsGroupMin ? -1 : 1;
+      return a.scoreCredito - b.scoreCredito;
+    });
+    const c1 = byBestFit[0];
 
-    // 2. Menor Parcela Pós-Lance (em um grupo diferente do C1 se possível)
-    const byLowestInstallment = [...workingList].sort(
-      (a, b) => a.parcelaPosLance - b.parcelaPosLance
-    );
-    const c2 =
-      byLowestInstallment.find((c) => c.item.grupo !== c1.item.grupo) ||
-      byLowestInstallment.find((c) => c.item.id !== c1.item.id) ||
-      c1;
+    let chosenScenarios: CandidateScenario[] = [c1];
 
-    // 3. Menor Lance Mínimo Histórico 12m (Grupo mais fácil de contemplar)
-    const byFastestContemp = [...workingList].sort(
-      (a, b) => a.item.percMinContemp - b.item.percMinContemp
-    );
-    const c3 =
-      byFastestContemp.find(
-        (c) => c.item.grupo !== c1.item.grupo && c.item.grupo !== c2.item.grupo
-      ) ||
-      byFastestContemp[0] ||
-      c1;
+    if (mode === 'compare3') {
+      // 2. Menor Parcela Pós-Lance (mantendo o MESMO crédito líquido em outro grupo ou sem embutido)
+      const byLowestInstallment = [...workingList].sort(
+        (a, b) => a.parcelaPosLance - b.parcelaPosLance
+      );
+      const c2 =
+        byLowestInstallment.find((c) => c.item.grupo !== c1.item.grupo) ||
+        byLowestInstallment.find(
+          (c) => c.item.id !== c1.item.id || c.embPerc !== c1.embPerc
+        ) ||
+        c1;
 
-    const chosenScenarios = [c1, c2, c3].filter(
-      (v, index, self) =>
-        index ===
-        self.findIndex((t) => t.item.id === v.item.id && t.cotas === v.cotas)
-    );
+      // 3. Menor Lance Mínimo Histórico 12m (Grupo mais fácil de contemplar para o mesmo crédito)
+      const byFastestContemp = [...workingList].sort(
+        (a, b) => a.item.percMinContemp - b.item.percMinContemp || a.scoreCredito - b.scoreCredito
+      );
+      const c3 =
+        byFastestContemp.find(
+          (c) => c.item.grupo !== c1.item.grupo && c.item.grupo !== c2.item.grupo
+        ) ||
+        byFastestContemp.find((c) => c.item.grupo !== c1.item.grupo) ||
+        c1;
+
+      chosenScenarios = [c1, c2, c3].filter(
+        (v, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.item.id === v.item.id && t.cotas === v.cotas && t.embPerc === v.embPerc
+          )
+      );
+    }
 
     onChangeModality(targetMod);
-    onChangeAgrupar(false); // Desmarca agrupar para comparar os 3 cenários lado a lado!
+    onChangeAgrupar(false);
 
     const nextSlots: ProposalSlot[] = [0, 1, 2, 3].map((idx) => {
       const sc = chosenScenarios[idx];
@@ -521,16 +533,26 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
     });
     setSlotGroupFilter(newGroupFilters);
 
-    setAssistantFeedback(
-      `Montamos ${chosenScenarios.length} opções ideais para ${objConfig.label} (${targetMod}): Opção 1 (Crédito exato: ${formatBRL(
-        c1.creditoLiquido
-      )} líq.), Opção 2 (Menor parcela: ${formatBRL(
-        c2.parcelaPosLance
-      )}/mês) e Opção 3 (Menor lance mín. 12m: Grupo ${c3.item.grupo} com ${formatPercent(
-        c3.item.percMinContemp,
-        1
-      )}).`
-    );
+    if (mode === 'single') {
+      setAssistantFeedback(
+        `Proposta ideal montada para ${objConfig.label} (${targetMod}): Grupo ${
+          c1.item.grupo
+        } (${c1.cotas} cota${c1.cotas > 1 ? 's' : ''}) • Crédito Líquido: ${formatBRL(
+          c1.creditoLiquido
+        )} • Parcela Pós-Lance: ${formatBRL(c1.parcelaPosLance)}/mês.`
+      );
+    } else {
+      setAssistantFeedback(
+        `Comparativo de ${chosenScenarios.length} cenários para ${formatBRL(
+          liquidoDesejado
+        )} líquidos em ${objConfig.label} (${targetMod}) montado abaixo!`
+      );
+    }
+  };
+
+  const handleAutoBuildProposal = (e: React.FormEvent) => {
+    e.preventDefault();
+    runProposalBuilder('single');
   };
 
   const calculatedProposals: CalculatedProposal[] = useMemo(() => {
@@ -855,13 +877,20 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </label>
           </div>
 
-          <div className="pt-5">
+          <div className="pt-5 space-y-1">
             <button
               type="submit"
               className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2 h-[36px] rounded-lg bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark text-xs font-black shadow-md transition"
             >
               <Target className="w-4 h-4" />
-              Montar 3 Melhores Opções
+              Simular Proposta Ideal
+            </button>
+            <button
+              type="button"
+              onClick={() => runProposalBuilder('compare3')}
+              className="w-full text-center text-[10px] font-bold text-blue-200 hover:text-bb-yellow transition py-0.5"
+            >
+              + Ou comparar 3 cenários lado a lado
             </button>
           </div>
         </div>

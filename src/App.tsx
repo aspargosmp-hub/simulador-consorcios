@@ -48,7 +48,7 @@ export function App() {
       },
       {
         slotIndex: 1,
-        enabled: true,
+        enabled: false,
         groupId: tc3Items[Math.min(4, tc3Items.length - 1)]?.id || initialDataset.items[1].id,
         cotas: 1,
         lanceRecursoProprioPerc: 15,
