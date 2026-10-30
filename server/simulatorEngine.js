@@ -137,6 +137,8 @@ export function simulateProposal({
   mode = 'single', // 'single' ou 'compare3'
   mascararGrupo = true,
   cliente = '',
+  grupoExato = '', // Opcional: simula especificamente para um grupo informado (somente Modo Master)
+  cotasFixas = 0,  // Opcional: fixa quantidade de cotas
 }) {
   const seed = loadSeedData();
   const items = seed.items || [];
@@ -152,10 +154,17 @@ export function simulateProposal({
   const liquidoDesejado = Math.max(1000, Number(creditoLiquido) || 0);
   const bolsoReais = Math.max(0, Number(lanceBolso) || 0);
 
-  // Filtragem de pool
-  let pool = items.filter(
-    (i) => i.codigoModalidade === targetMod && objConfig.filterFn(i) && i.vagas > 0
-  );
+  // Se foi fornecido um grupo exato (apenas API Master)
+  let pool = [];
+  if (grupoExato && !mascararGrupo) {
+    pool = items.filter((i) => i.grupo === String(grupoExato).trim());
+  }
+
+  if (pool.length === 0) {
+    pool = items.filter(
+      (i) => i.codigoModalidade === targetMod && objConfig.filterFn(i) && i.vagas > 0
+    );
+  }
   if (pool.length === 0) {
     pool = items.filter((i) => i.codigoModalidade === targetMod && i.vagas > 0);
   }
@@ -163,7 +172,7 @@ export function simulateProposal({
     pool = items.filter((i) => i.codigoModalidade === targetMod);
   }
   if (pool.length === 0) {
-    throw new Error(`Nenhum grupo ativo disponível para a modalidade ${targetMod}`);
+    throw new Error(`Nenhum grupo ativo disponível para os parâmetros solicitados.`);
   }
 
   const candidates = [];
@@ -178,7 +187,8 @@ export function simulateProposal({
 
       const fatorLiq = 1 - embPerc / 100;
 
-      for (let cotas = 1; cotas <= 12; cotas++) {
+      const cotasRange = cotasFixas > 0 ? [cotasFixas] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      for (const cotas of cotasRange) {
         const creditoBruto = item.valorBem * cotas;
         const calcCreditoLiquido = creditoBruto * fatorLiq;
         const parcelaInicial = item.parcela * cotas;

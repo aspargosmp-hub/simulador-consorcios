@@ -20,6 +20,12 @@ ALLOWED_KEYS = [
     for k in os.environ.get("API_KEYS", "demo_key_bb_consorcios").split(",")
     if k.strip()
 ]
+MASTER_KEYS = [
+    k.strip()
+    for k in os.environ.get("MASTER_API_KEYS", "master_key_bb_consorcios").split(",")
+    if k.strip()
+]
+GROUP_PROBE_HISTORY = {}
 
 OBJETIVOS_CONFIG = [
     {
@@ -179,12 +185,19 @@ def run_simulation(params: dict) -> dict:
     mode = str(params.get("mode") or "compare3").lower()
     mascarar_grupo = bool(params.get("mascararGrupo", True))
     cliente = str(params.get("cliente") or "").strip()
+    grupo_exato = str(params.get("grupo") or "").strip()
+    cotas_fixas = int(params.get("cotas") or 0)
 
-    pool = filter_obj_items(items, obj_id, target_mod)
-    pool_com_vagas = [i for i in pool if int(i.get("vagas") or 0) > 0]
-    final_pool = pool_com_vagas if pool_com_vagas else pool
+    final_pool = []
+    if grupo_exato and not mascarar_grupo:
+        final_pool = [i for i in items if i.get("grupo") == grupo_exato]
+
     if not final_pool:
-        final_pool = [i for i in items if i.get("codigoModalidade") == target_mod]
+        pool = filter_obj_items(items, obj_id, target_mod)
+        pool_com_vagas = [i for i in pool if int(i.get("vagas") or 0) > 0]
+        final_pool = pool_com_vagas if pool_com_vagas else pool
+        if not final_pool:
+            final_pool = [i for i in items if i.get("codigoModalidade") == target_mod]
     if not final_pool:
         raise ValueError(f"Nenhum grupo ativo encontrado para a modalidade {target_mod}")
 
@@ -204,7 +217,8 @@ def run_simulation(params: dict) -> dict:
 
             fator_liq = 1.0 - (emb_perc / 100.0)
 
-            for cotas in range(1, 13):
+            cotas_range = [cotas_fixas] if cotas_fixas > 0 else list(range(1, 13))
+            for cotas in cotas_range:
                 credito_bruto = val_bem * cotas
                 credito_liquido = credito_bruto * fator_liq
                 parcela_inicial = parcela_base * cotas
@@ -452,13 +466,15 @@ class ApiHandler(http.server.BaseHTTPRequestHandler):
         self.send_cors_headers()
         self.end_headers()
 
-    def check_auth(self) -> bool:
+    def check_auth(self) -> tuple[bool, bool]:
         auth = self.headers.get("Authorization", "")
         token = auth[7:].strip() if auth.startswith("Bearer ") else ""
         key = self.headers.get("x-api-key") or token
         if os.environ.get("PUBLIC_API") == "true":
-            return True
-        return bool(key in ALLOWED_KEYS or key == "demo_key_bb_consorcios")
+            return True, True
+        is_std = key in ALLOWED_KEYS or key == "demo_key_bb_consorcios"
+        is_mst = key in MASTER_KEYS or key == "master_key_bb_consorcios"
+        return (is_std or is_mst), is_mst
 
     def do_GET(self):
         url = urlparse(self.path)
@@ -485,7 +501,8 @@ class ApiHandler(http.server.BaseHTTPRequestHandler):
         url = urlparse(self.path)
         path = url.path.rstrip("/")
 
-        if not self.check_auth():
+        has_auth, is_master = self.check_auth()
+        if not has_auth:
             self.send_json(
                 401,
                 {
@@ -523,6 +540,46 @@ class ApiHandler(http.server.BaseHTTPRequestHandler):
                 self.send_json(200, res)
             except Exception as e:
                 self.send_json(400, {"success": False, "error": str(e)})
+
+        elif path == "/api/v1/simulate/master":
+            if not is_master and os.environ.get("PUBLIC_API") != "true":
+                self.send_json(
+                    403,
+                    {
+                        "success": False,
+                        "error": "Acesso Negado: Chave sem privilégio Master Operacional.",
+                        "message": "Este endpoint é restrito a parceiros credenciados. Utilize /api/v1/simulate para simulação comercial.",
+                    },
+                )
+                return
+
+            # Trava Anti-Dump de Grupos
+            import time
+            grp = str(payload.get("grupo") or "").strip()
+            if grp:
+                now_t = time.time()
+                history = [h for h in GROUP_PROBE_HISTORY.get(client_id, []) if h["time"] > now_t - 60.0]
+                history.append({"group": grp, "time": now_t})
+                GROUP_PROBE_HISTORY[client_id] = history
+                distinct = len(set(h["group"] for h in history))
+                if distinct > 6:
+                    self.send_json(
+                        429,
+                        {
+                            "success": False,
+                            "error": "Bloqueio de Segurança: Padrão de varredura ou raspagem de grupos detectado.",
+                            "message": "A exportação em lote de grupos é estritamente proibida por contrato e monitorada.",
+                        },
+                    )
+                    return
+
+            try:
+                payload["mascararGrupo"] = False
+                res = run_simulation(payload)
+                self.send_json(200, res)
+            except Exception as e:
+                self.send_json(400, {"success": False, "error": str(e)})
+
         elif path == "/api/v1/whatsapp-text":
             try:
                 payload["mascararGrupo"] = True

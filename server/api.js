@@ -13,13 +13,21 @@ import {
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configuração de API Keys autorizadas (via variável de ambiente ou chave padrão para desenvolvimento)
+// Configuração de API Keys autorizadas
 const ALLOWED_KEYS = process.env.API_KEYS
   ? process.env.API_KEYS.split(',').map((k) => k.trim())
   : ['demo_key_bb_consorcios'];
 
+// Chaves com privilégio Master (podem acessar endpoint /simulate/master)
+const MASTER_KEYS = process.env.MASTER_API_KEYS
+  ? process.env.MASTER_API_KEYS.split(',').map((k) => k.trim())
+  : ['master_key_bb_consorcios'];
+
 app.use(cors());
 app.use(express.json());
+
+// Sistema Anti-Dump / Anti-Varredura de Grupos
+const groupProbeHistory = new Map(); // key -> [ { group: string, time: number } ]
 
 // Middleware de Autenticação por API Key
 function requireApiKey(req, res, next) {
@@ -37,7 +45,10 @@ function requireApiKey(req, res, next) {
     return next();
   }
 
-  if (!apiKey || (!ALLOWED_KEYS.includes(apiKey) && apiKey !== 'demo_key_bb_consorcios')) {
+  const isStandard = ALLOWED_KEYS.includes(apiKey) || apiKey === 'demo_key_bb_consorcios';
+  const isMaster = MASTER_KEYS.includes(apiKey) || apiKey === 'master_key_bb_consorcios';
+
+  if (!apiKey || (!isStandard && !isMaster)) {
     return res.status(401).json({
       success: false,
       error: 'Não autorizado: Chave de API inválida ou ausente.',
@@ -45,6 +56,8 @@ function requireApiKey(req, res, next) {
     });
   }
 
+  req.apiKey = apiKey;
+  req.isMaster = isMaster;
   next();
 }
 
@@ -148,7 +161,80 @@ app.post('/api/v1/simulate', (req, res) => {
   }
 });
 
-// 4. Geração Rápida de Texto para WhatsApp
+// 4. API Master Operacional (Exclusivo para parceiros credenciados / Emissão de proposta)
+// Protegida com detector Anti-Dump: impossível puxar múltiplos grupos sequenciais
+app.post('/api/v1/simulate/master', (req, res) => {
+  if (!req.isMaster && process.env.PUBLIC_API !== 'true') {
+    return res.status(403).json({
+      success: false,
+      error: 'Acesso Negado: Chave sem privilégio Master Operacional.',
+      message: 'Este endpoint é exclusivo para parceiros credenciados. Utilize /api/v1/simulate para simulações comerciais.',
+    });
+  }
+
+  const {
+    objetivo = 'TRATOR',
+    plano = 'Flex',
+    creditoLiquido = 350000,
+    lanceBolso = 0,
+    usarEmbutido = true,
+    tipoPessoa = 'PF',
+    incluirSeguro = false,
+    mode = 'single',
+    cliente = '',
+    grupo = '',
+    cotas = 0,
+  } = req.body || {};
+
+  // Detecção Anti-Dump / Anti-Varredura de Grupos
+  const key = req.apiKey || req.ip;
+  const now = Date.now();
+  const windowStart = now - 60000; // 1 minuto
+
+  let probes = groupProbeHistory.get(key) || [];
+  probes = probes.filter((p) => p.time > windowStart);
+
+  if (grupo) {
+    probes.push({ group: String(grupo).trim(), time: now });
+    groupProbeHistory.set(key, probes);
+
+    const distinctGroups = new Set(probes.map((p) => p.group));
+    // Se tentar consultar mais de 6 grupos distintos em 1 minuto, bloqueia a tentativa de varredura
+    if (distinctGroups.size > 6) {
+      return res.status(429).json({
+        success: false,
+        error: 'Bloqueio de Segurança: Padrão de varredura ou raspagem de grupos detectado.',
+        message: 'A exportação em lote de grupos é estritamente proibida por contrato e monitorada.',
+      });
+    }
+  }
+
+  try {
+    const resultado = simulateProposal({
+      objetivo,
+      plano,
+      creditoLiquido,
+      lanceBolso,
+      usarEmbutido,
+      tipoPessoa,
+      incluirSeguro,
+      mode,
+      mascararGrupo: false, // No modo master liberado, inclui o grupo para emissão
+      cliente,
+      grupoExato: grupo,
+      cotasFixas: Number(cotas) || 0,
+    });
+
+    res.json(resultado);
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message || 'Erro ao processar simulação master.',
+    });
+  }
+});
+
+// 5. Geração Rápida de Texto para WhatsApp
 app.post('/api/v1/whatsapp-text', (req, res) => {
   try {
     const resultado = simulateProposal({ ...req.body, mascararGrupo: true });
