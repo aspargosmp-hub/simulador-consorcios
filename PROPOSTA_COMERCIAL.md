@@ -107,23 +107,7 @@ O valor da solução se justifica com extrema rapidez pelo ticket médio do seto
 
 ---
 
-### 7. TERMO DE ADESÃO & PRÓXIMOS PASSOS
-
-1. **Definição do Plano Escolhido:** `[  ] API Simples` ou `[  ] API Master`
-2. **Formalização do Contrato & Liquidação da Taxa de Licenciamento.**
-3. **Emissão da Chave de Produção (`x-api-key`) e Kit de Integração.**
-4. **Reunião Técnica de Alinhamento (30 minutos) e Entrada em Produção.**
-
----
-
-**CONTRATADA:**  
-**Motor de Inteligência & Simulação de Consórcios**  
-CNPJ: _____________________________________________________  
-Responsável: ______________________________________________  
-
-**CONTRATANTE:**  
-Razão Social: _____________________________________________  
-CNPJ: _____________________________________________________  
-Representante Legal: ______________________________________  
-Assinatura: _______________________________________________  
-Data: _____ / _____ / 2026
+<div align="center">
+  <p><strong>Stratego Digital • Inteligência de Dados & Soluções Tecnológicas</strong></p>
+  <p><em>Documento estritamente confidencial elaborado para avaliação técnico-comercial.</em></p>
+</div>
