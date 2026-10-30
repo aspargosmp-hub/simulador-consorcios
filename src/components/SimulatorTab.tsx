@@ -207,9 +207,27 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
   const [telefone, setTelefone] = useState<string>('');
   const [tipoPessoa, setTipoPessoa] = useState<TipoPessoa>('PF');
   const [incluirSeguro, setIncluirSeguro] = useState<boolean>(false);
-  const [especialista, setEspecialista] = useState<string>('Consultor Especialista');
-  const [telefoneEspecialista, setTelefoneEspecialista] = useState<string>('(11) 99999-9999');
+  const [especialista, setEspecialista] = useState<string>(() => {
+    return localStorage.getItem('bb_especialista') || 'Consultor Especialista';
+  });
+  const [telefoneEspecialista, setTelefoneEspecialista] = useState<string>(() => {
+    return localStorage.getItem('bb_telefone_especialista') || '';
+  });
   const [comentario, setComentario] = useState<string>('');
+
+  const handleEspecialistaChange = (val: string) => {
+    setEspecialista(val);
+    try {
+      localStorage.setItem('bb_especialista', val);
+    } catch (_) {}
+  };
+
+  const handleTelefoneEspecialistaChange = (val: string) => {
+    setTelefoneEspecialista(val);
+    try {
+      localStorage.setItem('bb_telefone_especialista', val);
+    } catch (_) {}
+  };
   const [copiedWhats, setCopiedWhats] = useState<boolean>(false);
   const [copiedImage, setCopiedImage] = useState<boolean>(false);
   const [savedToast, setSavedToast] = useState<boolean>(false);
@@ -1633,9 +1651,9 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
           </div>
 
-          {/* Dados de Personalização do Cliente (Direto Acima da Imagem) */}
+          {/* Dados de Personalização do Cliente e Consultor (Direto Acima da Imagem) */}
           <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 print:hidden">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
                   Nome do Cliente ({tipoPessoa})
@@ -1654,7 +1672,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Telefone / WhatsApp Cliente
+                  WhatsApp Cliente
                 </label>
                 <input
                   type="text"
@@ -1666,13 +1684,28 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               </div>
               <div>
                 <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Especialista Responsável
+                  Consultor / Especialista
                 </label>
                 <input
                   type="text"
                   value={especialista}
-                  onChange={(e) => setEspecialista(e.target.value)}
+                  onChange={(e) => handleEspecialistaChange(e.target.value)}
+                  placeholder="Nome do Consultor"
                   className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-bb-blue"
+                  title="Fica salvo automaticamente para as próximas propostas"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">
+                  WhatsApp do Consultor
+                </label>
+                <input
+                  type="text"
+                  value={telefoneEspecialista}
+                  onChange={(e) => handleTelefoneEspecialistaChange(e.target.value)}
+                  placeholder="Ex: (11) 98765-4321"
+                  className="w-full px-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-bb-blue"
+                  title="Número que sai impresso no rodapé da proposta e na imagem do WhatsApp (fica salvo automaticamente)"
                 />
               </div>
               <div>
