@@ -68,10 +68,10 @@ Para viabilizar a implantação tecnológica, homologação dos endpoints e sust
 * **Taxa de Licenciamento, Setup & Onboarding Master:** **R$ 16.000,00** *(Taxa Única)*
 * **Manutenção, Atualização Diária & Suporte Contínuo:** **R$ 990,00 / mês**
 
-> [!NOTE]
-> **Condições de Pagamento da Taxa de Licenciamento:**  
-> • **À vista (PIX/TED):** com **5% de desconto**;  
-> • **Parcelado:** Entrada de 50% no aceite + 50% em 30 dias (ou em até 10x no cartão corporativo).
+> [!IMPORTANT]
+> **Condições de Pagamento & Faturamento:**  
+> • **Taxa de Licenciamento & Setup Tecnológico:** Pagamento integral **no ato da assinatura do contrato** (via PIX ou Transferência Bancária / TED);  
+> • **Início da Mensalidade de Manutenção:** O primeiro vencimento da mensalidade (R$ 490,00 ou R$ 990,00 conforme o plano) ocorre **30 (trinta) dias após o pagamento da taxa de licenciamento**, garantindo o primeiro mês de operação com suporte completo.
 
 ---
 
