@@ -1,6 +1,8 @@
-# 🚀 Documentação da API REST — Motor de Consórcios BB
+# 🚀 Documentação da API REST — Motor de Cálculo & Proposta de Consórcios
 
-Bem-vindo à documentação oficial da **API do Simulador de Consórcios**. Esta API permite que sistemas externos (CRMs, Chatbots de WhatsApp, Landing Pages, Aplicativos Mobile e Sistemas de Gestão) consultem em tempo real as tabelas atualizadas e gerem propostas de consórcio personalizadas.
+Esta API opera no modelo **Caixa-Preta (Motor de Inteligência Transacional)**.  
+> ⚠️ **IMPORTANTE:** A API **NÃO entrega, NÃO exporta e NÃO lista tabelas brutas de dados ou cotas**.  
+> O sistema parceiro envia apenas os parâmetros do cliente (*ex: Objetivo Trator, Crédito R$ 350.000*) e a API devolve **exclusivamente a proposta calculada** (parcela inicial, parcela pós-lance reduzida, percentual de lance recomendado e texto formatado para WhatsApp). Toda a base de dados interna permanece 100% protegida e retida no servidor.
 
 ---
 

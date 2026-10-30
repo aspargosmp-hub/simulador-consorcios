@@ -304,15 +304,10 @@ export function simulateProposal({
     const lanceEmbutidoValor = c.creditoBruto * (c.embPerc / 100);
     const lanceTotalValor = lanceProprioValor + lanceEmbutidoValor;
 
-    return {
+    const pOut = {
       opcao: index + 1,
       plano: (plano || '').toLowerCase() === 'master' ? 'Plano Master' : 'Plano Flex (-2% Taxa)',
-      modalidadeCodigo: targetMod,
-      objetivoLabel: objConfig.label,
-      grupo: mascararGrupo ? '*** (Disponível na Contratação)' : item.grupo,
-      bemCodigo: mascararGrupo ? '***' : item.bemCodigo,
-      bemDescricao: item.bemDescricao,
-      cotas: c.cotas,
+      objetivo: objConfig.label,
       prazoMeses: item.prazo,
       creditoBruto: Number(c.creditoBruto.toFixed(2)),
       creditoLiquido: Number(c.creditoLiquido.toFixed(2)),
@@ -334,14 +329,21 @@ export function simulateProposal({
         taxaAdmTotal: Number(item.taxaAdm.toFixed(2)),
         taxaMensalizada: taxaMensalizada,
         taxaAnual: taxaAnual,
-        fundoReserva: Number(item.fundoReserva.toFixed(2)),
         indiceCorrecao: item.indiceCorrecao || 'FIPE',
       },
       seguroPrestamistaIncluso: incluirSeguro,
       valorSeguroMensal: Number(seguroMensal.toFixed(2)),
-      assembleiaProxima: item.assembleia,
-      historicoLanceMinimo12m: `${Number(item.percMinContemp.toFixed(2))}%`,
     };
+
+    if (!mascararGrupo) {
+      pOut.grupo = item.grupo;
+      pOut.bemCodigo = item.bemCodigo;
+      pOut.bemDescricao = item.bemDescricao;
+      pOut.assembleiaProxima = item.assembleia;
+      pOut.historicoLanceMinimo12m = `${Number(item.percMinContemp.toFixed(2))}%`;
+    }
+
+    return pOut;
   });
 
   // Geração de texto pronto para WhatsApp
@@ -394,8 +396,6 @@ export function simulateProposal({
 
   return {
     success: true,
-    dataAtualizacaoBase: seed.updatedAt,
-    totalCotasDisponiveis: seed.totalRecords,
     parametrosSimulacao: {
       objetivo: objConfig.label,
       plano: (plano || '').toLowerCase() === 'master' ? 'Master' : 'Flex',
@@ -404,7 +404,6 @@ export function simulateProposal({
       tipoPessoa,
       incluirSeguro,
       modo: mode,
-      gruposMascarados: mascararGrupo,
     },
     propostas: proposals,
     whatsappTextoPronto: lines.join('\n'),
