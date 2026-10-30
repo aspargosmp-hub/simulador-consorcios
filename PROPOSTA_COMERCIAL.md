@@ -24,10 +24,10 @@ Para atender com máxima segurança aos diferentes momentos da operação da sua
 │            PLANO API SIMPLES                 │             PLANO API MASTER                 │
 │      (Captação de Leads & Comercial)         │       (Operacional & Emissão Contratual)     │
 ├──────────────────────────────────────────────┼──────────────────────────────────────────────┤
-│ • Simulação Caixa-Preta (Sem Grupos)         │ • Acesso aos Códigos de Grupo e Bens BB      │
-│ • Parcela Inicial e Parcela Pós-Lance        │ • Simulação por Grupo Específico             │
+│ • Simulação Caixa-Preta (Sem Grupos)         │ • Zero Troca de Telas: Tudo direto no seu CRM│
+│ • Parcela Inicial e Parcela Pós-Lance        │ • Acesso aos Códigos de Grupo e Bens BB      │
 │ • Lance Embutido (30%) e Lance do Bolso      │ • Próxima Assembleia e Histórico 12m         │
-│ • Texto Formatado para WhatsApp              │ • Dados para Preenchimento de Contrato       │
+│ • Texto Formatado para WhatsApp              │ • Vagas em Tempo Real p/ Emissão Imediata    │
 │ • 100% Blindada contra Desvio de Leads       │ • Trava Anti-Varredura / Anti-Dump Ativa     │
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
@@ -48,6 +48,7 @@ Para atender com máxima segurança aos diferentes momentos da operação da sua
 | Multi-Cenários Comparativos | ✅ 1 a 3 Propostas Ideais | ✅ 1 a 3 Propostas Ideais |
 | Copy Pronta para WhatsApp | 💬 Foco em Atração & Parcela | 📑 Foco em Fechamento & Formal |
 | **2. INTELIGÊNCIA CONTRATUAL & FORMALIZAÇÃO** | | |
+| Autonomia Operacional (Sem Troca de Telas) | ❌ Exige checar no banco p/ emitir | 🚀 **100% Autossuficiente no seu CRM** |
 | Identificação do Grupo e Bem no BB | 🛡️ **Oculto** *(Lead retido no seu time comercial)* | 📋 **Acesso Completo p/ Emissão** |
 | Simulação Direta por Código de Grupo | ❌ Não disponível *(Foco em Parcela)* | 🎯 **Simulação por Grupo Exato** |
 | Data Oficial da Próxima Assembleia | ❌ Não disponível | 📅 **Data Exata da Assembleia** |
@@ -74,6 +75,7 @@ Para viabilizar a implantação tecnológica, homologação dos endpoints e sust
 
 #### 🔹 OPÇÃO B: PLANO API MASTER (Operacional & Emissão Formal)
 *Recomendado para grandes corretoras, correspondentes bancários e escritórios autorizados a formalizar cotas.*
+* **Diferencial Estratégico:** **Zero troca de plataformas.** O corretor/consultor fecha o contrato direto na tela do seu CRM com 100% dos dados bancários na mão (grupo, código do bem, vagas, assembleia e histórico de lances), sem precisar parar o atendimento para entrar em portais bancários ou consultar planilhas externas.
 * **Taxa de Licenciamento, Setup & Onboarding Master:** **R$ 25.000,00** *(Taxa Única — no ato da assinatura)*
 * **Manutenção, Atualização Diária & Suporte Contínuo:** **R$ 1.490,00 / mês**
 
