@@ -1751,434 +1751,525 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
           )}
 
-          {/* ÁREA DE PRINT LIMPA E CENTRALIZADA (ESTILO EXECUTIVO BB CONSÓRCIOS) */}
-          <div
-            className={`mx-auto bg-white p-4 sm:p-6 rounded-xl border border-slate-200 shadow-sm print:shadow-none print:border-none ${
-              calculatedProposals.length === 1 ? 'max-w-[680px]' : 'max-w-[960px]'
-            }`}
-          >
-            {/* Topo Amarelo Ouro Oficial BB Consórcios */}
-            <div className="bg-[#FFCC00] rounded-lg py-3.5 px-6 flex items-center justify-center shadow-sm mb-2">
-              <img
-                src="./logo-bb-consorcios.png"
-                alt="BB Consórcios"
-                className="h-14 sm:h-16 w-auto object-contain"
-              />
-            </div>
+          {/* ÁREA DE PRINT LIMPA E CENTRALIZADA (NOVO DESIGN EXECUTIVO BB CONSÓRCIOS) */}
+          {(() => {
+            const isSingle = calculatedProposals.length === 1;
+            const showAggCol = agrupar && calculatedProposals.length > 1;
+            const heroP = calculatedProposals[0];
+            const heroLiquido = showAggCol
+              ? aggregated.creditoLiquidoTotal
+              : heroP.creditoLiquido;
+            const heroBruto = showAggCol
+              ? aggregated.creditoBrutoTotal
+              : heroP.creditoBruto;
+            const heroBolsoValor = showAggCol
+              ? aggregated.lanceRecursoProprioTotal
+              : heroP.valorLanceRecursoProprio;
+            const heroBolsoPerc =
+              heroBruto > 0
+                ? (heroBolsoValor / heroBruto) * 100
+                : heroP.lanceRecursoProprioPerc;
+            const heroParcelaInicial = showAggCol
+              ? aggregated.parcelaMensalTotal
+              : heroP.parcelaMensalTotal;
+            const heroParcelaPos = showAggCol
+              ? aggregated.parcelaPosLanceTotal
+              : heroP.parcelaPosLance;
+            const heroLanceTotalValor = showAggCol
+              ? aggregated.lanceTotalValor
+              : heroP.valorLanceTotal;
+            const reducaoPerc =
+              heroParcelaInicial > 0 && heroLanceTotalValor > 0
+                ? Math.max(
+                    0,
+                    Math.round(
+                      ((heroParcelaInicial - heroParcelaPos) / heroParcelaInicial) * 100
+                    )
+                  )
+                : 0;
+            const hasAnyEmbutido = calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0);
+            const hasAnyLance = calculatedProposals.some((p) => p.lanceTotalPerc > 0);
+            const modLabel =
+              MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality;
 
-            {/* Sub-barra Azul Escuro Institucional ("Modalidade: ...") */}
-            <div className="bg-[#0F4C81] text-white px-4 py-2.5 border-2 border-slate-900 border-b-0 flex flex-wrap items-center justify-between gap-2">
-              <div className="font-extrabold text-sm tracking-tight">
-                Modalidade:{' '}
-                {MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality}
-                {incluirSeguro ? ` • Seguro ${tipoPessoa}` : ''}
-              </div>
-              <div className="flex items-center gap-3 text-xs">
-                {cliente.trim() && (
-                  <span className="font-bold text-[#FFCC00]">Cliente: {cliente.trim()}</span>
-                )}
-                {calculatedProposals.length > 1 && (
-                  <span className="text-blue-100 font-semibold">
-                    Comparativo ({calculatedProposals.length} opções)
+            return (
+              <div
+                className={`mx-auto bg-white rounded-2xl border border-slate-300 shadow-md overflow-hidden print:shadow-none print:border-slate-300 ${
+                  isSingle ? 'max-w-[740px]' : 'max-w-[980px]'
+                }`}
+              >
+                {/* Topo Amarelo Ouro Oficial BB Consórcios */}
+                <div className="bg-[#FFCC00] py-3.5 px-6 flex items-center justify-center">
+                  <img
+                    src="./logo-bb-consorcios.png"
+                    alt="BB Consórcios"
+                    className="h-14 sm:h-16 w-auto object-contain"
+                  />
+                </div>
+
+                {/* Sub-barra Azul Marinho Institucional */}
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0F4C81] text-white px-5 py-2.5 flex flex-wrap items-center justify-between gap-2">
+                  <div className="font-extrabold text-xs sm:text-sm tracking-wide uppercase">
+                    Proposta de Consórcio • {modLabel}
+                    {incluirSeguro ? ` • Seguro ${tipoPessoa}` : ''}
+                    {cliente.trim() ? ` • ${cliente.trim()}` : ''}
+                  </div>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-black bg-[#FFCC00] text-[#002D62] uppercase tracking-wide">
+                    {isSingle
+                      ? `Grupo ${heroP.item.grupo.replace(/^0+/, '')} • ${heroP.cotas} ${
+                          heroP.cotas === 1 ? 'Cota' : 'Cotas'
+                        }`
+                      : `Comparativo • ${calculatedProposals.length} Opções`}
                   </span>
-                )}
-              </div>
-            </div>
+                </div>
 
-            {/* BLOCO 1: Dados Principais do Grupo, Crédito e Lance */}
-            <div className="border-2 border-slate-900 overflow-hidden">
-              <table className="w-full text-xs sm:text-sm border-collapse">
-                <tbody className="divide-y divide-slate-300">
-                  {/* Linha Grupo */}
-                  <tr className="bg-white">
-                    <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
-                      Grupo
-                    </td>
-                    {calculatedProposals.map((p, idx) => (
-                      <td
-                        key={idx}
-                        className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                      >
-                        {p.item.grupo.replace(/^0+/, '') || p.item.grupo}
-                      </td>
-                    ))}
-                    {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-extrabold text-bb-dark bg-amber-50">
-                        Soma ({aggregated.cotasTotal} cotas)
-                      </td>
-                    )}
-                  </tr>
+                {/* Corpo Interno do Card */}
+                <div className="p-4 sm:p-6 space-y-5">
+                  {/* 3 HERO CARDS (Resumo em 3 segundos para 1 proposta ou soma de cotas) */}
+                  {(isSingle || showAggCol) && (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="rounded-xl bg-gradient-to-b from-emerald-50 to-emerald-100/70 border border-emerald-300 p-3.5">
+                        <div className="text-[11px] font-extrabold text-emerald-800 uppercase tracking-wide">
+                          1. Crédito Livre na Mão
+                        </div>
+                        <div className="text-xl sm:text-2xl font-black text-emerald-950 mt-1">
+                          {formatBRL(heroLiquido)}
+                        </div>
+                        <div className="text-[11px] font-semibold text-emerald-800 mt-0.5">
+                          Liberado p/ compra do bem
+                        </div>
+                      </div>
 
-                  {/* Se houver Lance Embutido, exibe Valor da Carta Bruto e Lance Embutido para transparência total */}
-                  {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
-                    visibleRows.creditoBruto && (
-                      <tr className="bg-slate-100/90">
-                        <td className="py-2 px-3.5 font-bold text-[#0F4C81] border-r border-slate-400">
-                          Valor da Carta (Bruto)
-                        </td>
-                        {calculatedProposals.map((p, idx) => (
-                          <td
-                            key={idx}
-                            className="py-2 px-3 text-center font-bold text-slate-700 border-r border-slate-300 last:border-r-0"
-                          >
-                            {formatBRL(p.creditoBruto)}
-                          </td>
-                        ))}
-                        {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-bold text-slate-800 bg-amber-50/60">
-                            {formatBRL(aggregated.creditoBrutoTotal)}
-                          </td>
-                        )}
-                      </tr>
-                    )}
+                      <div className="rounded-xl bg-gradient-to-b from-amber-50 to-amber-100/70 border border-amber-300 p-3.5">
+                        <div className="text-[11px] font-extrabold text-amber-800 uppercase tracking-wide">
+                          2. Lance do Seu Bolso
+                        </div>
+                        <div className="text-xl sm:text-2xl font-black text-amber-950 mt-1">
+                          {formatBRL(heroBolsoValor)}
+                        </div>
+                        <div className="text-[11px] font-semibold text-amber-800 mt-0.5">
+                          {heroBolsoValor > 0
+                            ? `Pago só se contemplado (${formatPercent(heroBolsoPerc, 1)})`
+                            : '100% coberto pela própria carta'}
+                        </div>
+                      </div>
 
-                  {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
-                    visibleRows.lanceEmbutido && (
-                      <tr className="bg-white">
-                        <td className="py-2 px-3.5 font-bold text-indigo-900 border-r border-slate-400">
-                          (-) Lance Embutido da Carta
-                        </td>
-                        {calculatedProposals.map((p, idx) => (
-                          <td
-                            key={idx}
-                            className="py-2 px-3 text-center font-bold text-indigo-800 border-r border-slate-300 last:border-r-0"
-                          >
-                            {p.lanceEmbutidoPerc > 0
-                              ? `${formatBRL(p.valorLanceEmbutido)} (${formatPercent(
-                                  p.lanceEmbutidoPerc,
-                                  0
+                      <div className="rounded-xl bg-gradient-to-b from-blue-50 to-blue-100/70 border border-blue-300 p-3.5">
+                        <div className="text-[11px] font-extrabold text-blue-800 uppercase tracking-wide">
+                          {hasAnyLance ? '3. Parcela Pós-Lance' : '3. Parcela Mensal'}
+                        </div>
+                        <div className="text-xl sm:text-2xl font-black text-blue-950 mt-1">
+                          {formatBRL(hasAnyLance ? heroParcelaPos : heroParcelaInicial)}
+                        </div>
+                        <div className="text-[11px] font-semibold text-blue-800 mt-0.5">
+                          {reducaoPerc > 0
+                            ? `C/ redução de ${reducaoPerc}% após lance`
+                            : `Prazo de ${heroP.prazo} meses`}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* SEÇÃO 1: COMPOSIÇÃO DO CRÉDITO */}
+                  <div>
+                    <div className="bg-slate-100 rounded-md px-3.5 py-1.5 text-[11px] font-black text-[#0F4C81] uppercase tracking-wider mb-1.5">
+                      Composição do Crédito
+                    </div>
+                    <div className="divide-y divide-slate-200 text-xs sm:text-sm">
+                      {!isSingle && (
+                        <div className="py-2.5 px-3.5 flex items-center justify-between bg-slate-50 rounded-lg font-extrabold text-[#0F4C81]">
+                          <span className="w-[42%]">Proposta / Grupo</span>
+                          <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center">
+                            {calculatedProposals.map((p, idx) => (
+                              <span key={idx}>
+                                G.{p.item.grupo.replace(/^0+/, '')} ({p.cotas}{' '}
+                                {p.cotas === 1 ? 'cota' : 'cotas'})
+                              </span>
+                            ))}
+                            {showAggCol && (
+                              <span className="text-amber-900">
+                                Soma ({aggregated.cotasTotal} cotas)
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+
+                      {visibleRows.creditoBruto && (
+                        <div className="py-2.5 px-3.5 flex items-center justify-between">
+                          <span className="font-semibold text-slate-700 w-[55%]">
+                            {isSingle && heroP.cotas > 1
+                              ? `Valor da Carta de Crédito (${heroP.cotas} cotas de ${formatBRL(
+                                  heroP.valorUnitario
                                 )})`
-                              : 'Não utilizado'}
-                          </td>
-                        ))}
-                        {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-bold text-indigo-900 bg-amber-50/60">
-                            {formatBRL(aggregated.lanceEmbutidoTotal)}
-                          </td>
+                              : 'Valor da Carta de Crédito (Bruto)'}
+                          </span>
+                          {isSingle ? (
+                            <span className="font-bold text-slate-900">
+                              {formatBRL(heroP.creditoBruto)}
+                            </span>
+                          ) : (
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-bold text-slate-900">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>{formatBRL(p.creditoBruto)}</span>
+                              ))}
+                              {showAggCol && (
+                                <span>{formatBRL(aggregated.creditoBrutoTotal)}</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {hasAnyEmbutido && visibleRows.lanceEmbutido && (
+                        <div className="py-2.5 px-3.5 flex items-center justify-between text-indigo-700">
+                          <span className="font-semibold w-[55%]">
+                            (-) Lance Embutido (descontado da própria carta)
+                          </span>
+                          {isSingle ? (
+                            <span className="font-bold">
+                              - {formatBRL(heroP.valorLanceEmbutido)} (
+                              {formatPercent(heroP.lanceEmbutidoPerc, 0)})
+                            </span>
+                          ) : (
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-bold">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>
+                                  {p.lanceEmbutidoPerc > 0
+                                    ? `- ${formatBRL(p.valorLanceEmbutido)} (${formatPercent(
+                                        p.lanceEmbutidoPerc,
+                                        0
+                                      )})`
+                                    : 'R$ 0,00'}
+                                </span>
+                              ))}
+                              {showAggCol && (
+                                <span>- {formatBRL(aggregated.lanceEmbutidoTotal)}</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {visibleRows.creditoLiquido && (
+                        <div className="py-2.5 px-3.5 mt-1 rounded-lg bg-emerald-50 border border-emerald-200 flex items-center justify-between text-emerald-950">
+                          <span className="font-black w-[55%]">
+                            (=) Crédito Líquido a Liberar para Compra do Bem
+                          </span>
+                          {isSingle ? (
+                            <span className="font-black text-base text-emerald-900">
+                              {formatBRL(heroP.creditoLiquido)}
+                            </span>
+                          ) : (
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-black text-sm sm:text-base text-emerald-900">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>{formatBRL(p.creditoLiquido)}</span>
+                              ))}
+                              {showAggCol && (
+                                <span>{formatBRL(aggregated.creditoLiquidoTotal)}</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* SEÇÃO 2: ESTRATÉGIA DE LANCE */}
+                  {hasAnyLance && (
+                    <div>
+                      <div className="bg-slate-100 rounded-md px-3.5 py-1.5 text-[11px] font-black text-[#0F4C81] uppercase tracking-wider mb-1.5">
+                        Estratégia de Lance (Oferta na Assembleia)
+                      </div>
+                      <div className="divide-y divide-slate-200 text-xs sm:text-sm">
+                        {hasAnyEmbutido && visibleRows.lanceEmbutido && (
+                          <div className="py-2.5 px-3.5 flex items-center justify-between">
+                            <span className="font-semibold text-slate-600 w-[55%]">
+                              Lance usando a própria Carta (Embutido)
+                            </span>
+                            {isSingle ? (
+                              <span className="font-bold text-indigo-700">
+                                {formatBRL(heroP.valorLanceEmbutido)} (
+                                {formatPercent(heroP.lanceEmbutidoPerc, 1)})
+                              </span>
+                            ) : (
+                              <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-bold text-indigo-700">
+                                {calculatedProposals.map((p, idx) => (
+                                  <span key={idx}>
+                                    {formatBRL(p.valorLanceEmbutido)} (
+                                    {formatPercent(p.lanceEmbutidoPerc, 1)})
+                                  </span>
+                                ))}
+                                {showAggCol && (
+                                  <span>{formatBRL(aggregated.lanceEmbutidoTotal)}</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         )}
-                      </tr>
-                    )}
 
-                  {/* Crédito a Liberar */}
-                  {visibleRows.creditoLiquido && (
-                    <tr className="bg-emerald-50/90">
-                      <td className="py-2.5 px-3.5 font-extrabold text-emerald-900 border-r border-slate-400">
-                        Crédito a Liberar
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2.5 px-3 text-center font-black text-emerald-800 text-sm sm:text-base border-r border-slate-300 last:border-r-0"
-                        >
-                          {formatBRL(p.creditoLiquido)}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2.5 px-3 text-center font-black text-emerald-900 bg-emerald-100 text-sm sm:text-base">
-                          {formatBRL(aggregated.creditoLiquidoTotal)}
-                        </td>
-                      )}
-                    </tr>
-                  )}
-
-                  {/* Qntd. Parcelas em Meses */}
-                  {visibleRows.prazo && (
-                    <tr className="bg-white">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Qntd. Parcelas em Meses
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {p.prazo}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {Math.max(...calculatedProposals.map((p) => p.prazo))}
-                        </td>
-                      )}
-                    </tr>
-                  )}
-
-                  {/* Parcela Mensal */}
-                  {visibleRows.parcelaMensal && (
-                    <tr className="bg-slate-100/90">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Parcela Mensal{incluirSeguro ? ` (c/ Seg. ${tipoPessoa})` : ''}
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {formatBRL(p.parcelaMensalTotal)}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {formatBRL(aggregated.parcelaMensalTotal)}
-                        </td>
-                      )}
-                    </tr>
-                  )}
-
-                  {/* Lance Proposto (%) */}
-                  {visibleRows.lanceTotal && (
-                    <tr className="bg-white">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Lance Proposto
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {formatPercent(p.lanceTotalPerc, 2)}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {formatPercent(aggregated.lanceTotalPercMedio, 2)}
-                        </td>
-                      )}
-                    </tr>
-                  )}
-
-                  {/* Valor do Lance (R$) */}
-                  {visibleRows.lanceTotal && (
-                    <tr className="bg-slate-100/90">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Valor do Lance
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {formatBRL(p.valorLanceTotal)}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {formatBRL(aggregated.lanceTotalValor)}
-                        </td>
-                      )}
-                    </tr>
-                  )}
-
-                  {/* Se houver Lance Embutido + Bolso, explicita quanto sai do bolso */}
-                  {calculatedProposals.some(
-                    (p) => p.lanceEmbutidoPerc > 0 && p.lanceRecursoProprioPerc > 0
-                  ) &&
-                    visibleRows.lanceRecursoProprio && (
-                      <tr className="bg-white">
-                        <td className="py-2 px-3.5 font-bold text-slate-700 border-r border-slate-400">
-                          Lance do Bolso (Recurso Próprio)
-                        </td>
-                        {calculatedProposals.map((p, idx) => (
-                          <td
-                            key={idx}
-                            className="py-2 px-3 text-center font-bold text-slate-800 border-r border-slate-300 last:border-r-0"
-                          >
-                            {formatBRL(p.valorLanceRecursoProprio)} (
-                            {formatPercent(p.lanceRecursoProprioPerc, 1)})
-                          </td>
-                        ))}
-                        {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-bold text-slate-900 bg-amber-50/60">
-                            {formatBRL(aggregated.lanceRecursoProprioTotal)}
-                          </td>
+                        {visibleRows.lanceRecursoProprio && (
+                          <div className="py-2.5 px-3.5 flex items-center justify-between">
+                            <span className="font-extrabold text-slate-800 w-[55%]">
+                              (+) Lance do Seu Bolso (Recurso Próprio)
+                            </span>
+                            {isSingle ? (
+                              <span className="font-black text-amber-800">
+                                {formatBRL(heroP.valorLanceRecursoProprio)} (
+                                {formatPercent(heroP.lanceRecursoProprioPerc, 1)})
+                              </span>
+                            ) : (
+                              <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-black text-amber-800">
+                                {calculatedProposals.map((p, idx) => (
+                                  <span key={idx}>
+                                    {formatBRL(p.valorLanceRecursoProprio)} (
+                                    {formatPercent(p.lanceRecursoProprioPerc, 1)})
+                                  </span>
+                                ))}
+                                {showAggCol && (
+                                  <span>{formatBRL(aggregated.lanceRecursoProprioTotal)}</span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         )}
-                      </tr>
-                    )}
 
-                  {/* Parcela Após Diluir o Lance */}
-                  {visibleRows.parcelaPosLance && (
-                    <tr className="bg-blue-50/90">
-                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Parcela Após Diluir o Lance
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2.5 px-3 text-center font-black text-[#0F4C81] text-sm sm:text-base border-r border-slate-300 last:border-r-0"
-                        >
-                          {formatBRL(p.parcelaPosLance)}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2.5 px-3 text-center font-black text-[#0F4C81] bg-blue-100/80 text-sm">
-                          {formatBRL(aggregated.parcelaPosLanceTotal)}
-                        </td>
-                      )}
-                    </tr>
+                        {visibleRows.lanceTotal && (
+                          <div className="py-2.5 px-3.5 mt-1 rounded-lg bg-slate-50 border border-slate-200 flex items-center justify-between text-[#0F4C81]">
+                            <span className="font-extrabold w-[55%]">
+                              (=) Lance Total Ofertado na Assembleia
+                            </span>
+                            {isSingle ? (
+                              <span className="font-black text-sm sm:text-base">
+                                {formatBRL(heroP.valorLanceTotal)} (
+                                {formatPercent(heroP.lanceTotalPerc, 2)})
+                              </span>
+                            ) : (
+                              <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-black">
+                                {calculatedProposals.map((p, idx) => (
+                                  <span key={idx}>
+                                    {formatBRL(p.valorLanceTotal)} (
+                                    {formatPercent(p.lanceTotalPerc, 2)})
+                                  </span>
+                                ))}
+                                {showAggCol && (
+                                  <span>
+                                    {formatBRL(aggregated.lanceTotalValor)} (
+                                    {formatPercent(aggregated.lanceTotalPercMedio, 2)})
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   )}
 
-                  {/* Valor Unitário */}
-                  {visibleRows.valorUnitario && (
-                    <tr className="bg-slate-100/90">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Valor Unitário
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {formatBRL(p.valorUnitario)}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-bold text-slate-600 bg-amber-50/60">
-                          -
-                        </td>
+                  {/* SEÇÃO 3: PLANO DE PARCELAS */}
+                  <div>
+                    <div className="bg-slate-100 rounded-md px-3.5 py-1.5 text-[11px] font-black text-[#0F4C81] uppercase tracking-wider mb-1.5">
+                      Plano de Parcelas (Antes e Depois da Contemplação)
+                    </div>
+                    <div className="divide-y divide-slate-200 text-xs sm:text-sm">
+                      {visibleRows.parcelaMensal && (
+                        <div className="py-2.5 px-3.5 flex items-center justify-between">
+                          <span className="font-semibold text-slate-700 w-[55%]">
+                            Parcela Mensal Inicial (
+                            {incluirSeguro
+                              ? `c/ Seg. ${tipoPessoa}`
+                              : 'antes da contemplação'}
+                            )
+                          </span>
+                          {isSingle ? (
+                            <span className="font-bold text-slate-800">
+                              {heroP.prazo}x de {formatBRL(heroP.parcelaMensalTotal)}
+                            </span>
+                          ) : (
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-bold text-slate-800">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>
+                                  {p.prazo}x de {formatBRL(p.parcelaMensalTotal)}
+                                </span>
+                              ))}
+                              {showAggCol && (
+                                <span>
+                                  {Math.max(...calculatedProposals.map((p) => p.prazo))}x de{' '}
+                                  {formatBRL(aggregated.parcelaMensalTotal)}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       )}
-                    </tr>
-                  )}
 
-                  {/* Qntd. Cotas */}
-                  {visibleRows.cotas && (
-                    <tr className="bg-white">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Qntd. Cotas
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {p.cotas}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {aggregated.cotasTotal}
-                        </td>
+                      {hasAnyLance && visibleRows.parcelaPosLance && (
+                        <div className="py-2.5 px-3.5 mt-1 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-between text-blue-950">
+                          <span className="font-black w-[55%]">
+                            Nova Parcela Após Contemplação (diluindo o lance)
+                          </span>
+                          {isSingle ? (
+                            <span className="font-black text-base text-blue-900">
+                              {Math.max(1, heroP.prazo - 1)}x de{' '}
+                              {formatBRL(heroP.parcelaPosLance)}
+                            </span>
+                          ) : (
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-black text-sm sm:text-base text-blue-900">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>
+                                  {Math.max(1, p.prazo - 1)}x de{' '}
+                                  {formatBRL(p.parcelaPosLance)}
+                                </span>
+                              ))}
+                              {showAggCol && (
+                                <span>
+                                  {Math.max(
+                                    1,
+                                    Math.max(...calculatedProposals.map((p) => p.prazo)) - 1
+                                  )}
+                                  x de {formatBRL(aggregated.parcelaPosLanceTotal)}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                        </div>
                       )}
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
 
-            {/* BLOCO 2: Taxa Mensalizada, Taxa Anual e Índice de Correção (Separado igual ao modelo clássico) */}
-            {(visibleRows.taxaMensalizada ||
-              visibleRows.taxaAnual ||
-              visibleRows.indiceCorrecao) && (
-              <div className="border-2 border-slate-900 mt-3.5 overflow-hidden">
-                <table className="w-full text-xs sm:text-sm border-collapse">
-                  <tbody className="divide-y divide-slate-300">
-                    {visibleRows.taxaMensalizada && (
-                      <tr className="bg-slate-100/90">
-                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
-                          Taxa Mensalizada
-                        </td>
-                        {calculatedProposals.map((p, idx) => (
-                          <td
-                            key={idx}
-                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                          >
-                            {formatPercent(p.taxaMensalizada, 2)}
-                          </td>
-                        ))}
-                        {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                            {formatPercent(aggregated.taxaMensalizadaMedia, 2)}
-                          </td>
-                        )}
-                      </tr>
-                    )}
+                      {hasAnyLance && visibleRows.prazoPosLance && (
+                        <div className="py-2.5 px-3.5 flex items-center justify-between text-slate-600">
+                          <span className="font-medium text-xs sm:text-[13px] w-[62%]">
+                            {isSingle
+                              ? `Opção alternativa: manter a parcela de ${formatBRL(
+                                  heroP.parcelaMensalTotal
+                                )} e quitar em menos tempo`
+                              : 'Opção alternativa: manter a parcela inicial e reduzir o prazo para'}
+                          </span>
+                          {isSingle ? (
+                            <span className="font-extrabold text-slate-800 text-xs sm:text-[13px]">
+                              {heroP.prazoPosLance} parcelas restantes
+                            </span>
+                          ) : (
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-extrabold text-slate-800 text-xs sm:text-[13px]">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>{p.prazoPosLance} parcelas</span>
+                              ))}
+                              {showAggCol && (
+                                <span>{aggregated.prazoPosLanceMax} parcelas</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-                    {visibleRows.taxaAnual && (
-                      <tr className="bg-white">
-                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                          Taxa Anual
-                        </td>
-                        {calculatedProposals.map((p, idx) => (
-                          <td
-                            key={idx}
-                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                          >
-                            {formatPercent(p.taxaAnual, 2)}
-                          </td>
-                        ))}
-                        {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                            {formatPercent(aggregated.taxaAnualMedia, 2)}
-                          </td>
+                  {/* SEÇÃO 4: CARACTERÍSTICAS DO GRUPO E TAXAS */}
+                  <div>
+                    <div className="bg-slate-100 rounded-md px-3.5 py-1.5 text-[11px] font-black text-[#0F4C81] uppercase tracking-wider mb-2">
+                      Características do Grupo e Taxas
+                    </div>
+                    {isSingle ? (
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center">
+                          <div className="text-[11px] font-bold text-slate-500">
+                            Taxa Mensalizada
+                          </div>
+                          <div className="text-sm sm:text-base font-black text-[#0F4C81] mt-0.5">
+                            {formatPercent(heroP.taxaMensalizada, 2)} a.m.
+                          </div>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center">
+                          <div className="text-[11px] font-bold text-slate-500">Taxa Anual</div>
+                          <div className="text-sm sm:text-base font-black text-[#0F4C81] mt-0.5">
+                            {formatPercent(heroP.taxaAnual, 2)} a.a.
+                          </div>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center">
+                          <div className="text-[11px] font-bold text-slate-500">
+                            Índice de Correção
+                          </div>
+                          <div className="text-sm sm:text-base font-black text-[#0F4C81] mt-0.5">
+                            {heroP.indiceCorrecao}
+                          </div>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-center">
+                          <div className="text-[11px] font-bold text-slate-500">
+                            Grupo / Cotas
+                          </div>
+                          <div className="text-sm sm:text-base font-black text-[#0F4C81] mt-0.5">
+                            G.{heroP.item.grupo.replace(/^0+/, '')} ({heroP.cotas}{' '}
+                            {heroP.cotas === 1 ? 'cota' : 'cotas'})
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="divide-y divide-slate-200 text-xs sm:text-sm">
+                        {visibleRows.taxaMensalizada && (
+                          <div className="py-2 px-3.5 flex items-center justify-between">
+                            <span className="font-semibold text-slate-700 w-[42%]">
+                              Taxa de Administração Mensalizada
+                            </span>
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-bold text-[#0F4C81]">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>{formatPercent(p.taxaMensalizada, 2)} a.m.</span>
+                              ))}
+                              {showAggCol && (
+                                <span>
+                                  {formatPercent(aggregated.taxaMensalizadaMedia, 2)} a.m.
+                                </span>
+                              )}
+                            </div>
+                          </div>
                         )}
-                      </tr>
+                        {visibleRows.taxaAnual && (
+                          <div className="py-2 px-3.5 flex items-center justify-between">
+                            <span className="font-semibold text-slate-700 w-[42%]">
+                              Taxa de Administração Anual
+                            </span>
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-bold text-[#0F4C81]">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>{formatPercent(p.taxaAnual, 2)} a.a.</span>
+                              ))}
+                              {showAggCol && (
+                                <span>{formatPercent(aggregated.taxaAnualMedia, 2)} a.a.</span>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                        {visibleRows.indiceCorrecao && (
+                          <div className="py-2 px-3.5 flex items-center justify-between">
+                            <span className="font-semibold text-slate-700 w-[42%]">
+                              Índice de Correção Anual
+                            </span>
+                            <div className="flex-1 grid grid-flow-col auto-cols-fr gap-2 text-center font-bold text-[#0F4C81]">
+                              {calculatedProposals.map((p, idx) => (
+                                <span key={idx}>{p.indiceCorrecao}</span>
+                              ))}
+                              {showAggCol && <span>{heroP.indiceCorrecao}</span>}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     )}
+                  </div>
 
-                    {visibleRows.indiceCorrecao && (
-                      <tr className="bg-slate-100/90">
-                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                          Índice de Correção
-                        </td>
-                        {calculatedProposals.map((p, idx) => (
-                          <td
-                            key={idx}
-                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                          >
-                            {p.indiceCorrecao}
-                          </td>
-                        ))}
-                        {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                            {calculatedProposals[0]?.indiceCorrecao}
-                          </td>
-                        )}
-                      </tr>
+                  {/* Rodapé Institucional Discreto */}
+                  <div className="pt-3 border-t border-slate-200 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 font-medium">
+                    <span>
+                      Simulação BB Consórcios ({tipoPessoa}) •{' '}
+                      {new Date().toLocaleDateString('pt-BR')}
+                    </span>
+                    {especialista.trim() && (
+                      <span className="font-bold text-[#0F4C81]">
+                        {especialista.trim()}
+                        {telefoneEspecialista.trim() ? ` • ${telefoneEspecialista.trim()}` : ''}
+                      </span>
                     )}
-                  </tbody>
-                </table>
+                  </div>
+                </div>
               </div>
-            )}
-
-            {/* BLOCO 3: Qntd. Parcelas Após Diluir o Lance (Separado no rodapé igual ao modelo clássico) */}
-            {visibleRows.prazoPosLance && (
-              <div className="border-2 border-slate-900 mt-3.5 overflow-hidden">
-                <table className="w-full text-xs sm:text-sm border-collapse">
-                  <tbody>
-                    <tr className="bg-white">
-                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
-                        Qntd. Parcelas Após Diluir o Lance
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {p.prazoPosLance}
-                        </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {aggregated.prazoPosLanceMax}
-                        </td>
-                      )}
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            )}
-
-            {/* Rodapé Institucional Discreto */}
-            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500 font-medium px-1">
-              <span>
-                Simulação BB Consórcios ({tipoPessoa}) • {new Date().toLocaleDateString('pt-BR')}
-              </span>
-              {especialista.trim() && (
-                <span className="font-bold text-[#0F4C81]">
-                  {especialista.trim()}
-                  {telefoneEspecialista.trim() ? ` • ${telefoneEspecialista.trim()}` : ''}
-                </span>
-              )}
-            </div>
-          </div>
+            );
+          })()}
 
           {/* Barra Repetida no Rodapé da Proposta Comercial (para não precisar rolar de volta ao topo) */}
           <div className="pt-5 border-t border-slate-200 print:hidden">
