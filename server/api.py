@@ -342,6 +342,7 @@ def run_simulation(params: dict) -> dict:
             "opcao": idx + 1,
             "plano": "Plano Master" if plano == "Master" else "Plano Flex (-2% Taxa)",
             "objetivo": obj_cfg["label"],
+            "cotas": c["cotas"],
             "prazoMeses": prazo_it,
             "creditoBruto": round(c["credito_bruto"], 2),
             "creditoLiquido": round(c["credito_liquido"], 2),
@@ -517,6 +518,7 @@ class ApiHandler(http.server.BaseHTTPRequestHandler):
 
         if path == "/api/v1/simulate":
             try:
+                payload["mascararGrupo"] = True  # Forçado para True: API pública NUNCA expõe o grupo
                 res = run_simulation(payload)
                 self.send_json(200, res)
             except Exception as e:

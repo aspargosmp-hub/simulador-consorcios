@@ -135,7 +135,7 @@ app.post('/api/v1/simulate', (req, res) => {
       tipoPessoa,
       incluirSeguro,
       mode,
-      mascararGrupo,
+      mascararGrupo: true, // Blindagem total: a API externa NUNCA recebe códigos de grupo, mesmo que solicite
       cliente,
     });
 

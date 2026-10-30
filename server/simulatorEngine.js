@@ -308,6 +308,7 @@ export function simulateProposal({
       opcao: index + 1,
       plano: (plano || '').toLowerCase() === 'master' ? 'Plano Master' : 'Plano Flex (-2% Taxa)',
       objetivo: objConfig.label,
+      cotas: c.cotas,
       prazoMeses: item.prazo,
       creditoBruto: Number(c.creditoBruto.toFixed(2)),
       creditoLiquido: Number(c.creditoLiquido.toFixed(2)),
