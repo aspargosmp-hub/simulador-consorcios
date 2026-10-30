@@ -837,14 +837,14 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </p>
           </div>
 
-          <div className="inline-flex rounded-xl bg-blue-950/60 p-1 border border-white/20 self-start md:self-center shrink-0">
+          <div className="inline-flex rounded-xl bg-white/15 p-1 border border-white/25 self-start md:self-center shrink-0">
             <button
               type="button"
               onClick={() => setPlanoPreferido('Flex')}
               className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition ${
                 planoPreferido === 'Flex'
                   ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                  : 'text-blue-100 hover:text-white'
+                  : 'text-white/90 hover:text-white'
               }`}
             >
               Plano Flex (-2% Taxa)
@@ -855,7 +855,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               className={`px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-extrabold transition ${
                 planoPreferido === 'Master'
                   ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                  : 'text-blue-100 hover:text-white'
+                  : 'text-white/90 hover:text-white'
               }`}
             >
               Plano Master (Taxa Cheia)
@@ -878,8 +878,8 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   onClick={() => setObjetivo(obj.id)}
                   className={`px-3 py-2.5 rounded-xl text-left transition border flex flex-col justify-between ${
                     active
-                      ? 'bg-bb-yellow text-bb-dark border-bb-yellow font-black shadow-md ring-2 ring-white/40'
-                      : 'bg-white/10 text-white border-white/15 hover:bg-white/20 font-semibold'
+                      ? 'bg-bb-yellow text-bb-dark border-bb-yellow font-black shadow-md ring-2 ring-white/50'
+                      : 'bg-white/20 hover:bg-white/30 text-white border-white/30 hover:border-white/45 shadow-xs font-bold backdrop-blur-xs'
                   }`}
                 >
                   <span className="text-lg sm:text-xl leading-none">{obj.emoji}</span>
@@ -891,10 +891,10 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         </div>
 
         {/* Passo 2: Valores do Cliente (3 Colunas Amplas e Alinhadas) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-white/15">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-white/20">
           {/* Coluna 1: Crédito Líquido */}
-          <div className="bg-white/5 p-3 rounded-xl border border-white/10">
-            <label className="block text-xs sm:text-sm text-bb-yellow font-extrabold uppercase tracking-wide">
+          <div className="bg-white/15 p-3.5 rounded-xl border border-white/25 shadow-sm backdrop-blur-xs">
+            <label className="block text-xs sm:text-sm text-bb-yellow font-black uppercase tracking-wide">
               2. Valor do Crédito Líquido
             </label>
             <span className="block text-[11px] text-blue-100 mb-2">
@@ -916,7 +916,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   className={`text-[11px] py-1 rounded-md font-extrabold text-center transition ${
                     targetLiquido === v
                       ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                      : 'bg-white/10 text-blue-100 hover:bg-white/20'
+                      : 'bg-white/20 text-white hover:bg-white/30 border border-white/25'
                   }`}
                 >
                   {v >= 1000000 ? '1 Mi' : `${v / 1000} mil`}
@@ -926,8 +926,8 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
           </div>
 
           {/* Coluna 2: Parcela Mensal Ideal */}
-          <div className="bg-white/5 p-3 rounded-xl border border-white/10">
-            <label className="block text-xs sm:text-sm text-bb-yellow font-extrabold uppercase tracking-wide">
+          <div className="bg-white/15 p-3.5 rounded-xl border border-white/25 shadow-sm backdrop-blur-xs">
+            <label className="block text-xs sm:text-sm text-bb-yellow font-black uppercase tracking-wide">
               3. Parcela Mensal Ideal
             </label>
             <span className="block text-[11px] text-blue-100 mb-2">
@@ -949,7 +949,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   className={`text-[11px] py-1 rounded-md font-extrabold text-center transition ${
                     targetMensalidadeMax === v
                       ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                      : 'bg-white/10 text-blue-100 hover:bg-white/20'
+                      : 'bg-white/20 text-white hover:bg-white/30 border border-white/25'
                   }`}
                 >
                   {v === 0 ? 'Livre' : `${(v / 1000).toLocaleString('pt-BR')} mil`}
@@ -959,8 +959,8 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
           </div>
 
           {/* Coluna 3: Lance do Bolso */}
-          <div className="bg-white/5 p-3 rounded-xl border border-white/10">
-            <label className="block text-xs sm:text-sm text-bb-yellow font-extrabold uppercase tracking-wide">
+          <div className="bg-white/15 p-3.5 rounded-xl border border-white/25 shadow-sm backdrop-blur-xs">
+            <label className="block text-xs sm:text-sm text-bb-yellow font-black uppercase tracking-wide">
               4. Lance do Bolso (Entrada)
             </label>
             <span className="block text-[11px] text-blue-100 mb-2">
@@ -982,7 +982,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   className={`text-[11px] py-1 rounded-md font-extrabold text-center transition ${
                     targetBolsoReais === v
                       ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                      : 'bg-white/10 text-blue-100 hover:bg-white/20'
+                      : 'bg-white/20 text-white hover:bg-white/30 border border-white/25'
                   }`}
                 >
                   {v === 0 ? 'Zero' : `${v / 1000} mil`}
@@ -993,8 +993,8 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         </div>
 
         {/* Barra Inferior: Opção de Lance Embutido + 2 Botões de Ação com Mesma Evidência */}
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 pt-2 border-t border-white/15">
-          <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 cursor-pointer transition">
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 pt-2 border-t border-white/20">
+          <label className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/20 border border-white/25 cursor-pointer transition">
             <input
               type="checkbox"
               checked={targetUsarEmbutido}
