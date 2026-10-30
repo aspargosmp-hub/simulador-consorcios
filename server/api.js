@@ -143,8 +143,8 @@ app.post('/api/v1/simulate', (req, res) => {
       objetivo,
       plano,
       creditoLiquido,
-      lanceBolso,
-      usarEmbutido,
+      lanceBolso: 0,
+      usarEmbutido: false, // API Simples: foco em crédito e parcela pura. Lance embutido (30%) e pós-lance são exclusivos da API Master!
       tipoPessoa,
       incluirSeguro,
       mode,

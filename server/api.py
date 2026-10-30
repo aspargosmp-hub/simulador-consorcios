@@ -535,7 +535,9 @@ class ApiHandler(http.server.BaseHTTPRequestHandler):
 
         if path == "/api/v1/simulate":
             try:
-                payload["mascararGrupo"] = True  # Forçado para True: API pública NUNCA expõe o grupo
+                payload["mascararGrupo"] = True  # Forçado para True: API Simples NUNCA expõe o grupo
+                payload["usarEmbutido"] = False  # API Simples: apenas crédito nominal e parcela pura! Lance embutido é exclusivo da API Master!
+                payload["lanceBolso"] = 0
                 res = run_simulation(payload)
                 self.send_json(200, res)
             except Exception as e:

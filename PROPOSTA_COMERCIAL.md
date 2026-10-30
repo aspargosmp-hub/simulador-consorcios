@@ -25,10 +25,10 @@ Para atender com máxima segurança aos diferentes momentos da operação da sua
 │      (Captação de Leads & Comercial)         │       (Operacional & Emissão Contratual)     │
 ├──────────────────────────────────────────────┼──────────────────────────────────────────────┤
 │ • Simulação Caixa-Preta (Sem Grupos)         │ • Zero Troca de Telas: Tudo direto no seu CRM│
-│ • Parcela Inicial e Parcela Pós-Lance        │ • Acesso aos Códigos de Grupo e Bens BB      │
-│ • Lance Embutido (30%) e Lance do Bolso      │ • Próxima Assembleia e Histórico 12m         │
-│ • Texto Formatado para WhatsApp              │ • Vagas em Tempo Real p/ Emissão Imediata    │
-│ • 100% Blindada contra Desvio de Leads       │ • Trava Anti-Varredura / Anti-Dump Ativa     │
+│ • Parcela Inicial e Carta Nominal Pura       │ • Lance Embutido (30%) e Parcela Reduzida    │
+│ • Simulação Rápida para Topo de Funil        │ • Acesso aos Códigos de Grupo e Bens BB      │
+│ • Texto Formatado para WhatsApp              │ • Próxima Assembleia e Histórico 12m         │
+│ • 100% Blindada contra Desvio de Leads       │ • Vagas em Tempo Real p/ Emissão Imediata    │
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┘
 ```
 
@@ -43,8 +43,9 @@ Para atender com máxima segurança aos diferentes momentos da operação da sua
 | **1. MOTOR DE CÁLCULO FINANCEIRO & PROPOSTAS** | | |
 | 9 Segmentos BB (Agro, Pesados, Imóveis, Autos, etc.) | ✅ 9 Segmentos Ativos | ✅ 9 Segmentos Ativos |
 | Tabelas de Taxa Administrativa | ✅ Flex (-2% Taxa) & Master | ✅ Flex (-2% Taxa) & Master |
-| Lance Embutido (até 30%) & Lance do Bolso | ✅ Cálculo Automático | ✅ Cálculo Automático |
-| Parcela Pós-Lance Reduzida | ✅ Incluso em Tempo Real | ✅ Incluso em Tempo Real |
+| Simulação de Crédito Nominal & Parcela Pura | ✅ Incluso em Tempo Real | ✅ Incluso em Tempo Real |
+| Projeção de Lance Embutido (até 30% da carta) | ❌ Não disponível *(Apenas carta pura)* | 🎯 **Engenharia de Lance Embutido (30%)** |
+| Cálculo de Parcela Pós-Lance Reduzida | ❌ Não disponível | 📉 **Recálculo Instantâneo da Parcela** |
 | Multi-Cenários Comparativos | ✅ 1 a 3 Propostas Ideais | ✅ 1 a 3 Propostas Ideais |
 | Copy Pronta para WhatsApp | 💬 Foco em Atração & Parcela | 📑 Foco em Fechamento & Formal |
 | **2. INTELIGÊNCIA CONTRATUAL & FORMALIZAÇÃO** | | |

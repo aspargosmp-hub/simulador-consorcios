@@ -33,7 +33,7 @@ Authorization: Bearer SUA_CHAVE_AQUI
 ## 📡 2. Endpoints
 
 ### A. API Comercial — `POST /api/v1/simulate`
-Simula automaticamente as melhores cotas sem entregar informações do grupo do banco.
+Simula automaticamente as melhores cotas sem entregar metadados contratuais e focada em crédito nominal e parcela pura (a engenharia de lance embutido de até 30% e parcela pós-lance é exclusiva do Plano Master).
 
 * **Headers:** `x-api-key: <CHAVE_COMERCIAL>`
 * **Body (JSON):**
@@ -42,14 +42,12 @@ Simula automaticamente as melhores cotas sem entregar informações do grupo do 
   "objetivo": "TRATOR",
   "plano": "Flex",
   "creditoLiquido": 350000,
-  "lanceBolso": 30000,
-  "usarEmbutido": true,
   "tipoPessoa": "PF",
   "mode": "compare3"
 }
 ```
 
-* **Exemplo de Retorno (Apenas Resultados Financeiros):**
+* **Exemplo de Retorno (Apenas Resultados Financeiros Básicos):**
 ```json
 {
   "success": true,
@@ -58,15 +56,15 @@ Simula automaticamente as melhores cotas sem entregar informações do grupo do 
       "opcao": 1,
       "plano": "Plano Flex (-2% Taxa)",
       "objetivo": "Trator / Agrícola",
-      "cotas": 4,
+      "cotas": 3,
       "prazoMeses": 82,
-      "creditoBruto": 499872.0,
-      "creditoLiquido": 349910.4,
-      "lanceEmbutido": { "percentual": 30.0, "valor": 149961.6 },
-      "lanceBolso": { "percentual": 6.0, "valor": 29992.32 },
-      "lanceTotal": { "percentual": 36.0, "valor": 179953.92 },
-      "parcelaMensalSemLance": 7796.48,
-      "parcelaPosLanceEstimada": 5518.22,
+      "creditoBruto": 374904.0,
+      "creditoLiquido": 374904.0,
+      "lanceEmbutido": { "percentual": 0.0, "valor": 0.0 },
+      "lanceBolso": { "percentual": 0.0, "valor": 0.0 },
+      "lanceTotal": { "percentual": 0.0, "valor": 0.0 },
+      "parcelaMensalSemLance": 5847.36,
+      "parcelaPosLanceEstimada": 5847.36,
       "taxas": {
         "taxaAdmTotal": 26.9,
         "taxaMensalizada": 0.33,
