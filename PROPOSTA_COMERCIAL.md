@@ -58,20 +58,20 @@ Para viabilizar a implantação tecnológica, homologação dos endpoints e sust
 
 #### 🔹 OPÇÃO A: PLANO API SIMPLES (Comercial / Captação de Leads)
 *Recomendado para imobiliárias, concessionárias, revendas e canais digitais voltados à conversão de leads.*
-* **Taxa de Licenciamento, Setup & Onboarding Tecnológico:** **R$ 13.000,00** *(Taxa Única)*
-* **Manutenção, Atualização Diária & Suporte Contínuo:** **R$ 490,00 / mês**
+* **Taxa de Licenciamento, Setup & Onboarding Tecnológico:** **R$ 19.000,00** *(Taxa Única — no ato da assinatura)*
+* **Manutenção, Atualização Diária & Suporte Contínuo:** **R$ 790,00 / mês**
 
 ---
 
 #### 🔹 OPÇÃO B: PLANO API MASTER (Operacional & Emissão Formal)
 *Recomendado para grandes corretoras, correspondentes bancários e escritórios autorizados a formalizar cotas.*
-* **Taxa de Licenciamento, Setup & Onboarding Master:** **R$ 16.000,00** *(Taxa Única)*
-* **Manutenção, Atualização Diária & Suporte Contínuo:** **R$ 990,00 / mês**
+* **Taxa de Licenciamento, Setup & Onboarding Master:** **R$ 25.000,00** *(Taxa Única — no ato da assinatura)*
+* **Manutenção, Atualização Diária & Suporte Contínuo:** **R$ 1.490,00 / mês**
 
 > [!IMPORTANT]
 > **Condições de Pagamento & Faturamento:**  
 > • **Taxa de Licenciamento & Setup Tecnológico:** Pagamento integral **no ato da assinatura do contrato** (via PIX ou Transferência Bancária / TED);  
-> • **Início da Mensalidade de Manutenção:** O primeiro vencimento da mensalidade (R$ 490,00 ou R$ 990,00 conforme o plano) ocorre **30 (trinta) dias após o pagamento da taxa de licenciamento**, garantindo o primeiro mês de operação com suporte completo.
+> • **Início da Mensalidade de Manutenção:** O primeiro vencimento da mensalidade (R$ 790,00 ou R$ 1.490,00 conforme o plano) ocorre **30 (trinta) dias após o pagamento da taxa de licenciamento**, garantindo o primeiro mês de operação com suporte completo.
 
 ---
 
@@ -81,7 +81,7 @@ O valor da solução se justifica com extrema rapidez pelo ticket médio do seto
 
 * **Exemplo Real:** Em uma carta de Imóvel, Caminhão ou Trator de R$ 500.000,00, a comissão média gerada para a corretora/parceiro gira entre **R$ 12.000,00 e R$ 20.000,00**.
 * **Retorno Imediato:** **Uma única venda adicional** gerada pela velocidade e precisão do simulador já paga **100% da Taxa de Licenciamento Inicial**.
-* A mensalidade (**R$ 490 ou R$ 990**) representa uma fração mínima do resultado operacional de qualquer empresa comercial do segmento.
+* A mensalidade (**R$ 790 ou R$ 1.490**) representa uma fração mínima do resultado operacional de qualquer empresa comercial do segmento.
 
 ---
 
