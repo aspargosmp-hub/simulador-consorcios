@@ -129,8 +129,49 @@ Devolve diretamente a mensagem formatada para WhatsApp:
 
 ---
 
-## 🛡️ 3. Regras de Segurança e Proteção de Dados
+## ⚠️ 3. Política de Uso Aceitável, Monitoramento Anti-Scraping e Riscos Legais
 
-1. **Zero Listagem de Tabelas:** A API processa exclusivamente simulações individuais. Não há rotas para exportação em massa de tabelas.
-2. **Proteção Anti-Varredura:** Se uma mesma chave tentar consultar mais de 6 grupos distintos em menos de 1 minuto, a requisição é bloqueada automaticamente (`HTTP 429`).
-3. **Limite de Taxa (Rate Limit):** Limite de 30 chamadas por minuto para simulações comerciais.
+A API do Motor de Consórcios é um serviço de inteligência transacional sob demanda. Para garantir a segurança dos dados, a disponibilidade do cluster e a integridade da propriedade intelectual, **todas as requisições são ativamente auditadas em tempo real**.
+
+### A. Condutas Estritamente Proibidas (Tolerância Zero)
+
+1. **Varredura Automatizada & Crawling:** É expressamente proibido rodar scripts, bots ou rotinas em looping com o objetivo de iterar valores, prazos ou códigos de grupos para mapear o catálogo completo de cotas.
+2. **Raspagem de Dados (*Data Scraping*) e Exportação (*Data Dumping*):** Não é permitida a extração massiva de dados para armazenamento em bancos locais, planilhas ou plataformas externas.
+3. **Engenharia Reversa:** Tentativas de descompilar, analisar parâmetros estatísticos ou inferir a lógica interna de parametrização e precificação do banco.
+4. **Sublicenciamento ou Repasse de Chave:** Cada chave de API é intransferível e vinculada ao CNPJ do cliente signatário. É proibido expor as chaves em repositórios públicos (GitHub, GitLab), frontends desprotegidos ou ceder acesso a terceiros não autorizados.
+
+---
+
+### B. Mecanismos de Detecção e Telemetria em Tempo Real
+
+* **Heurística Comportamental Anti-Dump:** O cluster monitora a dispersão e a frequência das chamadas. Se uma mesma chave de acesso consultar **mais de 6 grupos distintos em menos de 60 segundos**, ou demonstrar padrão característico de script de raspagem, o sistema ativa imediatamente o gatilho de defesa.
+* **Rate Limiting Restritivo:** O teto de simulações comerciais é fixado em 30 requisições por minuto por chave/IP.
+* **Trilha Forense Imutável:** Todas as chamadas geram registros com *timestamp*, endereço IP de origem, *User-Agent*, parâmetros enviados e assinatura digital da requisição, arquivados para comprovação pericial.
+
+---
+
+### C. Consequências do Descumprimento
+
+A identificação de tentativas de raspagem, dump ou uso indevido acarreta consequências automáticas imediatas:
+
+#### 1. Consequências Técnicas Imediatas
+* **Revogação Instantânea da Chave de Acesso (`HTTP 429 / HTTP 403`):** O tráfego de produção do cliente é interrompido em milissegundos pelo gateway, sem aviso prévio.
+* **Bloqueio de IP em Nível de Firewall (WAF):** O endereço IP e a faixa de rede do agressor entram em quarentena automática permanente.
+* **Suspensão dos Ambientes de Homologação e Produção.**
+
+#### 2. Consequências Jurídicas e Contratuais
+* **Rescisão Imediata do Contrato por Justa Causa:** Perda integral de quaisquer valores pagos a título de Taxa de Licenciamento, Setup e Mensalidades, sem direito a reembolso ou indenização.
+* **Execução da Cláusula Penal Indenizatória:** Cobrança imediata da multa rescisória fixada no Contrato de Prestação de Serviços por violação grave de segurança.
+* **Medidas Judiciais Cabíveis:** Ajuizamento de ação de reparação por perdas e danos e apuração de responsabilidade civil e criminal por concorrência desleal e infração de direitos de software, nos termos da:
+  * **Lei nº 9.609/1998** (Lei do Software);
+  * **Lei nº 9.279/1996** (Lei da Propriedade Industrial - Art. 195, Concorrência Desleal e Violação de Segredo de Negócio);
+  * **Lei nº 12.965/2014** (Marco Civil da Internet).
+
+---
+
+### D. Boas Práticas Recomendadas aos Desenvolvedores
+
+Para operar em total conformidade e evitar bloqueios acidentais:
+* **Integração Orientada ao Usuário:** Dispare a API apenas quando o usuário final realizar uma ação real (ex: submissão de formulário no site, clique no simulador ou envio de mensagem no chatbot do WhatsApp).
+* **Tratamento de Exceções:** Implemente tratamento para os códigos `401` (chave inválida), `403` (permissão insuficiente) e `429` (limite excedido) no seu código.
+* **Armazenamento Seguro:** Mantenha sua `x-api-key` armazenada exclusivamente em variáveis de ambiente no seu backend (`process.env.CONSORCIO_API_KEY`). **Nunca exponha sua chave no código JavaScript do frontend do cliente.**

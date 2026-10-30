@@ -101,8 +101,8 @@ O valor da solução se justifica com extrema rapidez pelo ticket médio do seto
 ### 6. SEGURANÇA E ACORDO DE NÍVEL DE SERVIÇO (SLA)
 
 * **Disponibilidade da API (Uptime):** 99.5% garantido em contrato.
-* **Segurança da Chave:** Chave privada criptografada de uso exclusivo da CONTRATANTE.
-* **Política Anti-Dump:** Bloqueio automatizado de tentativas de extração em lote para preservar a integridade do ecossistema.
+* **Segurança da Chave:** Chave privada criptografada de uso exclusivo e intransferível da CONTRATANTE.
+* **Política de Uso Aceitável & Proteção Anti-Scraping:** O serviço destina-se exclusivamente a consultas transacionais sob demanda. Tentativas de varredura automatizada, raspagem de dados (*scraping*), exportação massiva (*dumping*) ou engenharia reversa das tabelas de consórcio acarretam revogação imediata da chave de acesso (`HTTP 429 / 403`), rescisão contratual imediata por justa causa (sem devolução da taxa de licenciamento) e aplicação de penalidades cíveis e criminais cabíveis (Leis nº 9.609/1998 e nº 9.279/1996).
 * **Canal de Atendimento:** Suporte técnico direto aos desenvolvedores via WhatsApp e e-mail com resposta em até 2 horas úteis.
 
 ---
