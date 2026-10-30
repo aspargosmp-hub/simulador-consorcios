@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes border-beam-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam-spin 3s linear infinite;
+}
+
 @media print {
   body {
     background: #ffffff !important;

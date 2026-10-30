@@ -1009,20 +1009,41 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
           </label>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 shrink-0">
-            <button
-              type="submit"
-              className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-white hover:bg-slate-100 text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide shadow-md hover:shadow-lg border border-white/40 active:scale-[0.98] transition-all"
-            >
-              Simular 1 Proposta Ideal
-            </button>
-            <button
-              type="button"
-              onClick={() => runProposalBuilder('compare3')}
-              className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-white hover:bg-slate-100 text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide shadow-md hover:shadow-lg border border-white/40 active:scale-[0.98] transition-all"
-            >
-              Simular 3 Propostas
-            </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 shrink-0">
+            {/* Botão 1: Simular 1 Proposta Ideal com Contorno de Brilho Verde Giratório */}
+            <div className="relative p-[2.5px] rounded-xl overflow-hidden shadow-[0_0_18px_rgba(16,185,129,0.4)] hover:shadow-[0_0_26px_rgba(16,185,129,0.65)] bg-slate-300/30 transition-all">
+              <span
+                className="absolute inset-[-200%] animate-border-beam pointer-events-none"
+                style={{
+                  background:
+                    'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 60%, #059669 75%, #10b981 88%, #6ee7b7 97%, transparent 100%)',
+                }}
+              />
+              <button
+                type="submit"
+                className="relative z-10 w-full h-full inline-flex items-center justify-center px-5 py-3 rounded-[10px] bg-white hover:bg-slate-50 text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide active:scale-[0.98] transition-all"
+              >
+                Simular 1 Proposta Ideal
+              </button>
+            </div>
+
+            {/* Botão 2: Simular 3 Propostas com Contorno de Brilho Verde Giratório */}
+            <div className="relative p-[2.5px] rounded-xl overflow-hidden shadow-[0_0_18px_rgba(16,185,129,0.4)] hover:shadow-[0_0_26px_rgba(16,185,129,0.65)] bg-slate-300/30 transition-all">
+              <span
+                className="absolute inset-[-200%] animate-border-beam pointer-events-none"
+                style={{
+                  background:
+                    'conic-gradient(from 0deg at 50% 50%, transparent 0%, transparent 60%, #059669 75%, #10b981 88%, #6ee7b7 97%, transparent 100%)',
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => runProposalBuilder('compare3')}
+                className="relative z-10 w-full h-full inline-flex items-center justify-center px-5 py-3 rounded-[10px] bg-white hover:bg-slate-50 text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide active:scale-[0.98] transition-all"
+              >
+                Simular 3 Propostas
+              </button>
+            </div>
           </div>
         </div>
 
