@@ -1581,17 +1581,17 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
       {calculatedProposals.length > 0 ? (
         <div className="bg-white rounded-2xl shadow-md border border-slate-200 p-5 sm:p-6 print:p-0 print:shadow-none print:border-none space-y-4">
           {/* Barra Superior de Compartilhamento da Simulação */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200 print:hidden">
+          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-4 border-b border-slate-200 print:hidden">
             <div>
-              <h3 className="text-lg sm:text-xl font-black text-bb-dark uppercase tracking-tight">
+              <h2 className="text-lg sm:text-xl font-black text-bb-dark uppercase tracking-tight whitespace-nowrap">
                 Compartilhe a Simulação
-              </h3>
+              </h2>
               <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                Personalize os dados abaixo e envie a proposta pronta para o cliente via WhatsApp ou imagem.
+                Personalize os dados abaixo e envie a proposta pronta para o cliente via WhatsApp ou imagem em alta resolução.
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0 self-start xl:self-center">
               <button
                 type="button"
                 onClick={handleSave}
