@@ -182,7 +182,7 @@ export function App() {
     <div className="min-h-screen flex flex-col bg-slate-100">
       {/* Cabeçalho Branco Limpo com Faixa Inferior Amarela e Logo Transparente */}
       <header className="bg-white border-b-4 border-[#FFCC00] shadow-md print:hidden">
-        <div className="max-w-7xl mx-auto px-4 py-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <img
               src="./logo-bb-consorcios.png"
@@ -208,18 +208,18 @@ export function App() {
             </div>
           </div>
 
-          {/* Menu de Navegação em Dock com Mais Profundidade e Destaque */}
-          <nav className="inline-flex flex-wrap items-center gap-1.5 bg-slate-200/80 border border-slate-300/80 p-1.5 rounded-2xl shadow-inner self-start lg:self-center">
+          {/* Menu de Navegação em Dock: Nunca quebra em 2 linhas (Sem wrap) */}
+          <nav className="inline-flex items-center gap-1.5 bg-slate-200/80 border border-slate-300/80 p-1.5 rounded-2xl shadow-inner overflow-x-auto max-w-full shrink-0 self-start xl:self-center">
             <button
               onClick={() => setActiveTab('simulador')}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap shrink-0 transition ${
                 activeTab === 'simulador'
                   ? 'bg-[#0038A8] text-white shadow-md font-black'
                   : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <Calculator
-                className={`w-4 h-4 ${
+                className={`w-4 h-4 shrink-0 ${
                   activeTab === 'simulador' ? 'text-[#FFCC00]' : 'text-slate-500'
                 }`}
               />
@@ -228,14 +228,14 @@ export function App() {
 
             <button
               onClick={() => setActiveTab('consorcios')}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap shrink-0 transition ${
                 activeTab === 'consorcios'
                   ? 'bg-[#0038A8] text-white shadow-md font-black'
                   : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <Table2
-                className={`w-4 h-4 ${
+                className={`w-4 h-4 shrink-0 ${
                   activeTab === 'consorcios' ? 'text-[#FFCC00]' : 'text-slate-500'
                 }`}
               />
@@ -244,14 +244,14 @@ export function App() {
 
             <button
               onClick={() => setActiveTab('assembleias')}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap shrink-0 transition ${
                 activeTab === 'assembleias'
                   ? 'bg-[#0038A8] text-white shadow-md font-black'
                   : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <BarChart3
-                className={`w-4 h-4 ${
+                className={`w-4 h-4 shrink-0 ${
                   activeTab === 'assembleias' ? 'text-[#FFCC00]' : 'text-slate-500'
                 }`}
               />
@@ -260,18 +260,29 @@ export function App() {
 
             <button
               onClick={() => setActiveTab('historico')}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-extrabold whitespace-nowrap shrink-0 transition ${
                 activeTab === 'historico'
                   ? 'bg-[#0038A8] text-white shadow-md font-black'
                   : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <FolderClock
-                className={`w-4 h-4 ${
+                className={`w-4 h-4 shrink-0 ${
                   activeTab === 'historico' ? 'text-[#FFCC00]' : 'text-slate-500'
                 }`}
               />
-              Salvas {savedSimulations.length > 0 ? `(${savedSimulations.length})` : ''}
+              <span>Salvas</span>
+              {savedSimulations.length > 0 && (
+                <span
+                  className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[11px] font-black leading-none ${
+                    activeTab === 'historico'
+                      ? 'bg-[#FFCC00] text-[#002454]'
+                      : 'bg-[#0038A8] text-white shadow-xs'
+                  }`}
+                >
+                  {savedSimulations.length}
+                </span>
+              )}
             </button>
           </nav>
         </div>
