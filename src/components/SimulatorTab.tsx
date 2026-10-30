@@ -13,7 +13,6 @@ import {
   Save,
   Shield,
   SlidersHorizontal,
-  Target,
   TrendingDown,
   User,
 } from 'lucide-react';
@@ -1014,17 +1013,15 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 shrink-0">
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide shadow-md transition"
+              className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-white hover:bg-slate-100 text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide shadow-md hover:shadow-lg border border-white/40 active:scale-[0.98] transition-all"
             >
-              <Target className="w-4 h-4 shrink-0" />
               Simular 1 Proposta Ideal
             </button>
             <button
               type="button"
               onClick={() => runProposalBuilder('compare3')}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-blue-50 text-bb-dark border-2 border-bb-yellow text-xs sm:text-sm font-black uppercase tracking-wide shadow-md transition"
+              className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-white hover:bg-slate-100 text-bb-dark text-xs sm:text-sm font-black uppercase tracking-wide shadow-md hover:shadow-lg border border-white/40 active:scale-[0.98] transition-all"
             >
-              <Layers className="w-4 h-4 text-bb-blue shrink-0" />
               Simular 3 Propostas
             </button>
           </div>
