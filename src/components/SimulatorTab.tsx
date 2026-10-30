@@ -1751,14 +1751,14 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
           )}
 
-          {/* ÁREA DE PRINT LIMPA E CENTRALIZADA (ESTILO EXECUTIVO BB CONSÓRCIOS) */}
+          {/* ÁREA DE PRINT LIMPA E CENTRALIZADA (ESTILO EXECUTIVO BB CONSÓRCIOS - PLANILHA REFINADA) */}
           <div
-            className={`mx-auto bg-white p-4 sm:p-6 rounded-xl border border-slate-200 shadow-sm print:shadow-none print:border-none ${
-              calculatedProposals.length === 1 ? 'max-w-[680px]' : 'max-w-[960px]'
+            className={`mx-auto bg-white p-4 sm:p-6 rounded-2xl border border-slate-300 shadow-md print:shadow-none print:border-none ${
+              calculatedProposals.length === 1 ? 'max-w-[720px]' : 'max-w-[980px]'
             }`}
           >
             {/* Topo Amarelo Ouro Oficial BB Consórcios */}
-            <div className="bg-[#FFCC00] rounded-lg py-3.5 px-6 flex items-center justify-center shadow-sm mb-2">
+            <div className="bg-[#FFCC00] rounded-xl py-3 px-6 flex items-center justify-center shadow-sm mb-2.5">
               <img
                 src="./logo-bb-consorcios.png"
                 alt="BB Consórcios"
@@ -1767,15 +1767,17 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
 
             {/* Sub-barra Azul Escuro Institucional ("Modalidade: ...") */}
-            <div className="bg-[#0F4C81] text-white px-4 py-2.5 border-2 border-slate-900 border-b-0 flex flex-wrap items-center justify-between gap-2">
-              <div className="font-extrabold text-sm tracking-tight">
+            <div className="bg-gradient-to-r from-[#002D62] to-[#0F4C81] text-white px-4 py-2.5 rounded-lg flex flex-wrap items-center justify-between gap-2 mb-2.5">
+              <div className="font-extrabold text-xs sm:text-sm tracking-wide uppercase">
                 Modalidade:{' '}
                 {MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality}
                 {incluirSeguro ? ` • Seguro ${tipoPessoa}` : ''}
               </div>
               <div className="flex items-center gap-3 text-xs">
                 {cliente.trim() && (
-                  <span className="font-bold text-[#FFCC00]">Cliente: {cliente.trim()}</span>
+                  <span className="font-bold text-[#FFCC00]">
+                    CLIENTE: {cliente.trim().toUpperCase()}
+                  </span>
                 )}
                 {calculatedProposals.length > 1 && (
                   <span className="text-blue-100 font-semibold">
@@ -1786,24 +1788,24 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
 
             {/* BLOCO 1: Dados Principais do Grupo, Crédito e Lance */}
-            <div className="border-2 border-slate-900 overflow-hidden">
+            <div className="border border-slate-300 rounded-xl overflow-hidden shadow-xs mb-3 bg-white">
               <table className="w-full text-xs sm:text-sm border-collapse">
-                <tbody className="divide-y divide-slate-300">
+                <tbody className="divide-y divide-slate-200">
                   {/* Linha Grupo */}
                   <tr className="bg-white">
-                    <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
+                    <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] w-[46%] border-r border-slate-200">
                       Grupo
                     </td>
                     {calculatedProposals.map((p, idx) => (
                       <td
                         key={idx}
-                        className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                        className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-200 last:border-r-0"
                       >
                         {p.item.grupo.replace(/^0+/, '') || p.item.grupo}
                       </td>
                     ))}
                     {agrupar && calculatedProposals.length > 1 && (
-                      <td className="py-2 px-3 text-center font-extrabold text-bb-dark bg-amber-50">
+                      <td className="py-2.5 px-3 text-center font-extrabold text-bb-dark bg-amber-50">
                         Soma ({aggregated.cotasTotal} cotas)
                       </td>
                     )}
@@ -1812,20 +1814,20 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   {/* Se houver Lance Embutido, exibe Valor da Carta Bruto e Lance Embutido para transparência total */}
                   {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
                     visibleRows.creditoBruto && (
-                      <tr className="bg-slate-100/90">
-                        <td className="py-2 px-3.5 font-bold text-[#0F4C81] border-r border-slate-400">
+                      <tr className="bg-[#F8FAFC]">
+                        <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                           Valor da Carta (Bruto)
                         </td>
                         {calculatedProposals.map((p, idx) => (
                           <td
                             key={idx}
-                            className="py-2 px-3 text-center font-bold text-slate-700 border-r border-slate-300 last:border-r-0"
+                            className="py-2.5 px-3 text-center font-bold text-slate-800 border-r border-slate-200 last:border-r-0"
                           >
                             {formatBRL(p.creditoBruto)}
                           </td>
                         ))}
                         {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-bold text-slate-800 bg-amber-50/60">
+                          <td className="py-2.5 px-3 text-center font-bold text-slate-800 bg-amber-50/60">
                             {formatBRL(aggregated.creditoBrutoTotal)}
                           </td>
                         )}
@@ -1835,13 +1837,13 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
                     visibleRows.lanceEmbutido && (
                       <tr className="bg-white">
-                        <td className="py-2 px-3.5 font-bold text-indigo-900 border-r border-slate-400">
+                        <td className="py-2.5 px-3.5 font-bold text-indigo-700 w-[46%] border-r border-slate-200">
                           (-) Lance Embutido da Carta
                         </td>
                         {calculatedProposals.map((p, idx) => (
                           <td
                             key={idx}
-                            className="py-2 px-3 text-center font-bold text-indigo-800 border-r border-slate-300 last:border-r-0"
+                            className="py-2.5 px-3 text-center font-bold text-indigo-700 border-r border-slate-200 last:border-r-0"
                           >
                             {p.lanceEmbutidoPerc > 0
                               ? `${formatBRL(p.valorLanceEmbutido)} (${formatPercent(
@@ -1852,7 +1854,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                           </td>
                         ))}
                         {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-bold text-indigo-900 bg-amber-50/60">
+                          <td className="py-2.5 px-3 text-center font-bold text-indigo-700 bg-amber-50/60">
                             {formatBRL(aggregated.lanceEmbutidoTotal)}
                           </td>
                         )}
@@ -1861,20 +1863,20 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
                   {/* Crédito a Liberar */}
                   {visibleRows.creditoLiquido && (
-                    <tr className="bg-emerald-50/90">
-                      <td className="py-2.5 px-3.5 font-extrabold text-emerald-900 border-r border-slate-400">
+                    <tr className="bg-[#ECFDF5] border-y border-emerald-200">
+                      <td className="py-2.5 px-3.5 font-black text-emerald-900 w-[46%] border-r border-slate-200">
                         Crédito a Liberar
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2.5 px-3 text-center font-black text-emerald-800 text-sm sm:text-base border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-black text-emerald-700 text-sm sm:text-base border-r border-slate-200 last:border-r-0"
                         >
                           {formatBRL(p.creditoLiquido)}
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2.5 px-3 text-center font-black text-emerald-900 bg-emerald-100 text-sm sm:text-base">
+                        <td className="py-2.5 px-3 text-center font-black text-emerald-800 bg-emerald-100 text-sm sm:text-base">
                           {formatBRL(aggregated.creditoLiquidoTotal)}
                         </td>
                       )}
@@ -1884,19 +1886,19 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   {/* Qntd. Parcelas em Meses */}
                   {visibleRows.prazo && (
                     <tr className="bg-white">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                      <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                         Qntd. Parcelas em Meses
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                         >
                           {p.prazo}
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                        <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
                           {Math.max(...calculatedProposals.map((p) => p.prazo))}
                         </td>
                       )}
@@ -1905,20 +1907,20 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
                   {/* Parcela Mensal */}
                   {visibleRows.parcelaMensal && (
-                    <tr className="bg-slate-100/90">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                    <tr className="bg-[#F8FAFC]">
+                      <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                         Parcela Mensal{incluirSeguro ? ` (c/ Seg. ${tipoPessoa})` : ''}
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                         >
                           {formatBRL(p.parcelaMensalTotal)}
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                        <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
                           {formatBRL(aggregated.parcelaMensalTotal)}
                         </td>
                       )}
@@ -1928,19 +1930,19 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   {/* Lance Proposto (%) */}
                   {visibleRows.lanceTotal && (
                     <tr className="bg-white">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                      <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                         Lance Proposto
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                         >
                           {formatPercent(p.lanceTotalPerc, 2)}
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                        <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
                           {formatPercent(aggregated.lanceTotalPercMedio, 2)}
                         </td>
                       )}
@@ -1949,20 +1951,20 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
                   {/* Valor do Lance (R$) */}
                   {visibleRows.lanceTotal && (
-                    <tr className="bg-slate-100/90">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                    <tr className="bg-[#F8FAFC]">
+                      <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                         Valor do Lance
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                         >
                           {formatBRL(p.valorLanceTotal)}
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                        <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
                           {formatBRL(aggregated.lanceTotalValor)}
                         </td>
                       )}
@@ -1975,20 +1977,20 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   ) &&
                     visibleRows.lanceRecursoProprio && (
                       <tr className="bg-white">
-                        <td className="py-2 px-3.5 font-bold text-slate-700 border-r border-slate-400">
+                        <td className="py-2.5 px-3.5 font-extrabold text-amber-800 w-[46%] border-r border-slate-200">
                           Lance do Bolso (Recurso Próprio)
                         </td>
                         {calculatedProposals.map((p, idx) => (
                           <td
                             key={idx}
-                            className="py-2 px-3 text-center font-bold text-slate-800 border-r border-slate-300 last:border-r-0"
+                            className="py-2.5 px-3 text-center font-black text-amber-800 border-r border-slate-200 last:border-r-0"
                           >
                             {formatBRL(p.valorLanceRecursoProprio)} (
                             {formatPercent(p.lanceRecursoProprioPerc, 1)})
                           </td>
                         ))}
                         {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-bold text-slate-900 bg-amber-50/60">
+                          <td className="py-2.5 px-3 text-center font-black text-amber-800 bg-amber-50/60">
                             {formatBRL(aggregated.lanceRecursoProprioTotal)}
                           </td>
                         )}
@@ -1997,65 +1999,66 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
                   {/* Parcela Após Diluir o Lance */}
                   {visibleRows.parcelaPosLance && (
-                    <tr className="bg-blue-50/90">
-                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                    <tr className="bg-[#EFF6FF] border-y border-blue-200">
+                      <td className="py-2.5 px-3.5 font-black text-blue-950 w-[46%] border-r border-slate-200">
                         Parcela Após Diluir o Lance
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2.5 px-3 text-center font-black text-[#0F4C81] text-sm sm:text-base border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-black text-blue-800 text-sm sm:text-base border-r border-slate-200 last:border-r-0"
                         >
                           {formatBRL(p.parcelaPosLance)}
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2.5 px-3 text-center font-black text-[#0F4C81] bg-blue-100/80 text-sm">
+                        <td className="py-2.5 px-3 text-center font-black text-blue-900 bg-blue-100/80 text-sm sm:text-base">
                           {formatBRL(aggregated.parcelaPosLanceTotal)}
                         </td>
                       )}
                     </tr>
                   )}
 
-                  {/* Valor Unitário */}
-                  {visibleRows.valorUnitario && (
-                    <tr className="bg-slate-100/90">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
-                        Valor Unitário
-                      </td>
-                      {calculatedProposals.map((p, idx) => (
-                        <td
-                          key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
-                        >
-                          {formatBRL(p.valorUnitario)}
+                  {/* Valor Unitário (Ocultado quando for apenas 1 cota para evitar repetição) */}
+                  {calculatedProposals.some((p) => p.cotas > 1) &&
+                    visibleRows.valorUnitario && (
+                      <tr className="bg-[#F8FAFC]">
+                        <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
+                          Valor Unitário
                         </td>
-                      ))}
-                      {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-bold text-slate-600 bg-amber-50/60">
-                          -
-                        </td>
-                      )}
-                    </tr>
-                  )}
+                        {calculatedProposals.map((p, idx) => (
+                          <td
+                            key={idx}
+                            className="py-2.5 px-3 text-center font-bold text-slate-800 border-r border-slate-200 last:border-r-0"
+                          >
+                            {formatBRL(p.valorUnitario)}
+                          </td>
+                        ))}
+                        {agrupar && calculatedProposals.length > 1 && (
+                          <td className="py-2.5 px-3 text-center font-bold text-slate-600 bg-amber-50/60">
+                            -
+                          </td>
+                        )}
+                      </tr>
+                    )}
 
                   {/* Qntd. Cotas */}
                   {visibleRows.cotas && (
                     <tr className="bg-white">
-                      <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] w-[46%] border-r border-slate-200">
                         Qntd. Cotas
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                         >
-                          {p.cotas}
+                          {p.cotas} {p.cotas === 1 ? 'cota' : 'cotas'}
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
-                        <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {aggregated.cotasTotal}
+                        <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          {aggregated.cotasTotal} cotas
                         </td>
                       )}
                     </tr>
@@ -2064,29 +2067,29 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               </table>
             </div>
 
-            {/* BLOCO 2: Taxa Mensalizada, Taxa Anual e Índice de Correção (Separado igual ao modelo clássico) */}
+            {/* BLOCO 2: Taxa Mensalizada, Taxa Anual e Índice de Correção */}
             {(visibleRows.taxaMensalizada ||
               visibleRows.taxaAnual ||
               visibleRows.indiceCorrecao) && (
-              <div className="border-2 border-slate-900 mt-3.5 overflow-hidden">
+              <div className="border border-slate-300 rounded-xl overflow-hidden shadow-xs mb-3 bg-white">
                 <table className="w-full text-xs sm:text-sm border-collapse">
-                  <tbody className="divide-y divide-slate-300">
+                  <tbody className="divide-y divide-slate-200">
                     {visibleRows.taxaMensalizada && (
-                      <tr className="bg-slate-100/90">
-                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
+                      <tr className="bg-[#F8FAFC]">
+                        <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                           Taxa Mensalizada
                         </td>
                         {calculatedProposals.map((p, idx) => (
                           <td
                             key={idx}
-                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                            className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-200 last:border-r-0"
                           >
-                            {formatPercent(p.taxaMensalizada, 2)}
+                            {formatPercent(p.taxaMensalizada, 2)} a.m.
                           </td>
                         ))}
                         {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                            {formatPercent(aggregated.taxaMensalizadaMedia, 2)}
+                          <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                            {formatPercent(aggregated.taxaMensalizadaMedia, 2)} a.m.
                           </td>
                         )}
                       </tr>
@@ -2094,40 +2097,40 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
                     {visibleRows.taxaAnual && (
                       <tr className="bg-white">
-                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                        <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                           Taxa Anual
                         </td>
                         {calculatedProposals.map((p, idx) => (
                           <td
                             key={idx}
-                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                            className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-200 last:border-r-0"
                           >
-                            {formatPercent(p.taxaAnual, 2)}
+                            {formatPercent(p.taxaAnual, 2)} a.a.
                           </td>
                         ))}
                         {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                            {formatPercent(aggregated.taxaAnualMedia, 2)}
+                          <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                            {formatPercent(aggregated.taxaAnualMedia, 2)} a.a.
                           </td>
                         )}
                       </tr>
                     )}
 
                     {visibleRows.indiceCorrecao && (
-                      <tr className="bg-slate-100/90">
-                        <td className="py-2 px-3.5 font-extrabold text-[#0F4C81] border-r border-slate-400">
+                      <tr className="bg-[#F8FAFC]">
+                        <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
                           Índice de Correção
                         </td>
                         {calculatedProposals.map((p, idx) => (
                           <td
                             key={idx}
-                            className="py-2 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                            className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                           >
                             {p.indiceCorrecao}
                           </td>
                         ))}
                         {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
+                          <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
                             {calculatedProposals[0]?.indiceCorrecao}
                           </td>
                         )}
@@ -2138,26 +2141,26 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               </div>
             )}
 
-            {/* BLOCO 3: Qntd. Parcelas Após Diluir o Lance (Separado no rodapé igual ao modelo clássico) */}
+            {/* BLOCO 3: Opção Alternativa (Redução de Prazo) */}
             {visibleRows.prazoPosLance && (
-              <div className="border-2 border-slate-900 mt-3.5 overflow-hidden">
+              <div className="border border-slate-300 rounded-xl overflow-hidden shadow-xs bg-white">
                 <table className="w-full text-xs sm:text-sm border-collapse">
                   <tbody>
                     <tr className="bg-white">
-                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] w-[45%] border-r border-slate-400">
-                        Qntd. Parcelas Após Diluir o Lance
+                      <td className="py-2.5 px-3.5 font-extrabold text-[#0F4C81] w-[46%] border-r border-slate-200">
+                        Opção Alternativa (Redução de Prazo)
                       </td>
                       {calculatedProposals.map((p, idx) => (
                         <td
                           key={idx}
-                          className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] border-r border-slate-300 last:border-r-0"
+                          className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                         >
-                          {p.prazoPosLance}
+                          {p.prazoPosLance} parcelas (mantendo parcela cheia)
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
                         <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {aggregated.prazoPosLanceMax}
+                          {aggregated.prazoPosLanceMax} parcelas (mantendo parcela cheia)
                         </td>
                       )}
                     </tr>

@@ -78,7 +78,7 @@ export async function generateProposalPngBlob(
   interface RowDef {
     label: string;
     values: string[];
-    highlight?: 'green' | 'blue' | 'gold';
+    highlight?: 'green' | 'blue' | 'amber' | 'gold';
     bold?: boolean;
   }
 
@@ -186,6 +186,8 @@ export async function generateProposalPngBlob(
           )})`,
         formatBRL(aggregated.lanceRecursoProprioTotal)
       ),
+      highlight: 'amber',
+      bold: true,
     });
   }
 
@@ -201,7 +203,9 @@ export async function generateProposalPngBlob(
     });
   }
 
-  if (visibleRows.valorUnitario) {
+  // Só exibe Valor Unitário se houver alguma proposta com mais de 1 cota (evita duplicação para 1 cota)
+  const hasMultipleCotas = proposals.some((p) => p.cotas > 1);
+  if (hasMultipleCotas && visibleRows.valorUnitario) {
     block1Rows.push({
       label: 'Valor Unitário',
       values: getColValues((p) => formatBRL(p.valorUnitario), '-'),
@@ -211,7 +215,10 @@ export async function generateProposalPngBlob(
   if (visibleRows.cotas) {
     block1Rows.push({
       label: 'Qntd. Cotas',
-      values: getColValues((p) => `${p.cotas}`, `${aggregated.cotasTotal}`),
+      values: getColValues(
+        (p) => `${p.cotas} ${p.cotas === 1 ? 'cota' : 'cotas'}`,
+        `${aggregated.cotasTotal} cotas`
+      ),
       bold: true,
     });
   }
@@ -248,8 +255,11 @@ export async function generateProposalPngBlob(
   const block3Rows: RowDef[] = [];
   if (hasAnyLance && visibleRows.prazoPosLance) {
     block3Rows.push({
-      label: 'Qntd. Parcelas Após Diluir o Lance',
-      values: getColValues((p) => `${p.prazoPosLance}`, '-'),
+      label: 'Opção Alternativa (Redução de Prazo)',
+      values: getColValues(
+        (p) => `${p.prazoPosLance} parcelas (mantendo parcela cheia)`,
+        `${aggregated.prazoPosLanceMax} parcelas (mantendo parcela cheia)`
+      ),
       bold: true,
     });
   }
@@ -339,6 +349,13 @@ export async function generateProposalPngBlob(
   const drawBlock = (rows: RowDef[]) => {
     if (rows.length === 0) return;
     const blockStartY = curY;
+    const blockH = rows.length * rowH;
+
+    // Fundo base e cantos arredondados do bloco
+    ctx.save();
+    roundRect(ctx, padX, blockStartY, tableW, blockH, 8);
+    ctx.clip();
+
     rows.forEach((row, rIdx) => {
       const y = curY;
       // Fundo da linha
@@ -347,17 +364,19 @@ export async function generateProposalPngBlob(
       } else if (row.highlight === 'blue') {
         ctx.fillStyle = '#EFF6FF';
       } else {
-        ctx.fillStyle = rIdx % 2 === 0 ? '#FFFFFF' : '#F1F5F9';
+        ctx.fillStyle = rIdx % 2 === 0 ? '#FFFFFF' : '#F8FAFC';
       }
       ctx.fillRect(padX, y, tableW, rowH);
 
       // Linha divisória horizontal
-      ctx.strokeStyle = '#CBD5E1';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(padX, y + rowH);
-      ctx.lineTo(padX + tableW, y + rowH);
-      ctx.stroke();
+      if (rIdx < rows.length - 1) {
+        ctx.strokeStyle = row.highlight === 'green' ? '#A7F3D0' : row.highlight === 'blue' ? '#BFDBFE' : '#E2E8F0';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padX, y + rowH);
+        ctx.lineTo(padX + tableW, y + rowH);
+        ctx.stroke();
+      }
 
       // Texto do rótulo (esquerda)
       ctx.fillStyle =
@@ -365,16 +384,20 @@ export async function generateProposalPngBlob(
           ? '#065F46'
           : row.highlight === 'blue'
           ? '#1E3A8A'
-          : '#1E40AF';
-      ctx.font = `${row.bold ? '800' : '700'} 14px Inter, Arial, sans-serif`;
+          : row.highlight === 'amber'
+          ? '#B45309'
+          : row.label.startsWith('(-)')
+          ? '#4338CA'
+          : '#334155';
+      ctx.font = `${row.bold || row.highlight ? '800' : '700'} 13.5px Inter, Arial, sans-serif`;
       ctx.textAlign = 'left';
-      ctx.fillText(row.label, padX + 14, y + 24);
+      ctx.fillText(row.label, padX + 16, y + 24);
 
       // Valores (colunas à direita)
       row.values.forEach((val, cIdx) => {
         const colX = padX + labelColW + cIdx * valColW;
         // Divisória vertical
-        ctx.strokeStyle = '#94A3B8';
+        ctx.strokeStyle = '#CBD5E1';
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(colX, y);
@@ -385,9 +408,13 @@ export async function generateProposalPngBlob(
           row.highlight === 'green'
             ? '#047857'
             : row.highlight === 'blue'
-            ? '#0F3B82'
-            : '#0F4C81';
-        ctx.font = `${row.bold ? '800' : '700'} 15px Inter, Arial, sans-serif`;
+            ? '#1D4ED8'
+            : row.highlight === 'amber'
+            ? '#B45309'
+            : row.label.startsWith('(-)')
+            ? '#4338CA'
+            : '#1E293B';
+        ctx.font = `${row.highlight ? '900 16px' : row.bold ? '800 14px' : '700 13.5px'} Inter, Arial, sans-serif`;
         ctx.textAlign = 'center';
         ctx.fillText(val, colX + valColW / 2, y + 24);
       });
@@ -395,10 +422,13 @@ export async function generateProposalPngBlob(
       curY += rowH;
     });
 
-    // Borda externa do bloco
-    ctx.strokeStyle = '#0F172A';
+    ctx.restore();
+
+    // Borda externa suave do bloco
+    ctx.strokeStyle = '#94A3B8';
     ctx.lineWidth = 1.5;
-    ctx.strokeRect(padX, blockStartY, tableW, rows.length * rowH);
+    roundRect(ctx, padX, blockStartY, tableW, blockH, 8);
+    ctx.stroke();
   };
 
   drawBlock(block1Rows);
