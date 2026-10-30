@@ -19,7 +19,6 @@ import {
   Target,
   TrendingDown,
   User,
-  Wand2,
 } from 'lucide-react';
 import {
   CalculatedProposal,
@@ -802,8 +801,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         {/* Cabeçalho do Simulador Inteligente */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-white/15">
           <div>
-            <div className="inline-flex items-center gap-2 text-lg sm:text-xl font-black text-bb-yellow uppercase tracking-tight">
-              <Wand2 className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" />
+            <div className="text-lg sm:text-xl font-black text-bb-yellow uppercase tracking-tight">
               Simulador Inteligente
             </div>
             <p className="text-xs sm:text-sm text-blue-100 mt-1">
