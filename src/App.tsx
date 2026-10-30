@@ -179,9 +179,9 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-slate-100">
       {/* Cabeçalho Branco Limpo com Faixa Inferior Amarela e Logo Transparente */}
-      <header className="bg-white border-b-4 border-[#FFCC00] shadow-sm print:hidden">
+      <header className="bg-white border-b-4 border-[#FFCC00] shadow-md print:hidden">
         <div className="max-w-7xl mx-auto px-4 py-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <img
@@ -208,14 +208,14 @@ export function App() {
             </div>
           </div>
 
-          {/* Menu de Navegação em Dock Limpo */}
-          <nav className="inline-flex flex-wrap items-center gap-1.5 bg-slate-100 border border-slate-200/90 p-1.5 rounded-2xl self-start lg:self-center">
+          {/* Menu de Navegação em Dock com Mais Profundidade e Destaque */}
+          <nav className="inline-flex flex-wrap items-center gap-1.5 bg-slate-200/80 border border-slate-300/80 p-1.5 rounded-2xl shadow-inner self-start lg:self-center">
             <button
               onClick={() => setActiveTab('simulador')}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'simulador'
-                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
-                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
+                  ? 'bg-[#0038A8] text-white shadow-md font-black'
+                  : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <Calculator
@@ -230,8 +230,8 @@ export function App() {
               onClick={() => setActiveTab('consorcios')}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'consorcios'
-                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
-                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
+                  ? 'bg-[#0038A8] text-white shadow-md font-black'
+                  : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <Table2
@@ -246,8 +246,8 @@ export function App() {
               onClick={() => setActiveTab('assembleias')}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'assembleias'
-                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
-                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
+                  ? 'bg-[#0038A8] text-white shadow-md font-black'
+                  : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <BarChart3
@@ -262,8 +262,8 @@ export function App() {
               onClick={() => setActiveTab('historico')}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'historico'
-                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
-                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
+                  ? 'bg-[#0038A8] text-white shadow-md font-black'
+                  : 'text-slate-700 hover:text-[#0038A8] hover:bg-white hover:shadow-xs'
               }`}
             >
               <FolderClock
