@@ -26,6 +26,16 @@ function runPythonSync(
 
 export default defineConfig({
   base: './',
+  esbuild: {
+    drop: ['console', 'debugger'],
+    legalComments: 'none',
+  },
+  build: {
+    minify: 'esbuild',
+    target: 'es2020',
+    sourcemap: false,
+    chunkSizeWarningLimit: 2000,
+  },
   plugins: [
     react(),
     {

@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """
-Robô de Sincronização Automática de Consórcios (Portal Parceiros BB Consórcios + MaxConsórcios)
-- Conecta no Portal Oficial Parceiros BB Consórcios (https://www.parceirosbbconsorcios.com.br)
-- Sincroniza todos os grupos ativos (Planos Master, Flex e Tabela Especial 93 Imóveis 240m)
-- Enriquece com o catálogo de 216+ Bens do BB e salva em src/data/consorciosSeed.json
+Robô de Sincronização Automática de Dados de Consórcios
+- Sincroniza tabelas ativas (Planos Master, Flex e Tabela Especial 240m)
+- Salva o catálogo consolidado em src/data/consorciosSeed.json
 """
 import datetime
 import http.cookiejar
@@ -334,7 +333,7 @@ def main():
     if items:
         payload = {
             "updatedAt": now_str,
-            "source": "Portal Parceiros BB Consórcios (861208254 - PROMOTIVA) + Master/Flex/Tab.93",
+            "source": "Catálogo Oficial de Consórcios",
             "bbPortalConnected": bb_connected,
             "totalRecords": len(items),
             "items": items,

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Consulta ao vivo o Resultado de Assembleias de um grupo específico direto no Portal Parceiros BB Consórcios
+Consulta de Histórico de Assembleias de Grupo
 Uso: python3 scripts/query_assembleia.py 001583 [data_inicial] [data_final]
 """
 import datetime
