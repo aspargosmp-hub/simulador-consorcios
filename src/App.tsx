@@ -180,29 +180,27 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      {/* Cabeçalho Executivo com Identidade Visual Oficial BB Consórcios */}
-      <header className="bg-gradient-to-r from-[#002454] via-[#0038A8] to-[#002D62] text-white border-t-4 border-b-4 border-[#FFCC00] shadow-lg print:hidden">
+      {/* Cabeçalho Branco Limpo com Faixa Inferior Amarela e Logo Transparente */}
+      <header className="bg-white border-b-4 border-[#FFCC00] shadow-sm print:hidden">
         <div className="max-w-7xl mx-auto px-4 py-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="bg-[#FFCC00] rounded-2xl px-3.5 py-2 shadow-md border border-yellow-300/60 flex items-center justify-center shrink-0">
-              <img
-                src="./logo-bb-consorcios.png"
-                alt="BB Consórcios"
-                className="h-11 sm:h-12 w-auto object-contain"
-              />
-            </div>
+            <img
+              src="./logo-bb-consorcios.png"
+              alt="BB Consórcios"
+              className="h-12 sm:h-14 w-auto object-contain shrink-0"
+            />
 
-            <div className="hidden sm:block h-11 w-px bg-white/20 shrink-0" />
+            <div className="hidden sm:block h-11 w-px bg-slate-200 shrink-0" />
 
             <div>
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase leading-tight">
-                O MELHOR SIMULADOR DA <span className="text-[#FFCC00]">BB CONSÓRCIOS</span>
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#0038A8] uppercase leading-tight">
+                O MELHOR SIMULADOR DA BB CONSÓRCIOS
               </h1>
-              <div className="flex items-center gap-2 mt-1 text-xs sm:text-sm text-blue-100 font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_#34d399]" />
+              <div className="flex items-center gap-2 mt-1 text-xs sm:text-sm text-slate-600 font-semibold">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 shadow-[0_0_8px_#10b981]" />
                 <span>
-                  Tabelas e assembleias oficiais atualizadas •{' '}
-                  <strong className="text-[#FFCC00] font-extrabold">
+                  Dados atualizados •{' '}
+                  <strong className="text-slate-900 font-extrabold">
                     {dataset.updatedAt.split(' ')[0]}
                   </strong>
                 </span>
@@ -210,17 +208,21 @@ export function App() {
             </div>
           </div>
 
-          {/* Menu de Navegação em Dock Unificado e Destacado */}
-          <nav className="inline-flex flex-wrap items-center gap-1.5 bg-[#001838]/65 border border-white/15 p-1.5 rounded-2xl shadow-inner self-start lg:self-center">
+          {/* Menu de Navegação em Dock Limpo */}
+          <nav className="inline-flex flex-wrap items-center gap-1.5 bg-slate-100 border border-slate-200/90 p-1.5 rounded-2xl self-start lg:self-center">
             <button
               onClick={() => setActiveTab('simulador')}
-              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition ${
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'simulador'
-                  ? 'bg-[#FFCC00] text-[#002454] shadow-md'
-                  : 'text-blue-100 hover:text-white hover:bg-white/10'
+                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
+                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
               }`}
             >
-              <Calculator className="w-4 h-4" />
+              <Calculator
+                className={`w-4 h-4 ${
+                  activeTab === 'simulador' ? 'text-[#FFCC00]' : 'text-slate-500'
+                }`}
+              />
               Simulador
             </button>
 
@@ -228,11 +230,15 @@ export function App() {
               onClick={() => setActiveTab('consorcios')}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'consorcios'
-                  ? 'bg-[#FFCC00] text-[#002454] shadow-md font-black'
-                  : 'text-blue-100 hover:text-white hover:bg-white/10'
+                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
+                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
               }`}
             >
-              <Table2 className="w-4 h-4" />
+              <Table2
+                className={`w-4 h-4 ${
+                  activeTab === 'consorcios' ? 'text-[#FFCC00]' : 'text-slate-500'
+                }`}
+              />
               Tabela de Grupos
             </button>
 
@@ -240,11 +246,15 @@ export function App() {
               onClick={() => setActiveTab('assembleias')}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'assembleias'
-                  ? 'bg-[#FFCC00] text-[#002454] shadow-md font-black'
-                  : 'text-blue-100 hover:text-white hover:bg-white/10'
+                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
+                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
               }`}
             >
-              <BarChart3 className="w-4 h-4" />
+              <BarChart3
+                className={`w-4 h-4 ${
+                  activeTab === 'assembleias' ? 'text-[#FFCC00]' : 'text-slate-500'
+                }`}
+              />
               Assembleias
             </button>
 
@@ -252,11 +262,15 @@ export function App() {
               onClick={() => setActiveTab('historico')}
               className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'historico'
-                  ? 'bg-[#FFCC00] text-[#002454] shadow-md font-black'
-                  : 'text-blue-100 hover:text-white hover:bg-white/10'
+                  ? 'bg-[#0038A8] text-white shadow-sm font-black'
+                  : 'text-slate-600 hover:text-[#0038A8] hover:bg-white'
               }`}
             >
-              <FolderClock className="w-4 h-4" />
+              <FolderClock
+                className={`w-4 h-4 ${
+                  activeTab === 'historico' ? 'text-[#FFCC00]' : 'text-slate-500'
+                }`}
+              />
               Salvas {savedSimulations.length > 0 ? `(${savedSimulations.length})` : ''}
             </button>
           </nav>
