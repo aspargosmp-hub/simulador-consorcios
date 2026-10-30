@@ -193,16 +193,18 @@ export function App() {
             <div className="hidden sm:block h-11 w-px bg-slate-200 shrink-0" />
 
             <div>
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#0038A8] uppercase leading-tight">
-                O MELHOR SIMULADOR DA BB CONSÓRCIOS
+              <h1 className="text-lg sm:text-2xl font-extrabold tracking-tight text-[#0038A8] leading-tight whitespace-nowrap">
+                O Melhor Simulador de Consórcios
               </h1>
-              <div className="flex items-center gap-2 mt-1 text-xs sm:text-sm text-slate-600 font-semibold">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0 shadow-[0_0_8px_#10b981]" />
+              <div className="flex items-center gap-2 mt-0.5 text-xs sm:text-sm text-slate-600 font-semibold whitespace-nowrap">
+                <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 shrink-0 shadow-[0_0_8px_#10b981]" />
                 <span>
                   Dados atualizados •{' '}
                   <strong className="text-slate-900 font-extrabold">
                     {dataset.updatedAt.split(' ')[0]}
                   </strong>
+                  <span className="hidden sm:inline text-slate-400 mx-1.5">•</span>
+                  <span className="hidden sm:inline text-slate-500 font-medium">Tabelas Flex e Master</span>
                 </span>
               </div>
             </div>
