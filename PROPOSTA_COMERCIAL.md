@@ -34,21 +34,30 @@ Para atender com máxima segurança aos diferentes momentos da operação da sua
 
 ---
 
-### 3. QUADRO COMPARATIVO DE RECURSOS
+### 3. QUADRO COMPARATIVO DE RECURSOS & TECNOLOGIA
 
-| Recursos & Entregáveis Tecnológicos | Plano API Simples | Plano API Master |
+| Capacidade & Entregável Tecnológico | Plano API Simples<br>*(Captação Digital & Pré-Venda)* | Plano API Master<br>*(Operacional & Fechamento no Balcão)* |
 | :--- | :---: | :---: |
-| **9 Segmentos** (Agro, Caminhões, Imóveis, Carros, Solar, Motos) | ✅ Incluso | ✅ Incluso |
-| **Tabelas Flex (-2% Taxa) & Master** | ✅ Incluso | ✅ Incluso |
-| **Motor de 1 a 3 Cenários Comparativos** | ✅ Incluso | ✅ Incluso |
-| **Cálculo Automático de Lance Embutido (até 30%)** | ✅ Incluso | ✅ Incluso |
-| **Cálculo de Redução de Parcela Pós-Lance** | ✅ Incluso | ✅ Incluso |
-| **Geração de Mensagem Pronta para WhatsApp** | ✅ Incluso | ✅ Incluso |
-| **Blindagem de Grupos** *(Leads protegidos na sua empresa)* | ✅ **Totalmente Ocultos** | 🔓 Liberados p/ Emissão |
-| **Simulação Direta por Código de Grupo** | ❌ Não disponível | ✅ **Incluso** |
-| **Dados Contratuais** *(Bem, Assembleia, Vagas)* | ❌ Não disponível | ✅ **Incluso** |
-| **Proteção Anti-Scraping / Anti-Varredura Ativa** | ✅ Incluso | ✅ Incluso |
-| **Suporte Técnico de Integração aos Desenvolvedores** | ✅ Incluso | ✅ Incluso Dedicado |
+| **Investimento Comercial** | **R$ 19.000** setup + **R$ 790/mês** | **R$ 25.000** setup + **R$ 1.490/mês** |
+| **Público e Aplicação Principal** | Sites, Landing Pages, Chatbots & SDR | Mesas de Operações, Corretores & Emissão Formal |
+| **1. MOTOR DE CÁLCULO FINANCEIRO & PROPOSTAS** | | |
+| 9 Segmentos BB (Agro, Pesados, Imóveis, Autos, etc.) | ✅ 9 Segmentos Ativos | ✅ 9 Segmentos Ativos |
+| Tabelas de Taxa Administrativa | ✅ Flex (-2% Taxa) & Master | ✅ Flex (-2% Taxa) & Master |
+| Lance Embutido (até 30%) & Lance do Bolso | ✅ Cálculo Automático | ✅ Cálculo Automático |
+| Parcela Pós-Lance Reduzida | ✅ Incluso em Tempo Real | ✅ Incluso em Tempo Real |
+| Multi-Cenários Comparativos | ✅ 1 a 3 Propostas Ideais | ✅ 1 a 3 Propostas Ideais |
+| Copy Pronta para WhatsApp | 💬 Foco em Atração & Parcela | 📑 Foco em Fechamento & Formal |
+| **2. INTELIGÊNCIA CONTRATUAL & FORMALIZAÇÃO** | | |
+| Identificação do Grupo e Bem no BB | 🛡️ **Oculto** *(Lead retido no seu time comercial)* | 📋 **Acesso Completo p/ Emissão** |
+| Simulação Direta por Código de Grupo | ❌ Não disponível *(Foco em Parcela)* | 🎯 **Simulação por Grupo Exato** |
+| Data Oficial da Próxima Assembleia | ❌ Não disponível | 📅 **Data Exata da Assembleia** |
+| Histórico Real de Menor Lance (12m) | ❌ Não disponível | 📊 **Inteligência Preditiva (12m)** |
+| Saldo de Vagas em Tempo Real | ❌ Não disponível | 🟢 **Vagas Abertas em Tempo Real** |
+| **3. INFRAESTRUTURA, SEGURANÇA & SUPORTE VIP** | | |
+| Blindagem Anti-Scraping / Anti-Dump | 🛡️ Ativa 24/7 *(Protege a base)* | 🛡️ Ativa 24/7 *(Protege a base)* |
+| Capacidade & Fila de Requisições | 30 simulações / minuto | ⚡ **Fila Prioritária de Alta Demanda** |
+| Canal de Atendimento & Suporte | Suporte Técnico (Chamados / E-mail) | ⭐ **Linha Direta WhatsApp c/ Engenharia** |
+| Homologação e Onboarding | Guia Técnico & Exemplos Prontos | 🚀 **Reunião Técnica & Onboarding VIP** |
 
 ---
 
