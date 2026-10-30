@@ -1595,58 +1595,63 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <button
                 type="button"
                 onClick={handleSave}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-black bg-bb-blue hover:bg-bb-dark text-white shadow-sm transition"
+                className="inline-flex items-center gap-2 h-10 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-xs transition"
+                title="Salva esta simulação para consultar no histórico"
               >
-                {savedToast ? <Check className="w-4 h-4" /> : <Save className="w-4 h-4" />}
+                {savedToast ? <Check className="w-4 h-4 text-emerald-600" /> : <Save className="w-4 h-4 text-slate-500" />}
                 {savedToast ? 'Salvo!' : 'Salvar'}
               </button>
 
               <button
                 type="button"
                 onClick={() => setShowRowConfig((v) => !v)}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-extrabold border transition ${
+                className={`inline-flex items-center gap-2 h-10 px-3.5 rounded-xl text-xs sm:text-sm font-bold border transition ${
                   showRowConfig
-                    ? 'bg-slate-800 text-white border-slate-800'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
+                    ? 'bg-slate-800 text-white border-slate-800 shadow-xs'
+                    : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-300 shadow-xs'
                 }`}
+                title="Ocultar ou exibir linhas específicas na tabela"
               >
-                <SlidersHorizontal className="w-3.5 h-3.5" />
+                <SlidersHorizontal className={`w-4 h-4 ${showRowConfig ? 'text-white' : 'text-slate-500'}`} />
                 Personalizar Linhas
               </button>
 
               <button
                 type="button"
-                onClick={handleCopyImage}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-[#25D366] hover:bg-[#1DA851] text-white shadow-sm transition"
-              >
-                {copiedImage ? (
-                  <Check className="w-4 h-4 text-white" />
-                ) : (
-                  <WhatsAppIcon className="w-4 h-4" />
-                )}
-                {copiedImage ? 'Imagem Copiada!' : 'Copiar p/ WhatsApp'}
-              </button>
-
-              <button
-                type="button"
                 onClick={handleDownloadImage}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-extrabold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition"
+                className="inline-flex items-center gap-2 h-10 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-xs transition"
+                title="Baixa a proposta em formato PNG no seu computador"
               >
-                <Download className="w-3.5 h-3.5" />
+                <Download className="w-4 h-4 text-slate-500" />
                 Baixar Imagem
               </button>
 
               <button
                 type="button"
-                onClick={() => window.print()}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark shadow-sm transition"
+                onClick={handleCopyImage}
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#25D366] hover:bg-[#1DA851] text-white shadow-sm transition"
+                title="Copia a imagem em alta definição para colar (Ctrl+V) direto no WhatsApp"
               >
-                <Printer className="w-3.5 h-3.5" />
-                PDF / Imprimir
+                {copiedImage ? (
+                  <Check className="w-4 h-4 text-white" />
+                ) : (
+                  <WhatsAppIcon className="w-4 h-4 text-white" />
+                )}
+                {copiedImage ? 'Imagem Copiada!' : 'Copiar para WhatsApp'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => window.print()}
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-[#FFCC00] hover:bg-[#E6B800] text-[#002454] shadow-sm transition"
+                title="Gera o PDF da proposta ou imprime"
+              >
+                <Printer className="w-4 h-4 text-[#002454]" />
+                Gerar PDF / Imprimir
               </button>
             </div>
           </div>
