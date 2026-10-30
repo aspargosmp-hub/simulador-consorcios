@@ -44,7 +44,7 @@ export function formatBRL(value: number): string {
 }
 
 export function formatPercent(value: number, decimals = 2): string {
-  return `${(Number.isFinite(value) ? value : 0).toFixed(decimals)}%`;
+  return `${(Number.isFinite(value) ? value : 0).toFixed(decimals).replace('.', ',')}%`;
 }
 
 export function calculateProposal(

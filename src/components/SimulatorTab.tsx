@@ -1811,28 +1811,27 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                     )}
                   </tr>
 
-                  {/* Se houver Lance Embutido, exibe Valor da Carta Bruto e Lance Embutido para transparência total */}
-                  {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
-                    visibleRows.creditoBruto && (
-                      <tr className="bg-[#F8FAFC]">
-                        <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
-                          Valor da Carta (Bruto)
+                  {/* Valor da Carta Bruto */}
+                  {visibleRows.creditoBruto && (
+                    <tr className="bg-[#F8FAFC]">
+                      <td className="py-2.5 px-3.5 font-bold text-slate-700 w-[46%] border-r border-slate-200">
+                        Valor da Carta (Bruto)
+                      </td>
+                      {calculatedProposals.map((p, idx) => (
+                        <td
+                          key={idx}
+                          className="py-2.5 px-3 text-center font-bold text-slate-800 border-r border-slate-200 last:border-r-0"
+                        >
+                          {formatBRL(p.creditoBruto)}
                         </td>
-                        {calculatedProposals.map((p, idx) => (
-                          <td
-                            key={idx}
-                            className="py-2.5 px-3 text-center font-bold text-slate-800 border-r border-slate-200 last:border-r-0"
-                          >
-                            {formatBRL(p.creditoBruto)}
-                          </td>
-                        ))}
-                        {agrupar && calculatedProposals.length > 1 && (
-                          <td className="py-2.5 px-3 text-center font-bold text-slate-800 bg-amber-50/60">
-                            {formatBRL(aggregated.creditoBrutoTotal)}
-                          </td>
-                        )}
-                      </tr>
-                    )}
+                      ))}
+                      {agrupar && calculatedProposals.length > 1 && (
+                        <td className="py-2.5 px-3 text-center font-bold text-slate-800 bg-amber-50/60">
+                          {formatBRL(aggregated.creditoBrutoTotal)}
+                        </td>
+                      )}
+                    </tr>
+                  )}
 
                   {calculatedProposals.some((p) => p.lanceEmbutidoPerc > 0) &&
                     visibleRows.lanceEmbutido && (

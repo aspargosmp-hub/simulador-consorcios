@@ -16,9 +16,6 @@ interface ExportImageOptions {
   visibleRows: Record<string, boolean>;
 }
 
-/**
- * Desenha um retângulo com cantos arredondados no Canvas 2D
- */
 function roundRect(
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -51,7 +48,7 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
 }
 
 /**
- * Gera um Blob PNG em alta definição (Retina 2x) do Quadro de Simulação BB Consórcios
+ * Gera um Blob PNG em alta definição (Retina 2x) exatamente no layout refinado de planilha clássica
  */
 export async function generateProposalPngBlob(
   opts: ExportImageOptions
@@ -73,13 +70,15 @@ export async function generateProposalPngBlob(
 
   const showAggregatedCol = agrupar && proposals.length > 1;
   const colsCount = proposals.length + (showAggregatedCol ? 1 : 0);
+  const isSingle = proposals.length === 1;
 
-  // Monta as 3 seções de linhas inspiradas no modelo clássico da BB Consórcios, porém com design moderno
   interface RowDef {
     label: string;
     values: string[];
-    highlight?: 'green' | 'blue' | 'amber' | 'gold';
+    highlight?: 'green' | 'blue' | 'amber';
+    isZebra?: boolean;
     bold?: boolean;
+    isEmbutido?: boolean;
   }
 
   const getColValues = (fn: (p: CalculatedProposal) => string, aggVal: string): string[] => {
@@ -91,21 +90,24 @@ export async function generateProposalPngBlob(
   const hasAnyEmbutido = proposals.some((p) => p.lanceEmbutidoPerc > 0);
   const hasAnyLance = proposals.some((p) => p.lanceTotalPerc > 0);
 
+  // MONTAGEM DO BLOCO 1
   const block1Rows: RowDef[] = [
     {
       label: 'Grupo',
       values: getColValues((p) => p.item.grupo.replace(/^0+/, '') || p.item.grupo, 'Soma Cotas'),
       bold: true,
+      isZebra: false,
     },
   ];
 
-  if (hasAnyEmbutido && visibleRows.creditoBruto) {
+  if (visibleRows.creditoBruto) {
     block1Rows.push({
       label: 'Valor da Carta (Bruto)',
       values: getColValues(
         (p) => formatBRL(p.creditoBruto),
         formatBRL(aggregated.creditoBrutoTotal)
       ),
+      isZebra: true,
     });
   }
 
@@ -117,8 +119,10 @@ export async function generateProposalPngBlob(
           p.lanceEmbutidoPerc > 0
             ? `${formatBRL(p.valorLanceEmbutido)} (${formatPercent(p.lanceEmbutidoPerc, 0)})`
             : 'Não utilizado',
-        `${formatBRL(aggregated.lanceEmbutidoTotal)}`
+        `- ${formatBRL(aggregated.lanceEmbutidoTotal)}`
       ),
+      isEmbutido: true,
+      isZebra: false,
     });
   }
 
@@ -141,7 +145,7 @@ export async function generateProposalPngBlob(
         (p) => `${p.prazo}`,
         `${Math.max(...proposals.map((p) => p.prazo))}`
       ),
-      bold: true,
+      isZebra: false,
     });
   }
 
@@ -152,7 +156,7 @@ export async function generateProposalPngBlob(
         (p) => formatBRL(p.parcelaMensalTotal),
         formatBRL(aggregated.parcelaMensalTotal)
       ),
-      bold: true,
+      isZebra: true,
     });
   }
 
@@ -163,15 +167,15 @@ export async function generateProposalPngBlob(
         (p) => formatPercent(p.lanceTotalPerc, 2),
         formatPercent(aggregated.lanceTotalPercMedio, 2)
       ),
-      bold: true,
+      isZebra: false,
     });
     block1Rows.push({
-      label: 'Valor do Lance Total',
+      label: 'Valor do Lance',
       values: getColValues(
         (p) => formatBRL(p.valorLanceTotal),
         formatBRL(aggregated.lanceTotalValor)
       ),
-      bold: true,
+      isZebra: true,
     });
   }
 
@@ -188,6 +192,7 @@ export async function generateProposalPngBlob(
       ),
       highlight: 'amber',
       bold: true,
+      isZebra: false,
     });
   }
 
@@ -203,12 +208,13 @@ export async function generateProposalPngBlob(
     });
   }
 
-  // Só exibe Valor Unitário se houver alguma proposta com mais de 1 cota (evita duplicação para 1 cota)
+  // Oculta Valor Unitário se todas as propostas forem de 1 cota
   const hasMultipleCotas = proposals.some((p) => p.cotas > 1);
   if (hasMultipleCotas && visibleRows.valorUnitario) {
     block1Rows.push({
       label: 'Valor Unitário',
       values: getColValues((p) => formatBRL(p.valorUnitario), '-'),
+      isZebra: true,
     });
   }
 
@@ -220,17 +226,20 @@ export async function generateProposalPngBlob(
         `${aggregated.cotasTotal} cotas`
       ),
       bold: true,
+      isZebra: false,
     });
   }
 
+  // MONTAGEM DO BLOCO 2
   const block2Rows: RowDef[] = [];
   if (visibleRows.taxaMensalizada) {
     block2Rows.push({
       label: 'Taxa Mensalizada',
       values: getColValues(
-        (p) => formatPercent(p.taxaMensalizada, 2),
-        formatPercent(aggregated.taxaMensalizadaMedia, 2)
+        (p) => `${formatPercent(p.taxaMensalizada, 2)} a.m.`,
+        `${formatPercent(aggregated.taxaMensalizadaMedia, 2)} a.m.`
       ),
+      isZebra: true,
       bold: true,
     });
   }
@@ -238,9 +247,10 @@ export async function generateProposalPngBlob(
     block2Rows.push({
       label: 'Taxa Anual',
       values: getColValues(
-        (p) => formatPercent(p.taxaAnual, 2),
-        formatPercent(aggregated.taxaAnualMedia, 2)
+        (p) => `${formatPercent(p.taxaAnual, 2)} a.a.`,
+        `${formatPercent(aggregated.taxaAnualMedia, 2)} a.a.`
       ),
+      isZebra: false,
       bold: true,
     });
   }
@@ -248,10 +258,11 @@ export async function generateProposalPngBlob(
     block2Rows.push({
       label: 'Índice de Correção',
       values: getColValues((p) => p.indiceCorrecao, proposals[0]?.indiceCorrecao || '-'),
-      bold: true,
+      isZebra: true,
     });
   }
 
+  // MONTAGEM DO BLOCO 3
   const block3Rows: RowDef[] = [];
   if (hasAnyLance && visibleRows.prazoPosLance) {
     block3Rows.push({
@@ -261,28 +272,40 @@ export async function generateProposalPngBlob(
         `${aggregated.prazoPosLanceMax} parcelas (mantendo parcela cheia)`
       ),
       bold: true,
+      isZebra: false,
     });
   }
 
+  // DIMENSÕES E DIAGRAMAÇÃO EXATA
   const scale = 2; // Retina 2x
-  const width = colsCount === 1 ? 680 : Math.min(1080, 440 + colsCount * 200);
-  const padX = 28;
-  const rowH = 38;
-  const headerLogoH = 88;
-  const subBannerH = 44;
-  const gapBetweenBlocks = 16;
+  const cardW = isSingle ? 720 : Math.min(1080, 480 + colsCount * 190);
+  const outerPadX = 24;
+  const outerPadY = 24;
+  const width = cardW + outerPadX * 2;
 
-  const totalRowsCount = block1Rows.length + block2Rows.length + block3Rows.length;
-  const footerH = 44;
-  const height =
-    24 +
+  const innerPad = 24;
+  const tableW = cardW - innerPad * 2;
+  const rowH = 45; // Linhas arejadas como na prévia aprovada
+  const headerLogoH = 74;
+  const subBannerH = 42;
+  const gapBetweenBlocks = 18;
+
+  const totalTableRows = block1Rows.length + block2Rows.length + block3Rows.length;
+  const footerH = 46;
+
+  const cardH =
+    innerPad +
     headerLogoH +
+    10 +
     subBannerH +
-    totalRowsCount * rowH +
-    (block2Rows.length > 0 ? gapBetweenBlocks : 0) +
-    (block3Rows.length > 0 ? gapBetweenBlocks : 0) +
+    10 +
+    block1Rows.length * rowH +
+    (block2Rows.length > 0 ? gapBetweenBlocks + block2Rows.length * rowH : 0) +
+    (block3Rows.length > 0 ? gapBetweenBlocks + block3Rows.length * rowH : 0) +
     footerH +
-    20;
+    innerPad;
+
+  const height = cardH + outerPadY * 2;
 
   const canvas = document.createElement('canvas');
   canvas.width = width * scale;
@@ -291,59 +314,83 @@ export async function generateProposalPngBlob(
   if (!ctx) return null;
   ctx.scale(scale, scale);
 
-  // Fundo branco geral
-  ctx.fillStyle = '#FFFFFF';
+  // 1. Fundo externo suave cinza-azulado (#F1F5F9)
+  ctx.fillStyle = '#F1F5F9';
   ctx.fillRect(0, 0, width, height);
 
-  // Faixa superior Amarela BB Consórcios (#FFCC00)
-  let curY = 20;
-  roundRect(ctx, padX, curY, width - padX * 2, headerLogoH, 10);
+  // 2. Card Principal Branco com Sombra e Borda (#CBD5E1)
+  const cardX = outerPadX;
+  const cardY = outerPadY;
+
+  ctx.save();
+  ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
+  ctx.shadowBlur = 18;
+  ctx.shadowOffsetY = 6;
+  roundRect(ctx, cardX, cardY, cardW, cardH, 16);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fill();
+  ctx.restore();
+
+  roundRect(ctx, cardX, cardY, cardW, cardH, 16);
+  ctx.strokeStyle = '#CBD5E1';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  // 3. Topo Amarelo Ouro Oficial BB Consórcios
+  let curY = cardY + innerPad;
+  const contentX = cardX + innerPad;
+
+  roundRect(ctx, contentX, curY, tableW, headerLogoH, 10);
   ctx.fillStyle = '#FFCC00';
   ctx.fill();
 
   const logoImg = await loadImage('./logo-bb-consorcios.png');
   if (logoImg) {
-    const targetH = 64;
+    const targetH = 54;
     const targetW = (logoImg.width / logoImg.height) * targetH;
     ctx.drawImage(
       logoImg,
-      width / 2 - targetW / 2,
+      cardX + cardW / 2 - targetW / 2,
       curY + (headerLogoH - targetH) / 2,
       targetW,
       targetH
     );
   } else {
-    ctx.fillStyle = '#003399';
-    ctx.font = '900 32px Inter, Arial, sans-serif';
+    ctx.fillStyle = '#0038A8';
+    ctx.font = '900 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('BB CONSÓRCIOS', width / 2, curY + 54);
+    ctx.fillText('BB CONSÓRCIOS', cardX + cardW / 2, curY + 46);
   }
 
-  curY += headerLogoH + 8;
+  curY += headerLogoH + 10;
 
-  // Sub-banner Azul Escuro BB ("Modalidade: ...")
-  const tableW = width - padX * 2;
-  ctx.fillStyle = '#0F4C81';
-  ctx.fillRect(padX, curY, tableW, subBannerH);
-  ctx.strokeStyle = '#0B2E59';
-  ctx.lineWidth = 1.5;
-  ctx.strokeRect(padX, curY, tableW, subBannerH);
+  // 4. Sub-barra Azul Gradiente da Modalidade
+  const blueGrad = ctx.createLinearGradient(contentX, curY, contentX + tableW, curY);
+  blueGrad.addColorStop(0, '#002D62');
+  blueGrad.addColorStop(1, '#0F4C81');
+  roundRect(ctx, contentX, curY, tableW, subBannerH, 8);
+  ctx.fillStyle = blueGrad;
+  ctx.fill();
 
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = '800 15px Inter, Arial, sans-serif';
+  ctx.font = '800 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'left';
-  ctx.fillText(`Modalidade: ${modalidadeLabel}`, padX + 14, curY + 27);
+  const modTitle = `MODALIDADE: ${modalidadeLabel.toUpperCase()}${
+    incluirSeguro ? ` (SEGURO ${tipoPessoa})` : ''
+  }`;
+  ctx.fillText(modTitle, contentX + 16, curY + 26);
 
   if (cliente.trim()) {
-    ctx.font = '600 13px Inter, Arial, sans-serif';
+    ctx.font = '700 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
     ctx.textAlign = 'right';
     ctx.fillStyle = '#FFCC00';
-    ctx.fillText(`Cliente: ${cliente.trim()}`, width - padX - 14, curY + 27);
+    ctx.fillText(`CLIENTE: ${cliente.trim().toUpperCase()}`, contentX + tableW - 16, curY + 26);
   }
 
-  curY += subBannerH;
+  curY += subBannerH + 10;
 
-  const labelColW = colsCount === 1 ? Math.round(tableW * 0.44) : Math.round(tableW * 0.36);
+  // 5. Função de Desenho de Bloco de Tabela Refinada
+  const labelColW = isSingle ? 310 : Math.round(tableW * 0.42);
   const valColW = (tableW - labelColW) / colsCount;
 
   const drawBlock = (rows: RowDef[]) => {
@@ -353,32 +400,40 @@ export async function generateProposalPngBlob(
 
     // Fundo base e cantos arredondados do bloco
     ctx.save();
-    roundRect(ctx, padX, blockStartY, tableW, blockH, 8);
+    roundRect(ctx, contentX, blockStartY, tableW, blockH, 8);
     ctx.clip();
 
     rows.forEach((row, rIdx) => {
       const y = curY;
+
       // Fundo da linha
       if (row.highlight === 'green') {
         ctx.fillStyle = '#ECFDF5';
       } else if (row.highlight === 'blue') {
         ctx.fillStyle = '#EFF6FF';
+      } else if (row.isZebra) {
+        ctx.fillStyle = '#F8FAFC';
       } else {
-        ctx.fillStyle = rIdx % 2 === 0 ? '#FFFFFF' : '#F8FAFC';
+        ctx.fillStyle = '#FFFFFF';
       }
-      ctx.fillRect(padX, y, tableW, rowH);
+      ctx.fillRect(contentX, y, tableW, rowH);
 
       // Linha divisória horizontal
       if (rIdx < rows.length - 1) {
-        ctx.strokeStyle = row.highlight === 'green' ? '#A7F3D0' : row.highlight === 'blue' ? '#BFDBFE' : '#E2E8F0';
+        ctx.strokeStyle =
+          row.highlight === 'green'
+            ? '#A7F3D0'
+            : row.highlight === 'blue'
+            ? '#BFDBFE'
+            : '#E2E8F0';
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(padX, y + rowH);
-        ctx.lineTo(padX + tableW, y + rowH);
+        ctx.moveTo(contentX, y + rowH);
+        ctx.lineTo(contentX + tableW, y + rowH);
         ctx.stroke();
       }
 
-      // Texto do rótulo (esquerda)
+      // Texto do Rótulo (Esquerda)
       ctx.fillStyle =
         row.highlight === 'green'
           ? '#065F46'
@@ -386,19 +441,22 @@ export async function generateProposalPngBlob(
           ? '#1E3A8A'
           : row.highlight === 'amber'
           ? '#B45309'
-          : row.label.startsWith('(-)')
+          : row.isEmbutido
           ? '#4338CA'
           : '#334155';
-      ctx.font = `${row.bold || row.highlight ? '800' : '700'} 13.5px Inter, Arial, sans-serif`;
+      ctx.font = `${
+        row.highlight || row.bold ? '800' : '700'
+      } 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
       ctx.textAlign = 'left';
-      ctx.fillText(row.label, padX + 16, y + 24);
+      ctx.fillText(row.label, contentX + 18, y + 27);
 
-      // Valores (colunas à direita)
+      // Valores (Direita / Centralizados nas colunas)
       row.values.forEach((val, cIdx) => {
-        const colX = padX + labelColW + cIdx * valColW;
+        const colX = contentX + labelColW + cIdx * valColW;
+
         // Divisória vertical
         ctx.strokeStyle = '#CBD5E1';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(colX, y);
         ctx.lineTo(colX, y + rowH);
@@ -411,12 +469,22 @@ export async function generateProposalPngBlob(
             ? '#1D4ED8'
             : row.highlight === 'amber'
             ? '#B45309'
-            : row.label.startsWith('(-)')
+            : row.isEmbutido
             ? '#4338CA'
+            : row.bold
+            ? '#0F4C81'
             : '#1E293B';
-        ctx.font = `${row.highlight ? '900 16px' : row.bold ? '800 14px' : '700 13.5px'} Inter, Arial, sans-serif`;
+        ctx.font = `${
+          row.highlight === 'green' || row.highlight === 'blue'
+            ? '900 16px'
+            : row.highlight === 'amber'
+            ? '900 14px'
+            : row.bold
+            ? '900 14px'
+            : '800 13.5px'
+        } -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText(val, colX + valColW / 2, y + 24);
+        ctx.fillText(val, colX + valColW / 2, y + 27);
       });
 
       curY += rowH;
@@ -424,10 +492,10 @@ export async function generateProposalPngBlob(
 
     ctx.restore();
 
-    // Borda externa suave do bloco
+    // Borda externa elegante do bloco (#94A3B8)
     ctx.strokeStyle = '#94A3B8';
     ctx.lineWidth = 1.5;
-    roundRect(ctx, padX, blockStartY, tableW, blockH, 8);
+    roundRect(ctx, contentX, blockStartY, tableW, blockH, 8);
     ctx.stroke();
   };
 
@@ -443,26 +511,34 @@ export async function generateProposalPngBlob(
     drawBlock(block3Rows);
   }
 
-  // Rodapé institucional discreto
-  curY += 24;
+  // 6. Rodapé Institucional
+  curY += 28;
+  ctx.strokeStyle = '#E2E8F0';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(contentX, curY);
+  ctx.lineTo(contentX + tableW, curY);
+  ctx.stroke();
+
+  curY += 20;
   ctx.fillStyle = '#64748B';
-  ctx.font = '600 11px Inter, Arial, sans-serif';
+  ctx.font = '600 11.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
   ctx.textAlign = 'left';
   ctx.fillText(
-    `Simulação BB Consórcios (${tipoPessoa}) • Data: ${new Date().toLocaleDateString('pt-BR')}`,
-    padX,
+    `Simulação BB Consórcios (${tipoPessoa}) • ${new Date().toLocaleDateString('pt-BR')}`,
+    contentX,
     curY
   );
 
   if (especialista.trim()) {
-    ctx.textAlign = 'right';
     ctx.fillStyle = '#0F4C81';
-    ctx.font = '700 11px Inter, Arial, sans-serif';
+    ctx.font = '800 11.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.textAlign = 'right';
     ctx.fillText(
       `${especialista.trim()}${
         telefoneEspecialista.trim() ? ` • ${telefoneEspecialista.trim()}` : ''
       }`,
-      width - padX,
+      contentX + tableW,
       curY
     );
   }
