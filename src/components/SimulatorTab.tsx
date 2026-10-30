@@ -9,7 +9,6 @@ import {
   Download,
   Layers,
   Plus,
-  Printer,
   Save,
   Shield,
   SlidersHorizontal,
@@ -1588,7 +1587,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                 Compartilhe a Simulação
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 mt-1">
-                Personalize os dados abaixo e envie a proposta pronta para o cliente via WhatsApp, imagem ou PDF.
+                Personalize os dados abaixo e envie a proposta pronta para o cliente via WhatsApp ou imagem.
               </p>
             </div>
 
@@ -1642,16 +1641,6 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                   <WhatsAppIcon className="w-4 h-4 text-white" />
                 )}
                 {copiedImage ? 'Imagem Copiada!' : 'Copiar para WhatsApp'}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => window.print()}
-                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#0038A8] hover:bg-[#002878] text-white shadow-xs transition"
-                title="Gera o PDF da proposta ou imprime"
-              >
-                <Printer className="w-4 h-4 text-white" />
-                Gerar PDF / Imprimir
               </button>
             </div>
           </div>
