@@ -3,7 +3,6 @@ import {
   ArrowRightLeft,
   BarChart3,
   Building2,
-  Calculator,
   Camera,
   Check,
   CheckCircle2,
@@ -1014,47 +1013,54 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
       {/* Painel Principal: Resultado da Simulação e Ajuste Fino das Propostas */}
       <div
-        className={`bg-white rounded-xl shadow-sm border p-5 print:hidden space-y-5 transition-all duration-300 ${
+        className={`bg-white rounded-2xl shadow-sm border p-5 sm:p-6 print:hidden space-y-5 transition-all duration-300 ${
           justUpdated
             ? 'border-bb-yellow ring-2 ring-bb-yellow bg-amber-50/10'
             : 'border-slate-200'
         }`}
       >
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
+        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-slate-200 pb-4">
           <div>
-            <h2 className="text-base font-extrabold text-bb-dark flex items-center gap-2 uppercase tracking-tight">
-              <Calculator className="w-5 h-5 text-bb-blue" />
+            <h2 className="text-lg sm:text-xl font-black text-bb-dark uppercase tracking-tight">
               Resultado da Simulação —{' '}
               <span className="text-bb-blue">
-                {OBJETIVOS_COMPRA.find((o) => o.id === objetivo)?.emoji}{' '}
-                {OBJETIVOS_COMPRA.find((o) => o.id === objetivo)?.label} (
-                {MODALIDADES_LIST.find((m) => m.code === modality)?.label || modality})
+                {OBJETIVOS_COMPRA.find((o) => o.id === objetivo)?.label} •{' '}
+                {modality === 'IM9'
+                  ? 'Tabela Especial 240m'
+                  : modality.endsWith('3')
+                  ? 'Plano Flex'
+                  : 'Plano Master'}
               </span>
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Compare abaixo os cenários montados para{' '}
+            <p className="text-xs sm:text-sm text-slate-600 mt-1">
+              Confira abaixo a simulação montada para{' '}
               {targetLiquido > 0 ? (
-                <strong>crédito líquido de {formatBRL(targetLiquido)}</strong>
+                <strong className="text-slate-900">
+                  crédito líquido de {formatBRL(targetLiquido)}
+                </strong>
               ) : (
-                <strong>sua simulação</strong>
+                <strong className="text-slate-900">seu atendimento</strong>
               )}
               {targetBolsoReais > 0 ? (
                 <>
                   {' '}
-                  com <strong>{formatBRL(targetBolsoReais)} de lance do bolso</strong>
+                  com{' '}
+                  <strong className="text-slate-900">
+                    {formatBRL(targetBolsoReais)} de lance do bolso
+                  </strong>
                 </>
               ) : null}
-              . Você pode ajustar qualquer grupo, carta ou lance abaixo:
+              . Se desejar, personalize o grupo, o valor da carta ou o lance diretamente nos quadros abaixo:
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             {/* Seletor PF vs PJ + Seguro Prestamista */}
-            <div className="inline-flex rounded-lg border border-slate-300 p-0.5 bg-slate-100">
+            <div className="inline-flex rounded-xl border border-slate-300 p-1 bg-slate-100">
               <button
                 type="button"
                 onClick={() => setTipoPessoa('PF')}
-                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold transition ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${
                   tipoPessoa === 'PF'
                     ? 'bg-bb-blue text-white shadow-sm'
                     : 'text-slate-600 hover:text-slate-900'
@@ -1065,7 +1071,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               <button
                 type="button"
                 onClick={() => setTipoPessoa('PJ')}
-                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md text-xs font-bold transition ${
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-extrabold transition ${
                   tipoPessoa === 'PJ'
                     ? 'bg-bb-blue text-white shadow-sm'
                     : 'text-slate-600 hover:text-slate-900'
@@ -1076,10 +1082,10 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </div>
 
             <label
-              className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-bold cursor-pointer transition ${
+              className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-extrabold cursor-pointer transition ${
                 incluirSeguro
                   ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
-                  : 'bg-slate-50 border-slate-300 text-slate-600'
+                  : 'bg-slate-50 border-slate-300 text-slate-700 hover:bg-slate-100'
               }`}
               title="Adiciona o Seguro de Vida Prestamista BB Consórcios conforme Pessoa Física (0,038% a.m.) ou Pessoa Jurídica (0,054% a.m.)"
             >
@@ -1096,7 +1102,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             <select
               value={modality}
               onChange={(e) => onChangeModality(e.target.value as CodigoModalidade)}
-              className="px-3 py-2 text-xs font-bold bg-slate-50 border border-slate-300 rounded-lg text-slate-800 focus:ring-2 focus:ring-bb-blue"
+              className="px-3 py-2 text-xs font-extrabold bg-slate-50 border border-slate-300 rounded-xl text-slate-800 focus:ring-2 focus:ring-bb-blue"
             >
               {MODALIDADES_LIST.map((m) => (
                 <option key={m.code} value={m.code}>
@@ -1106,15 +1112,16 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </select>
 
             <button
+              type="button"
               onClick={toggleFlexMaster}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold bg-amber-100 hover:bg-amber-200 text-amber-900 transition"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-extrabold bg-amber-100 hover:bg-amber-200 text-amber-900 transition"
               title="Troca todas as cotas abaixo entre a tabela Flex (-2% taxa) e a tabela Master"
             >
               <ArrowRightLeft className="w-3.5 h-3.5" />
-              Trocar p/ {modality.endsWith('3') ? 'Master (4)' : 'Flex (-2% Taxa)'}
+              Mudar p/ {modality.endsWith('3') ? 'Master' : 'Flex (-2% Taxa)'}
             </button>
 
-            <label className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 border border-blue-200 text-xs font-bold text-bb-blue cursor-pointer">
+            <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-50 border border-blue-200 text-xs font-extrabold text-bb-blue cursor-pointer">
               <input
                 type="checkbox"
                 checked={agrupar}
@@ -1632,13 +1639,12 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
           {/* Barra Superior de Exportação da Imagem / Print */}
           <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200 print:hidden">
             <div>
-              <h3 className="text-sm font-extrabold text-bb-dark uppercase tracking-wide flex items-center gap-2">
-                <Camera className="w-4 h-4 text-bb-blue" />
-                Quadro Visual da Proposta (Pronto para Print ou Copiar Imagem)
+              <h3 className="text-lg sm:text-xl font-black text-bb-dark uppercase tracking-tight">
+                Quadro Visual da Proposta
               </h3>
-              <p className="text-xs text-slate-500">
-                Visual limpo e sem caixinhas na tela: tire print direto ou clique em{' '}
-                <strong>Copiar Imagem</strong> para colar (Ctrl+V) no WhatsApp do cliente!
+              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                Pronto para enviar ao cliente: tire print direto da tela ou clique em{' '}
+                <strong className="text-slate-900">Copiar Imagem p/ WhatsApp</strong> e cole (Ctrl+V) na conversa!
               </p>
             </div>
 
