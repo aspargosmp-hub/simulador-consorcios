@@ -56,7 +56,8 @@ Para atender com máxima segurança aos diferentes momentos da operação da sua
 | Histórico Real de Menor Lance (12m) | ❌ Não disponível | 📊 **Inteligência Preditiva (12m)** |
 | Saldo de Vagas em Tempo Real | ❌ Não disponível | 🟢 **Vagas Abertas em Tempo Real** |
 | **3. INFRAESTRUTURA, SEGURANÇA & SUPORTE VIP** | | |
-| Blindagem Anti-Scraping / Anti-Dump | 🛡️ Ativa 24/7 *(Protege a base)* | 🛡️ Ativa 24/7 *(Protege a base)* |
+| Disponibilidade e Uptime (SLA) | 99.5% Garantido em Contrato | 99.9% com Alta Disponibilidade |
+| Atualização Diária da Base de Dados | Diária (Sincronização Oficial) | Diária (Sincronização Oficial) |
 | Capacidade & Fila de Requisições | 30 simulações / minuto | ⚡ **Fila Prioritária de Alta Demanda** |
 | Canal de Atendimento & Suporte | Suporte Técnico (Chamados / E-mail) | ⭐ **Linha Direta WhatsApp c/ Engenharia** |
 | Homologação e Onboarding | Guia Técnico & Exemplos Prontos | 🚀 **Reunião Técnica & Onboarding VIP** |
