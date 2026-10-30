@@ -180,35 +180,44 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      {/* Cabeçalho Limpo e Direto com a Logo Oficial BB Consórcios */}
-      <header className="bg-bb-blue text-white border-b-4 border-bb-yellow shadow-md print:hidden">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="bg-white rounded-xl px-3 py-1.5 shadow-sm flex items-center justify-center">
+      {/* Cabeçalho Executivo com Identidade Visual Oficial BB Consórcios */}
+      <header className="bg-gradient-to-r from-[#002454] via-[#0038A8] to-[#002D62] text-white border-t-4 border-b-4 border-[#FFCC00] shadow-lg print:hidden">
+        <div className="max-w-7xl mx-auto px-4 py-3.5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="bg-[#FFCC00] rounded-2xl px-3.5 py-2 shadow-md border border-yellow-300/60 flex items-center justify-center shrink-0">
               <img
                 src="./logo-bb-consorcios.png"
                 alt="BB Consórcios"
-                className="h-10 w-auto object-contain"
+                className="h-11 sm:h-12 w-auto object-contain"
               />
             </div>
+
+            <div className="hidden sm:block h-11 w-px bg-white/20 shrink-0" />
+
             <div>
-              <h1 className="text-lg sm:text-xl font-black tracking-tight text-white uppercase">
-                O MELHOR SIMULADOR DA BB CONSÓRCIOS
+              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white uppercase leading-tight">
+                O MELHOR SIMULADOR DA <span className="text-[#FFCC00]">BB CONSÓRCIOS</span>
               </h1>
-              <p className="text-xs text-bb-yellow font-medium">
-                Simulação rápida de cartas, lances e parcelas • Tabelas atualizadas ({dataset.updatedAt.split(' ')[0]})
-              </p>
+              <div className="flex items-center gap-2 mt-1 text-xs sm:text-sm text-blue-100 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_#34d399]" />
+                <span>
+                  Tabelas e assembleias oficiais atualizadas •{' '}
+                  <strong className="text-[#FFCC00] font-extrabold">
+                    {dataset.updatedAt.split(' ')[0]}
+                  </strong>
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Menu de Navegação Direto e Intuitivo */}
-          <nav className="flex flex-wrap items-center gap-1.5">
+          {/* Menu de Navegação em Dock Unificado e Destacado */}
+          <nav className="inline-flex flex-wrap items-center gap-1.5 bg-[#001838]/65 border border-white/15 p-1.5 rounded-2xl shadow-inner self-start lg:self-center">
             <button
               onClick={() => setActiveTab('simulador')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition ${
                 activeTab === 'simulador'
-                  ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-[#FFCC00] text-[#002454] shadow-md'
+                  : 'text-blue-100 hover:text-white hover:bg-white/10'
               }`}
             >
               <Calculator className="w-4 h-4" />
@@ -217,10 +226,10 @@ export function App() {
 
             <button
               onClick={() => setActiveTab('consorcios')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'consorcios'
-                  ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-[#FFCC00] text-[#002454] shadow-md font-black'
+                  : 'text-blue-100 hover:text-white hover:bg-white/10'
               }`}
             >
               <Table2 className="w-4 h-4" />
@@ -229,10 +238,10 @@ export function App() {
 
             <button
               onClick={() => setActiveTab('assembleias')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'assembleias'
-                  ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-[#FFCC00] text-[#002454] shadow-md font-black'
+                  : 'text-blue-100 hover:text-white hover:bg-white/10'
               }`}
             >
               <BarChart3 className="w-4 h-4" />
@@ -241,10 +250,10 @@ export function App() {
 
             <button
               onClick={() => setActiveTab('historico')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-extrabold transition ${
+              className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold transition ${
                 activeTab === 'historico'
-                  ? 'bg-bb-yellow text-bb-dark shadow-sm'
-                  : 'bg-white/10 text-white hover:bg-white/20'
+                  ? 'bg-[#FFCC00] text-[#002454] shadow-md font-black'
+                  : 'text-blue-100 hover:text-white hover:bg-white/10'
               }`}
             >
               <FolderClock className="w-4 h-4" />
