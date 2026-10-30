@@ -351,7 +351,7 @@ export const PainelAssembleiasTab: React.FC<PainelAssembleiasTabProps> = ({
                 <div className="text-xl font-extrabold text-bb-blue mt-1">
                   {formatPercent(stats.mediaMenorLance, 2)}
                 </div>
-                <div className="text-[10px] text-slate-500">Referência ideal p/ contemplar</div>
+                <div className="text-[10px] text-slate-500">Referência ideal para contemplar</div>
               </div>
 
               <div className="bg-amber-50/70 rounded-lg p-3 border border-amber-200">

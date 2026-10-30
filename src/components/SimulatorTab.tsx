@@ -1145,7 +1145,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               title="Troca todas as cotas abaixo entre a tabela Flex (-2% taxa) e a tabela Master"
             >
               <ArrowRightLeft className="w-3.5 h-3.5" />
-              Mudar p/ {modality.endsWith('3') ? 'Master' : 'Flex (-2% Taxa)'}
+              Mudar para {modality.endsWith('3') ? 'Master' : 'Flex (-2% Taxa)'}
             </button>
 
             <label className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-50 border border-blue-200 text-xs font-extrabold text-bb-blue cursor-pointer">
@@ -1620,6 +1620,9 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                 Personalizar Linhas
               </button>
 
+              {/* Divisor vertical sutil entre ferramentas e exportações */}
+              <div className="hidden sm:block h-6 w-px bg-slate-300 mx-0.5" />
+
               <button
                 type="button"
                 onClick={handleDownloadImage}
@@ -1633,7 +1636,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               <button
                 type="button"
                 onClick={handleCopyImage}
-                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#25D366] hover:bg-[#1DA851] text-white shadow-sm transition"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#25D366] hover:bg-[#1DA851] text-white shadow-xs transition"
                 title="Copia a imagem em alta definição para colar (Ctrl+V) direto no WhatsApp"
               >
                 {copiedImage ? (
@@ -1647,10 +1650,10 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-xs sm:text-sm font-extrabold bg-[#FFCC00] hover:bg-[#E6B800] text-[#002454] shadow-sm transition"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl text-xs sm:text-sm font-bold bg-[#0038A8] hover:bg-[#002878] text-white shadow-xs transition"
                 title="Gera o PDF da proposta ou imprime"
               >
-                <Printer className="w-4 h-4 text-[#002454]" />
+                <Printer className="w-4 h-4 text-white" />
                 Gerar PDF / Imprimir
               </button>
             </div>
