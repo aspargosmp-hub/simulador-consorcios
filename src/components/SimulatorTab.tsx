@@ -1017,7 +1017,7 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             : 'border-slate-200'
         }`}
       >
-        <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        <div className="flex flex-col gap-3.5 border-b border-slate-200 pb-4">
           <div>
             <h2 className="text-lg sm:text-xl font-black text-bb-dark uppercase tracking-tight">
               Resultado da Simulação —{' '}
@@ -1052,9 +1052,9 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2.5 bg-slate-50 border border-slate-200/80 rounded-xl p-2.5">
             {/* Seletor PF vs PJ + Seguro Prestamista */}
-            <div className="inline-flex rounded-xl border border-slate-300 p-1 bg-slate-100">
+            <div className="inline-flex rounded-xl border border-slate-300 p-1 bg-white">
               <button
                 type="button"
                 onClick={() => setTipoPessoa('PF')}
