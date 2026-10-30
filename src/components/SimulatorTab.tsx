@@ -36,6 +36,17 @@ import {
 import { generateProposalPngBlob } from '../utils/exportProposalImage';
 import { CurrencyInput } from './CurrencyInput';
 
+const WhatsAppIcon: React.FC<{ className?: string }> = ({ className = 'w-4 h-4' }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    aria-hidden="true"
+    className={`shrink-0 ${className}`}
+  >
+    <path d="M12.031 2c-5.506 0-9.989 4.478-9.99 9.984a9.964 9.964 0 0 0 1.333 4.993L2 22l5.233-1.237a9.994 9.994 0 0 0 4.779 1.217h.004c5.505 0 9.988-4.478 9.989-9.984 0-2.669-1.037-5.176-2.922-7.062A9.935 9.935 0 0 0 12.031 2Zm5.829 14.127c-.245.691-1.428 1.321-1.988 1.404-.51.076-1.156.108-1.868-.118-.432-.137-.986-.32-1.696-.627-2.987-1.29-4.938-4.298-5.087-4.497-.149-.199-1.214-1.616-1.214-3.083 0-1.467.768-2.188 1.041-2.487.273-.298.595-.373.794-.373.198 0 .397.002.57.01.183.009.428-.07.67.511.248.597.843 2.063.917 2.212.075.149.124.323.025.522-.099.199-.149.323-.298.497-.149.174-.313.389-.446.522-.149.149-.304.311-.131.609.174.298.771 1.272 1.656 2.061 1.138 1.015 2.098 1.329 2.396 1.478.298.149.471.124.645-.075.174-.199.744-.87.942-1.168.199-.298.397-.249.67-.149.273.099 1.736.819 2.034.968.298.149.496.224.57.348.075.124.075.721-.17 1.412Z" />
+  </svg>
+);
+
 interface SimulatorTabProps {
   items: ConsorcioItem[];
   modality: CodigoModalidade;
@@ -1552,61 +1563,64 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         </div>
 
         {/* Dados do Cliente e Botões de Ação */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-3 pt-3 border-t border-slate-100 items-end">
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">
-              Nome do Cliente ({tipoPessoa})
-            </label>
-            <input
-              type="text"
-              value={cliente}
-              onChange={(e) => setCliente(e.target.value)}
-              placeholder={
-                tipoPessoa === 'PF' ? 'Ex: João da Silva' : 'Ex: Agropecuária Boa Vista LTDA'
-              }
-              className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-            />
+        <div className="flex flex-col xl:flex-row xl:items-end gap-3 pt-3 border-t border-slate-100">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1">
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">
+                Nome do Cliente ({tipoPessoa})
+              </label>
+              <input
+                type="text"
+                value={cliente}
+                onChange={(e) => setCliente(e.target.value)}
+                placeholder={
+                  tipoPessoa === 'PF' ? 'Ex: João da Silva' : 'Ex: Agropecuária Boa Vista LTDA'
+                }
+                className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">
+                Telefone / WhatsApp Cliente
+              </label>
+              <input
+                type="text"
+                value={telefone}
+                onChange={(e) => setTelefone(e.target.value)}
+                placeholder="(00) 90000-0000"
+                className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">
+                Especialista Responsável
+              </label>
+              <input
+                type="text"
+                value={especialista}
+                onChange={(e) => setEspecialista(e.target.value)}
+                className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-600 mb-1">
+                Observação Interna (CRM)
+              </label>
+              <input
+                type="text"
+                value={comentario}
+                onChange={(e) => setComentario(e.target.value)}
+                placeholder="Ex: Cliente quer Trator c/ 30% embutido"
+                className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+              />
+            </div>
           </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">
-              Telefone / WhatsApp Cliente
-            </label>
-            <input
-              type="text"
-              value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
-              placeholder="(00) 90000-0000"
-              className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">
-              Especialista Responsável
-            </label>
-            <input
-              type="text"
-              value={especialista}
-              onChange={(e) => setEspecialista(e.target.value)}
-              className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-600 mb-1">
-              Observação Interna (CRM)
-            </label>
-            <input
-              type="text"
-              value={comentario}
-              onChange={(e) => setComentario(e.target.value)}
-              placeholder="Ex: Cliente quer Trator c/ 30% embutido"
-              className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-            />
-          </div>
-          <div className="grid grid-cols-3 gap-1.5">
+
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0">
             <button
               type="button"
               onClick={handleSave}
-              className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition shadow-sm"
             >
               {savedToast ? <Check className="w-3.5 h-3.5" /> : <Save className="w-3.5 h-3.5" />}
               {savedToast ? 'Salvo!' : 'Salvar'}
@@ -1614,19 +1628,19 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             <button
               type="button"
               onClick={handleCopyWhatsApp}
-              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#1DA851] text-white whitespace-nowrap shadow-sm transition"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-extrabold bg-[#25D366] hover:bg-[#1DA851] text-white whitespace-nowrap shadow-sm transition"
             >
               {copiedWhats ? (
                 <Check className="w-3.5 h-3.5" />
               ) : (
-                <img src="./whatsapp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
+                <WhatsAppIcon className="w-4 h-4" />
               )}
               {copiedWhats ? 'Copiado!' : 'WhatsApp'}
             </button>
             <button
               type="button"
               onClick={() => window.print()}
-              className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition shadow-sm"
             >
               <Printer className="w-3.5 h-3.5" />
               PDF / Imprimir
@@ -1667,16 +1681,12 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               <button
                 type="button"
                 onClick={handleCopyImage}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-[#1DA851] hover:bg-[#168A41] text-white shadow-sm transition"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-[#25D366] hover:bg-[#1DA851] text-white shadow-sm transition"
               >
                 {copiedImage ? (
                   <Check className="w-4 h-4 text-white" />
                 ) : (
-                  <img
-                    src="./whatsapp-icon.png"
-                    alt="WhatsApp"
-                    className="w-5 h-5 object-contain shrink-0"
-                  />
+                  <WhatsAppIcon className="w-4 h-4" />
                 )}
                 {copiedImage ? 'Imagem Copiada! (Cole no WhatsApp)' : 'Copiar p/ WhatsApp'}
               </button>
@@ -2172,63 +2182,66 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
 
           {/* Barra Repetida no Rodapé da Proposta Comercial (para não precisar rolar de volta ao topo) */}
           <div className="pt-5 border-t border-slate-200 print:hidden">
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">
-                  Nome do Cliente ({tipoPessoa})
-                </label>
-                <input
-                  type="text"
-                  value={cliente}
-                  onChange={(e) => setCliente(e.target.value)}
-                  placeholder={
-                    tipoPessoa === 'PF'
-                      ? 'Ex: João da Silva'
-                      : 'Ex: Agropecuária Boa Vista LTDA'
-                  }
-                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                />
+            <div className="flex flex-col xl:flex-row xl:items-end gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 flex-1">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Nome do Cliente ({tipoPessoa})
+                  </label>
+                  <input
+                    type="text"
+                    value={cliente}
+                    onChange={(e) => setCliente(e.target.value)}
+                    placeholder={
+                      tipoPessoa === 'PF'
+                        ? 'Ex: João da Silva'
+                        : 'Ex: Agropecuária Boa Vista LTDA'
+                    }
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Telefone / WhatsApp Cliente
+                  </label>
+                  <input
+                    type="text"
+                    value={telefone}
+                    onChange={(e) => setTelefone(e.target.value)}
+                    placeholder="(00) 90000-0000"
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Especialista Responsável
+                  </label>
+                  <input
+                    type="text"
+                    value={especialista}
+                    onChange={(e) => setEspecialista(e.target.value)}
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">
+                    Observação Interna (CRM)
+                  </label>
+                  <input
+                    type="text"
+                    value={comentario}
+                    onChange={(e) => setComentario(e.target.value)}
+                    placeholder="Ex: Cliente quer Trator c/ 30% embutido"
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">
-                  Telefone / WhatsApp Cliente
-                </label>
-                <input
-                  type="text"
-                  value={telefone}
-                  onChange={(e) => setTelefone(e.target.value)}
-                  placeholder="(00) 90000-0000"
-                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">
-                  Especialista Responsável
-                </label>
-                <input
-                  type="text"
-                  value={especialista}
-                  onChange={(e) => setEspecialista(e.target.value)}
-                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">
-                  Observação Interna (CRM)
-                </label>
-                <input
-                  type="text"
-                  value={comentario}
-                  onChange={(e) => setComentario(e.target.value)}
-                  placeholder="Ex: Cliente quer Trator c/ 30% embutido"
-                  className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
-                />
-              </div>
-              <div className="grid grid-cols-3 gap-1.5">
+
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold bg-bb-blue hover:bg-bb-dark text-white whitespace-nowrap transition shadow-sm"
                 >
                   {savedToast ? (
                     <Check className="w-3.5 h-3.5" />
@@ -2240,24 +2253,20 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                 <button
                   type="button"
                   onClick={handleCopyImage}
-                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-extrabold bg-[#25D366] hover:bg-[#1ebe5d] text-white whitespace-nowrap transition shadow-sm"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-extrabold bg-[#25D366] hover:bg-[#1DA851] text-white whitespace-nowrap transition shadow-sm"
                   title="Copia a imagem PNG pronta para colar (Ctrl+V) no WhatsApp"
                 >
                   {copiedImage ? (
                     <Check className="w-4 h-4" />
                   ) : (
-                    <img
-                      src="./whatsapp-icon.png"
-                      alt="WhatsApp"
-                      className="w-4 h-4 object-contain brightness-0 invert"
-                    />
+                    <WhatsAppIcon className="w-4 h-4" />
                   )}
                   {copiedImage ? 'Copiada!' : 'WhatsApp'}
                 </button>
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition"
+                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark whitespace-nowrap transition shadow-sm"
                 >
                   <Printer className="w-3.5 h-3.5" />
                   PDF / Imprimir
