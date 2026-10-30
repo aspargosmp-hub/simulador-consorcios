@@ -268,8 +268,8 @@ export async function generateProposalPngBlob(
     block3Rows.push({
       label: 'Opção Alternativa (Redução de Prazo)',
       values: getColValues(
-        (p) => `${p.prazoPosLance} parcelas (mantendo parcela cheia)`,
-        `${aggregated.prazoPosLanceMax} parcelas (mantendo parcela cheia)`
+        (p) => `${p.prazoPosLance} parcelas`,
+        `${aggregated.prazoPosLanceMax} parcelas`
       ),
       bold: true,
       isZebra: false,
@@ -484,7 +484,7 @@ export async function generateProposalPngBlob(
             : '800 13.5px'
         } -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText(val, colX + valColW / 2, y + 27);
+        ctx.fillText(val, colX + valColW / 2, y + 27, valColW - 16);
       });
 
       curY += rowH;

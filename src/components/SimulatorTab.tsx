@@ -2171,12 +2171,12 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                           key={idx}
                           className="py-2.5 px-3 text-center font-extrabold text-slate-800 border-r border-slate-200 last:border-r-0"
                         >
-                          {p.prazoPosLance} parcelas (mantendo parcela cheia)
+                          {p.prazoPosLance} parcelas
                         </td>
                       ))}
                       {agrupar && calculatedProposals.length > 1 && (
                         <td className="py-2.5 px-3 text-center font-extrabold text-[#0F4C81] bg-amber-50/60">
-                          {aggregated.prazoPosLanceMax} parcelas (mantendo parcela cheia)
+                          {aggregated.prazoPosLanceMax} parcelas
                         </td>
                       )}
                     </tr>
