@@ -48,17 +48,46 @@ function requireApiKey(req, res, next) {
   next();
 }
 
-app.use(requireApiKey);
+// Sistema de Proteção Anti-Scraping / Rate Limiting (Máx 30 requisições por minuto por chave/IP)
+const rateLimitMap = new Map();
+const MAX_REQUESTS_PER_MINUTE = 30;
 
-// 1. Healthcheck / Status da API
+function antiScrapingRateLimit(req, res, next) {
+  const clientKey =
+    req.headers['x-api-key'] ||
+    req.headers['authorization'] ||
+    req.ip ||
+    req.socket.remoteAddress;
+
+  const now = Date.now();
+  const windowStart = now - 60000; // janela de 1 minuto
+
+  let timestamps = rateLimitMap.get(clientKey) || [];
+  timestamps = timestamps.filter((t) => t > windowStart);
+
+  if (timestamps.length >= MAX_REQUESTS_PER_MINUTE) {
+    return res.status(429).json({
+      success: false,
+      error: 'Limite de requisições excedido (Rate Limit).',
+      message:
+        'Por segurança, o limite de simulações é de 30 por minuto. Varreduras e raspagem de dados são bloqueadas automaticamente.',
+    });
+  }
+
+  timestamps.push(now);
+  rateLimitMap.set(clientKey, timestamps);
+  next();
+}
+
+app.use(requireApiKey);
+app.use(antiScrapingRateLimit);
+
+// 1. Healthcheck / Status da API (Sem revelar metadados de tabelas internas)
 app.get(['/', '/api/v1/health'], (req, res) => {
-  const seed = loadSeedData();
   res.json({
     status: 'ONLINE',
     service: 'API Motor de Consórcios BB',
     version: '1.0.0',
-    dataAtualizacaoBase: seed.updatedAt,
-    totalCotasDisponiveis: seed.totalRecords,
     endpoints: {
       health: 'GET /api/v1/health',
       objetivos: 'GET /api/v1/objetivos',

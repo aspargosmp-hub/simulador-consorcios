@@ -420,6 +420,24 @@ def run_simulation(params: dict) -> dict:
     }
 
 
+# Rate Limiter Anti-Scraping (Máx 30 requisições por minuto por chave/IP)
+RATE_LIMIT_STORE = {}
+MAX_REQS_PER_MIN = 30
+
+
+def check_rate_limit(client_id: str) -> bool:
+    import time
+    now = time.time()
+    window = now - 60.0
+    history = [t for t in RATE_LIMIT_STORE.get(client_id, []) if t > window]
+    if len(history) >= MAX_REQS_PER_MIN:
+        RATE_LIMIT_STORE[client_id] = history
+        return False
+    history.append(now)
+    RATE_LIMIT_STORE[client_id] = history
+    return True
+
+
 class ApiHandler(http.server.BaseHTTPRequestHandler):
     def send_cors_headers(self):
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -445,13 +463,10 @@ class ApiHandler(http.server.BaseHTTPRequestHandler):
         url = urlparse(self.path)
         path = url.path.rstrip("/")
         if path in ["", "/api/v1/health"]:
-            seed = load_seed()
             data = {
                 "status": "ONLINE",
                 "service": "API Motor de Consórcios BB (Python Core)",
                 "version": "1.0.0",
-                "dataAtualizacaoBase": seed.get("updatedAt", ""),
-                "totalCotasDisponiveis": seed.get("totalRecords", 0),
                 "endpoints": {
                     "health": "GET /api/v1/health",
                     "objetivos": "GET /api/v1/objetivos",
@@ -476,6 +491,18 @@ class ApiHandler(http.server.BaseHTTPRequestHandler):
                     "success": False,
                     "error": "Não autorizado: Chave de API inválida ou ausente.",
                     "message": "Envie sua chave no header 'x-api-key' ou 'Authorization: Bearer <chave>'.",
+                },
+            )
+            return
+
+        client_id = self.headers.get("x-api-key") or self.client_address[0]
+        if not check_rate_limit(client_id):
+            self.send_json(
+                429,
+                {
+                    "success": False,
+                    "error": "Limite de requisições excedido (Rate Limit).",
+                    "message": "Por segurança, o limite é de 30 simulações por minuto. Varreduras automatizadas são bloqueadas.",
                 },
             )
             return
