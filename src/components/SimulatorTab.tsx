@@ -3,10 +3,8 @@ import {
   ArrowRightLeft,
   BarChart3,
   Building2,
-  Camera,
   Check,
   CheckCircle2,
-  Copy,
   CopyPlus,
   Download,
   Layers,
@@ -1616,9 +1614,13 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
             <button
               type="button"
               onClick={handleCopyWhatsApp}
-              className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white whitespace-nowrap transition"
+              className="inline-flex items-center justify-center gap-1.5 px-2.5 py-2 rounded-lg text-xs font-bold bg-[#25D366] hover:bg-[#1DA851] text-white whitespace-nowrap shadow-sm transition"
             >
-              {copiedWhats ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              {copiedWhats ? (
+                <Check className="w-3.5 h-3.5" />
+              ) : (
+                <img src="./whatsapp-icon.png" alt="WhatsApp" className="w-4 h-4 object-contain" />
+              )}
               {copiedWhats ? 'Copiado!' : 'WhatsApp'}
             </button>
             <button
@@ -1633,26 +1635,26 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
         </div>
       </div>
 
-      {/* QUADRO VISUAL DE PROPOSTA (PRONTO PARA PRINT / COPIAR IMAGEM / PDF) */}
+      {/* COMPARTILHE A SIMULAÇÃO (PRONTO PARA PRINT / COPIAR IMAGEM / PDF) */}
       {calculatedProposals.length > 0 ? (
-        <div className="bg-white rounded-xl shadow-md border border-slate-200 p-5 print:p-0 print:shadow-none print:border-none space-y-5">
-          {/* Barra Superior de Exportação da Imagem / Print */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200 print:hidden">
+        <div className="bg-white rounded-2xl shadow-md border border-slate-200 p-5 sm:p-6 print:p-0 print:shadow-none print:border-none space-y-5">
+          {/* Barra Superior de Compartilhamento da Simulação */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200 print:hidden">
             <div>
               <h3 className="text-lg sm:text-xl font-black text-bb-dark uppercase tracking-tight">
-                Quadro Visual da Proposta
+                Compartilhe a Simulação
               </h3>
-              <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
-                Pronto para enviar ao cliente: tire print direto da tela ou clique em{' '}
-                <strong className="text-slate-900">Copiar Imagem p/ WhatsApp</strong> e cole (Ctrl+V) na conversa!
+              <p className="text-xs sm:text-sm text-slate-600 mt-1">
+                Envie a proposta pronta para o seu cliente: clique em{' '}
+                <strong className="text-slate-900">Copiar p/ WhatsApp</strong> para colar (Ctrl+V) a imagem direto na conversa, tire print da tela ou gere o PDF.
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
               <button
                 type="button"
                 onClick={() => setShowRowConfig((v) => !v)}
-                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border transition ${
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-extrabold border transition ${
                   showRowConfig
                     ? 'bg-slate-800 text-white border-slate-800'
                     : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
@@ -1665,29 +1667,33 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
               <button
                 type="button"
                 onClick={handleCopyImage}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-black bg-bb-blue hover:bg-bb-dark text-white shadow-sm transition"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-[#1DA851] hover:bg-[#168A41] text-white shadow-sm transition"
               >
                 {copiedImage ? (
-                  <Check className="w-4 h-4 text-bb-yellow" />
+                  <Check className="w-4 h-4 text-white" />
                 ) : (
-                  <Camera className="w-4 h-4 text-bb-yellow" />
+                  <img
+                    src="./whatsapp-icon.png"
+                    alt="WhatsApp"
+                    className="w-5 h-5 object-contain shrink-0"
+                  />
                 )}
-                {copiedImage ? 'Imagem Copiada! (Cole no WhatsApp)' : 'Copiar Imagem p/ WhatsApp'}
+                {copiedImage ? 'Imagem Copiada! (Cole no WhatsApp)' : 'Copiar p/ WhatsApp'}
               </button>
 
               <button
                 type="button"
                 onClick={handleDownloadImage}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-extrabold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition"
               >
                 <Download className="w-3.5 h-3.5" />
-                Baixar PNG
+                Baixar Imagem
               </button>
 
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-extrabold bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark transition"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black bg-bb-yellow hover:bg-bb-yellowHover text-bb-dark shadow-sm transition"
               >
                 <Printer className="w-3.5 h-3.5" />
                 PDF / Imprimir
@@ -2234,15 +2240,19 @@ export const SimulatorTab: React.FC<SimulatorTabProps> = ({
                 <button
                   type="button"
                   onClick={handleCopyImage}
-                  className="inline-flex items-center justify-center gap-1 px-2.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white whitespace-nowrap transition"
+                  className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-extrabold bg-[#25D366] hover:bg-[#1ebe5d] text-white whitespace-nowrap transition shadow-sm"
                   title="Copia a imagem PNG pronta para colar (Ctrl+V) no WhatsApp"
                 >
                   {copiedImage ? (
-                    <Check className="w-3.5 h-3.5" />
+                    <Check className="w-4 h-4" />
                   ) : (
-                    <Camera className="w-3.5 h-3.5" />
+                    <img
+                      src="./whatsapp-icon.png"
+                      alt="WhatsApp"
+                      className="w-4 h-4 object-contain brightness-0 invert"
+                    />
                   )}
-                  {copiedImage ? 'Copiada!' : 'Imagem'}
+                  {copiedImage ? 'Copiada!' : 'WhatsApp'}
                 </button>
                 <button
                   type="button"
